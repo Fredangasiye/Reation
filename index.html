@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relation | Relational Alignment & Survival Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .option-card:hover {
+            transform: scale(1.02);
+            background-color: rgba(51, 65, 85, 0.8);
+        }
+
+        .option-card:active {
+            transform: scale(0.98);
+        }
+
+        .loader {
+            border-top-color: #8b5cf6;
+            animation: spinner 0.8s linear infinite;
+        }
+
+        @keyframes spinner {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .vibrant-gradient {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blur-content {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- App Container -->
+    <div id="app"
+        class="w-full max-w-2xl mx-auto shadow-2xl rounded-3xl overflow-hidden glass min-h-[600px] flex flex-col uppercase-none">
+        <!-- Progress Bar -->
+        <div id="progress-container" class="hidden w-full h-1 bg-slate-800">
+            <div id="progress-bar" class="h-full vibrant-gradient progress-bar" style="width: 0%"></div>
+        </div>
+
+        <!-- Render Target -->
+        <div id="view-content" class="flex-grow flex flex-col p-8 md:p-12 relative h-full">
+            <!-- Content gets injected here -->
+        </div>
+    </div>
+
+    <script>
+        // --- CONSTANTS & DATA ---
+        const WEBHOOK_URL = "INSERT_YOUR_URL_HERE";
+
+        const DOMAINS = {
+            1: "Conflict & Repair",
+            2: "Finance & Partnership",
+            3: "Intimacy & Loyalty",
+            4: "Attachment & Safety",
+            5: "Vision & Values"
+        };
+
+        const ARCHETYPE_DATA = {
+            A: {
+                title: "The Challenger (Dominant)",
+                shortDesc: "You are a 'Take-Charge' leader. Your data shows that in public disagreements, managing the social calendar, or facing conflict, you naturally assert control.",
+                description: "You possess a high-ego/dominant drive, prioritizing leadership, efficiency, and individual sovereignty within the relationship.",
+                factors: [
+                    "Conflict: You tend to counter-attack and value winning the argument over immediate repair.",
+                    "Finance: You view money as a tool for power and autonomy, often seeking CEO-level control.",
+                    "Intimacy: You seek validation through achievement and may view connection as a transaction.",
+                    "Vision: You have a singular mission and expect your partner to align with your logistical path."
+                ],
+                advice: "Fred, true leadership requires you to actively pause and invite Cat into the final decision, ensuring she doesn't feel like a passenger in her own life."
+            },
+            B: {
+                title: "The Strategist (Avoidant)",
+                shortDesc: "You are highly analytical and value logic. Under stress, your instinct is to detach emotionally to maintain a sense of objective safety.",
+                description: "You value logical distance and personal space, often detaching emotionally when the 'temperature' in the room gets too high.",
+                factors: [
+                    "Conflict: Your default is withdrawal or the silent treatment as a means of self-protection.",
+                    "Finance: You maintain strict stewardship but may use financial opacity as a shield for independence.",
+                    "Intimacy: You retreat into hobbies or screens when stressed instead of initiating connection.",
+                    "Vision: You avoid long-term labels and deep commitments until absolute logical safety is established."
+                ],
+                advice: "Withdrawal is a slow leak in intimacy. You must practice the 'Safe Return'—even if you need space, give your partner a specific re-engagement time."
+            },
+            C: {
+                title: "The Peacemaker (Secure)",
+                shortDesc: "Day-to-day, you are very steady. You prioritize harmony and de-escalate tension through collaborative, attachment-first logic.",
+                description: "You have a baseline for emotional security and transparency, viewing your relationship as a unified, collaborative team.",
+                factors: [
+                    "Conflict: You prioritize pause-and-regulate over reactivity and seek repair within hours.",
+                    "Finance: Total transparency is your default, viewing money as a shared resource for a shared team.",
+                    "Intimacy: You initiate connection with your partner first when feeling disconnected.",
+                    "Vision: You operate with a 'Covenant' mindset—sacrificial love and mutual humility are your core drivers."
+                ],
+                advice: "Your security is an anchor. However, you must ensure your voice isn't lost in the pursuit of peace. Speak your full truth, not just the harmonious part."
+            },
+            D: {
+                title: "The Nurturer (Passive)",
+                shortDesc: "You are adaptive and steady. But under severe stress or major life changes, your instinct is to step back and let a stronger personality take the wheel.",
+                description: "You are highly empathetic and adaptive, often suppressesing your own needs to maintain the comfort and schedule of your partner.",
+                factors: [
+                    "Conflict: You apologize immediately just to stop the fight, even when you aren't at fault.",
+                    "Finance: You prefer for your partner to handle all logistics to avoid the stress of decisions.",
+                    "Intimacy: You seek validation through being 'needed' and may struggle with boundaries.",
+                    "Vision: You mold your life to follow your partner's path, often at the expense of your own voice."
+                ],
+                advice: "Cat, you must practice voicing your needs before the stress boils over. Your honest dissent is a gift to the relationship's health."
+            }
+        };
+
+        const PAIRING_DYNAMICS = {
+            "AA": { status: "High Risk", dynamic: "The CEO Collision", choices: "Constant power struggles where winning the argument matters more than the person.", social: "Competitive social posturing that can leave third parties feeling the tension." },
+            "AB": { status: "Moderate Risk", dynamic: "The Pursuer & The Ghost", choices: "One drives while the other detaches, leading to a decision-making vacuum.", social: "One manages the room while the other seeks an exit or retreats into a screen." },
+            "AC": { status: "Optimized", dynamic: "The Anchor & The Visionary", choices: "A strong lead supported by an emotionally secure foundation.", social: "A balanced team where one leads and the other stabilizes the social vibe." },
+            "AD": { status: "Moderate Risk", dynamic: "The Driver and The Yielder", choices: "High Friction Potential. Fred likes to drive, and Cat is willing to let him. However, Fred's tendency to take control can cause Cat to experience blocks.", social: "Fred's instinct to assert himself publicly can unintentionally make Cat feel sidelined or unheard." },
+            "BA": { status: "Moderate Risk", dynamic: "The Ghost & The Pursuer", choices: "Withdrawal triggers more dominance, creating a cycle of chase and retreat.", social: "Social settings become a battleground for independence vs. control." },
+            "BB": { status: "High Risk", dynamic: "The Parallel Lives", choices: "Decision-making is stalled by mutual detachment and fear of vulnerability.", social: "A relationship that looks functional from the outside but feels hollow/isolated on the inside." },
+            "BC": { status: "Moderate Risk", dynamic: "The Anchor & The Strategist", choices: "The anchor seeks connection while the strategist seeks logic/space.", social: "A steady social presence with occasional moments of emotional disconnect." },
+            "BD": { status: "Moderate Risk", dynamic: "The Detached Lead", choices: "One retreats into logic while the other suppresses needs to maintain peace.", social: "Socially awkward or reserved, lacking a clear 'connector' personality." },
+            "CA": { status: "Optimized", dynamic: "The Visionary & The Anchor", choices: "Mutual respect where leadership is invited and stability is cherished.", social: "A socially warm and influential couple that invites others in." },
+            "CB": { status: "Moderate Risk", dynamic: "The Strategist & The Anchor", choices: "Balance is maintained but emotional depth requires intentional effort from the strategist.", social: "A calm social presence that can feel slightly distant or private." },
+            "CC": { status: "High Alignment", dynamic: "The Covenant Core", choices: "Transparent, sacrificial decision-making that prioritizes the 'Us'.", social: "Naturally hospitable and emotionally safe social leaders." },
+            "CD": { status: "Optimized", dynamic: "The Steady Team", choices: "High alignment with low conflict, though both must avoid 'peace at all costs'.", social: "Warm, inviting, and highly relatable social presence." },
+            "DA": { status: "Moderate Risk", dynamic: "The Yielder and The Driver", choices: "Fred likes to drive, and Cat is willing to let him, but at the cost of her voice.", social: "Cat feels like a passenger in social settings managed by Fred's initiative." },
+            "DB": { status: "Moderate Risk", dynamic: "The Accommodator", choices: "One adapts to the other's logical distance, creating a quiet but lonely dynamic.", social: "A socially passive couple that often follows the lead of friends." },
+            "DC": { status: "Optimized", dynamic: "The Steady Team", choices: "Great stability, provided the nurturer feels safe enough to be honest.", social: "Highly consistent and dependable social partners." },
+            "DD": { status: "Moderate Risk", dynamic: "The Passive Merge", choices: "Decision-making is slow as neither wants to 'burden' the other.", social: "Extremely kind but can be socially indecisive or invisible." }
+        };
+
+        const QUESTIONS = [];
+        for (let i = 1; i <= 50; i++) {
+            const domain = Math.ceil(i / 10);
+            QUESTIONS.push({
+                id: i,
+                domain: domain,
+                text: i === 1 ? "During a heated argument, what is your most common reaction?" :
+                    i === 2 ? "When your partner criticizes you, how do you usually respond?" :
+                        i === 3 ? "How quickly do you look to 'repair' after a disagreement?" :
+                            i === 4 ? "What is your stance on the phrase 'Never go to bed angry'?" :
+                                i === 5 ? "Do you ever feel 'contempt' (disgust or superiority) during a fight?" :
+                                    `Question ${i}: Assessment for ${DOMAINS[domain]}?`,
+                options: {
+                    A: i <= 5 ? ["I counterattack.", "I bring up their past mistakes.", "Only after they admit they were wrong.", "It's impossible; some things take days to settle.", "Yes, often when they seem incompetent."][i - 1] : "[Dominant/Ego] Highly driven or controlling choice.",
+                    B: i <= 5 ? ["I give the silent treatment.", "I walk away without a word.", "I prefer to wait days until it blows over.", "I prefer to sleep on it alone.", "No, I just feel numb and bored."][i - 1] : "[Avoidant] Withdrawn or detached choice.",
+                    C: i <= 5 ? ["I pause to regulate and understand.", "I try to find the kernel of truth in it.", "I try to reach out within hours.", "We should at least acknowledge our love before sleeping.", "Rarely; I try to remember their worth."][i - 1] : "[Secure] Collaborative and transparent choice.",
+                    D: i <= 5 ? ["I apologize immediately just to stop the fight.", "I accept all the blame to end the tension.", "I never let the argument start, I just give in.", "I will stay up all night begging for peace.", "No, I'm too busy feeling guilty myself."][i - 1] : "[Passive] Codependent or peacekeeping choice."
+                }
+            });
+        }
+
+        // --- STATE ---
+        let state = {
+            view: 'landing',
+            name: '',
+            relationshipStatus: null,
+            currentQuestion: 0,
+            answers: [],
+            p1Name: '',
+            p1Data: null,
+            isPartner2: false,
+            syncing: false
+        };
+
+        const setView = (view) => { state.view = view; render(); };
+
+        function render() {
+            const content = document.getElementById('view-content');
+            const progressContainer = document.getElementById('progress-container');
+            content.innerHTML = '';
+
+            if (state.view === 'landing') {
+                progressContainer.classList.add('hidden');
+                content.innerHTML = `
+                    <div class="fade-in space-y-8 text-center my-auto">
+                        <div class="space-y-4">
+                            <h1 class="text-5xl font-bold tracking-tight text-white">Relation</h1>
+                            <p class="text-xl text-slate-400 font-light max-w-md mx-auto">"Identify hidden friction points and align your relationship architecture."</p>
+                        </div>
+                        <div class="max-w-sm mx-auto space-y-6">
+                            <input id="user-name" type="text" placeholder="Enter your name" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-4 text-center text-lg outline-none focus:ring-2 focus:ring-violet-500 transition-all">
+                            <div class="space-y-4 flex flex-col items-center">
+                                <button onclick="startApp('Single')" class="w-full bg-violet-600 py-4 rounded-xl font-semibold text-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-500/20">Single: Preparing for my future</button>
+                                <button onclick="startApp('Coupled')" class="w-full glass py-4 rounded-xl font-semibold text-lg hover:bg-slate-800 transition-all border border-slate-700">In a Relationship: Strengthening us</button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-500 italic">"Start your project with a 5-Question Vibe Check."</p>
+                    </div>
+                `;
+            } else if (state.view === 'quiz') {
+                progressContainer.classList.remove('hidden');
+                const q = QUESTIONS[state.currentQuestion];
+                const progress = ((state.currentQuestion) / QUESTIONS.length) * 100;
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+
+                content.innerHTML = `
+                    <div class="slide-up space-y-8">
+                        <div class="space-y-2">
+                            <span class="text-xs font-bold uppercase tracking-widest text-violet-400">${DOMAINS[q.domain]}</span>
+                            <h2 class="text-2xl font-medium leading-snug">${q.text}</h2>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            ${Object.entries(q.options).map(([key, text]) => `
+                                <div onclick="selectOption('${key}')" class="option-card p-5 rounded-2xl glass border-slate-800 hover:border-violet-500/50 flex items-center space-x-4">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-800 text-slate-400 font-bold text-sm">${key}</span>
+                                    <span class="text-lg text-slate-200">${text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (state.view === 'teaser') {
+                progressContainer.classList.remove('hidden');
+                const teaser = getTeaserInsight();
+                content.innerHTML = `
+                    <div class="fade-in space-y-8 text-center my-auto">
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="loader w-12 h-12 border-4 border-slate-800 rounded-full mb-4"></div>
+                            <h3 class="text-xl font-bold">Analyzing Behavioral Baseline...</h3>
+                        </div>
+                        <div class="space-y-6 text-left">
+                            <div class="p-6 rounded-2xl bg-slate-800/50 border border-slate-700 space-y-2">
+                                <p class="text-violet-400 font-bold uppercase text-xs tracking-widest">1. Your Baseline Tendency</p>
+                                <p class="text-lg text-slate-200">${teaser.baseline}</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-slate-800/50 border border-slate-700 space-y-2">
+                                <p class="text-violet-400 font-bold uppercase text-xs tracking-widest">2. The Hidden Risk</p>
+                                <p class="text-lg text-slate-300 italic">"${teaser.risk}"</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-violet-600/10 border border-violet-600/20 space-y-3">
+                                <p class="text-violet-500 font-bold uppercase text-xs tracking-widest">3. The Cliffhanger</p>
+                                <p class="text-sm text-slate-300 leading-relaxed">"Your surface baseline is clear, but we haven't mapped your relational architecture. Most relationships collapse because they ignore the 'MRI' level—attachment triggers, financial transparency, and conflict repair speed. You are 10% away from your full Blueprint."</p>
+                            </div>
+                        </div>
+                        <button onclick="setView('quiz')" class="w-full py-4 bg-violet-600 rounded-xl font-bold animate-pulse shadow-lg shadow-violet-500/40">Continue for a full assessment (FREE)</button>
+                    </div>
+                `;
+            } else if (state.view === 'results') {
+                progressContainer.classList.add('hidden');
+                const scores = calculateScores();
+                const primary = getPrimaryArchetype(scores);
+                const feedback = ARCHETYPE_DATA[primary];
+
+                content.innerHTML = `
+                    <div class="fade-in space-y-12 pb-12">
+                        <div class="text-center space-y-2">
+                            <h2 class="text-4xl font-bold text-white">Your Private Blueprint</h2>
+                            <p class="text-slate-400">Comprehensive Relational Diagnostic for <b>${state.name || "User"}</b>.</p>
+                        </div>
+                        <div class="bg-violet-600/5 border border-violet-600/20 p-8 rounded-3xl space-y-6">
+                            <div class="space-y-2">
+                                <p class="text-xs font-bold uppercase tracking-widest text-violet-500">Primary Behavioral Archetype</p>
+                                <h3 class="text-3xl font-bold text-white">${feedback.title}</h3>
+                                <p class="text-slate-300 italic leading-relaxed">"${feedback.description}"</p>
+                            </div>
+                            <div class="space-y-4">
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Core Behavioral Factors</h4>
+                                <ul class="space-y-3">
+                                    ${feedback.factors.map(f => `<li class="flex items-start space-x-3 text-slate-300"><span class="text-violet-500 mt-1">✦</span><span class="text-sm leading-relaxed">${f}</span></li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest text-center mb-6">Structural Alignment Scores</h4>
+                            ${Object.entries(scores).map(([domain, data]) => `
+                                <div class="bg-slate-800/30 p-5 rounded-2xl border border-slate-800 space-y-3">
+                                    <div class="flex justify-between items-end">
+                                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">${DOMAINS[domain]}</p>
+                                        <p class="text-sm font-bold text-violet-400">${getLabel(data.strongest)} (${Math.round(data.percentage)}%)</p>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden"><div class="h-full vibrant-gradient" style="width: ${data.percentage}%"></div></div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        ${renderAlignmentForecast(scores)}
+
+                        <div class="pt-8 border-t border-slate-800 text-center space-y-6">
+                            <div id="sync-status" class="bg-blue-500/10 border border-blue-500/20 py-2 px-4 rounded-full inline-flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span id="sync-text" class="text-xs text-blue-400 font-bold uppercase tracking-widest">Relational Data Encrypted & Synced</span>
+                            </div>
+                            <div class="space-y-4">
+                                <p class="text-slate-500 text-sm italic">Request your full relationship architecture PDF diagnostic.</p>
+                                <input type="email" id="email-capture" placeholder="Enter your email" class="w-full max-w-sm bg-slate-800 border-slate-700 rounded-xl px-4 py-3 mb-4 focus:ring-2 focus:ring-violet-500 outline-none block mx-auto text-center">
+                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="text-violet-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest">Send Report to Engine</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function startApp(status) {
+            state.name = document.getElementById('user-name').value || (state.isPartner2 ? "Partner 2" : "Partner 1");
+            state.relationshipStatus = status;
+            setView('quiz');
+        }
+
+        function selectOption(option) {
+            state.answers.push(option);
+            state.currentQuestion++;
+            if (state.currentQuestion === 5) setView('teaser');
+            else if (state.currentQuestion >= QUESTIONS.length) { syncToWebhook(false); setView('results'); }
+            else render();
+        }
+
+        const DOMAIN_INTERACTIONS = {
+            1: { // Conflict & Repair
+                "AA": "High Volatility. Both counter-attack, leading to escalating power struggles.",
+                "AB": "The Chaser & The Ghost. One attacks while the other retreats into silence.",
+                "AC": "Balanced Intensity. A dominant leader met with a regulating anchor.",
+                "AD": "Internalized Tension. One drives the conflict while the other yield in fear.",
+                "CC": "Covenant Repair. Mutual de-escalation and rapid restoration of peace.",
+                "DD": "Silent Simmer. Conflict is avoided, leading to hidden resentment."
+            },
+            2: { // Finance & Partnership
+                "AA": "Financial Cold War. Competing for control over the 'War Chest'.",
+                "CC": "Shared Stewardship. Total transparency and unified financial vision.",
+                "BC": "Analytical Guardrails. Logic meets security, ensuring cautious stability.",
+                "AD": "Logistical Imbalance. One manages all power while the other feels like a passenger."
+            },
+            3: { // Intimacy & Loyalty
+                "AA": "Transactional Connection. Validation through achievement rather than vulnerability.",
+                "BB": "The Isolated Island. Both retreat into screens or hobbies when safety is low.",
+                "CC": "Vulnerable Proximity. Proactive initiation and emotional transparency.",
+                "AC": "Deep Loyalty. A strong protector met by a warm, supportive anchor."
+            },
+            4: { // Attachment & Safety
+                "AA": "Hyper-Independence. Both fear dependency, keeping a 'back door' open.",
+                "CC": "Secure Base. A home environment where both feel safe to be fully seen.",
+                "BD": "Passive Avoidance. Distance is the default, and needs are suppressed."
+            },
+            5: { // Vision & Values
+                "AA": "Mission Conflict. Competing singular paths with no room for a joint map.",
+                "CC": "Covenant Unity. A shared singular mission that serves a higher purpose.",
+                "CD": "Adaptive Vision. One leads with security while the other stabilizes the path."
+            }
+        };
+
+        const RECOMMENDED_RESOURCES = {
+            A: { title: "The Seven Principles for Making Marriage Work", author: "John Gottman", link: "#", reason: "To help you transition from dominance to 'accepting influence'." },
+            B: { title: "Hold Me Tight", author: "Sue Johnson", link: "#", reason: "To help you identify your 'Protest Polka' and return from detachment." },
+            C: { title: "The Meaning of Marriage", author: "Timothy Keller", link: "#", reason: "To strengthen your understanding of sacrificial, covenantal love." },
+            D: { title: "Boundaries in Marriage", author: "Henry Cloud", link: "#", reason: "To help you find your voice and stop the pattern of silent yielding." }
+        };
+
+        const ASYMMETRY_DATA = {
+            conflict: {
+                diagnosis: "Your data indicates a risk of 'The Crazy Cycle.' This occurs when a husband feels disrespected and reacts in ways that feel unloving, or a wife feels unloved and reacts in ways that seem disrespectful. If one partner defaults to Contempt (mockery or talking down) and the other to Stonewalling (withdrawal), your 'Relationship Wall' is accruing cracks that will eventually lead to structural failure. +4",
+                interventions: [
+                    { title: "Practice the 'Softened Start-up'", desc: "Never begin a difficult conversation with a 'Harsh Start-up' (criticism or 'You' statements). Instead, state a neutral feeling and a specific, positive need. +4" },
+                    { title: "The 20-Minute 'Flooding' Protocol", desc: "If your heart rate spikes, you are likely 'Flooding' and cannot process logic. You must take a mandatory 20-minute break to self-soothe before re-engaging. +4" },
+                    { title: "Accepting Influence", desc: "Success requires a 'Yield to Win' mentality. You must intentionally accept your partner's point of view as valid, even if you disagree with the set of facts. +4" }
+                ]
+            },
+            boundary: {
+                diagnosis: "We are scanning for 'Enmeshment' vs. 'Autonomy.' If your scores show a lack of 'Property Lines,' you are likely taking responsibility for your partner's feelings rather than being responsible to them. Yielding your boundaries just to keep the peace is a form of 'Courtship Deception' that leads to long-term resentment. +3",
+                interventions: [
+                    { title: "The Law of Responsibility", desc: "You are responsible for your own 'treasures'—your time, money, and feelings. You must stop 'Rescuing' your partner from the natural consequences of their actions. +3" },
+                    { title: "The 'Leave and Cleave' Boundary", desc: "Your primary allegiance must transfer from your family of origin to your partner. External family must not be allowed to overrule your internal consensus. +2" }
+                ]
+            }
+        };
+
+        const RESOURCE_LIBRARY = [
+            { cat: "Conflict Mastery", books: "Fight Right (Gottman) and The Lost Art of Listening (Nichols). +1" },
+            { cat: "Emotional Safety", books: "Hold Me Tight (Johnson) and Getting the Love You Want (Hendrix). +1" },
+            { cat: "Biblical Alignment", books: "Love & Respect (Eggerichs) and The Love Dare (Kendrick). +1" },
+            { cat: "Personal Autonomy", books: "Boundaries (Cloud & Townsend) and 8 Rules of Love (Shetty). +1" }
+        ];
+
+        const TIER_WORKSHEETS = {
+            1: {
+                name: "The Greenhouse (High Alignment)",
+                goal: "Creating Shared Meaning",
+                steps: [
+                    { title: "The Love Map Challenge", desc: "List your partner's best friends, current stressors, and biggest life dreams. +2" },
+                    { title: "The 'I Appreciate' Ritual", desc: "Every day for one week, pick one positive characteristic of your partner and tell them a specific incident where they displayed it. +1" }
+                ],
+                verse: "Biblical Foundation: 'Stimulate one another to love and good deeds' (Hebrews 10:24)."
+            },
+            2: {
+                name: "The Repair Shop (Moderate Friction)",
+                goal: "Mastering the 'Do-over'",
+                steps: [
+                    { title: "The Bagel Method", desc: "Draw two circles. In the small inner circle, write your non-negotiable needs regarding a conflict. In the outer circle, list areas where you can be flexible. Compare and find a 'Third Way' compromise. +4" },
+                    { title: "The Repair Checklist", desc: "Keep a physical list of repair phrases (e.g., 'I'm feeling defensive,' 'I see your point') and use them mid-fight to de-escalate. +1" }
+                ],
+                verse: "Biblical Foundation: 'Be quick to hear, slow to speak, and slow to anger' (James 1:19)."
+            },
+            3: {
+                name: "The Boundary Lab (High Tension)",
+                goal: "Establishing Property Lines",
+                steps: [
+                    { title: "The Emotional Inventory", desc: "Describe a recent argument using only 'I Feel' statements. Identify which 'Raw Spot' from your childhood was triggered. +3" },
+                    { title: "Closing the 'Exits'", desc: "Identify any 'exits' you use to avoid intimacy (e.g., overworking, social media, triangulation with parents) and commit to closing them for 30 days. +1" }
+                ],
+                verse: "Biblical Foundation: 'Let your 'Yes' be 'Yes' and your 'No,' 'No'' (Matthew 5:37)."
+            },
+            4: {
+                name: "The Crisis Reset (Critical Risk)",
+                goal: "Stopping the Bleeding",
+                steps: [
+                    { title: "The Love Dare 24-Hour Fast", desc: "For 24 hours, you are forbidden from speaking a single negative word to or about your partner. +1" },
+                    { title: "The Surrender Protocol", desc: "Identify one area where you are competing to 'win'. Commit to accepting your partner's influence in that area entirely for one week. +3" }
+                ],
+                verse: "Biblical Foundation: 'Love is patient... it keeps no record of wrongs' (1 Corinthians 13:4-5)."
+            }
+        };
+
+        const VETTING_MRI = {
+            prep: [
+                { title: "Define Your Non-Negotiables", desc: "Based on the 'Bagel Method,' what are your core values that you cannot sacrifice for chemistry? +1" },
+                { title: "Identify Your Imago", desc: "List the positive and negative traits of your primary caretakers. Be aware that you will naturally be attracted to someone who mirrors these traits. +2" }
+            ],
+            questions: [
+                { q: "Conflict Speed", desc: "Ask: 'What is the longest you've ever gone without speaking to someone you were mad at?' (Scanning for Stonewalling/Withdrawal). +2" },
+                { q: "Authority & Cleaving", desc: "Ask: 'How do you handle it when your parents disagree with a major decision you've made?' (Scanning for lack of boundaries). +1" },
+                { q: "Ownership", desc: "Ask: 'Tell me about a time you were 'the bad guy' in a past relationship and how you fixed it.' (Scanning for Defensiveness). +2" }
+            ],
+            redFlags: [
+                { f: "Contempt", desc: "Do they roll their eyes or use cutting sarcasm when you express a need? +1" },
+                { f: "Deactivating Strategies", desc: "Do they pull away or become cold the moment things get 'too close'? +1" },
+                { f: "Consumer Mindset", desc: "Do they view the relationship as a way to 'make them happy' rather than a shared mission? +1" }
+            ]
+        };
+
+        function calculateFrictionScore(p1Ans, p2Ans) {
+            const weights = {
+                AA: 10, AB: 9, BA: 9, BB: 8,
+                AD: 7, DA: 7, BD: 6, DB: 6,
+                DD: 4, AC: 2, CA: 2, BC: 2,
+                CB: 2, CD: 1, DC: 1, CC: 0
+            };
+            let total = 0;
+            p1Ans.forEach((ans, i) => {
+                const pair = ans + (p2Ans[i] || "C");
+                total += weights[pair] || 0;
+            });
+            return total;
+        }
+
+        function getTeaserInsight() {
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            state.answers.forEach(a => counts[a]++);
+            if (counts.A >= 2) return { baseline: "The Challenger: You have a natural leadership drive and prioritize efficiency.", risk: "Leadership can blur into dominance. If you don't build a 'veto culture', your partner may learn to appease rather than align." };
+            if (counts.B >= 2) return { baseline: "The Strategist: You value autonomy and seek logical distance before emotional commitments.", risk: "Independence is your armor, but it can starve the relationship of 'proximate safety.' Withdrawal is a slow leak in intimacy." };
+            if (counts.C >= 2) return { baseline: "The Peacemaker: You prioritize harmony and de-escalate tension through collaborative logic.", risk: "Yielding to avoid conflict often leads to silent resentment and internalizing tension, which is a form of courtship deception." };
+            if (counts.D >= 2) return { baseline: "The Nurturer: You are highly empathetic and prioritize the emotional comfort of others over your own needs.", risk: "Passive adaptation creates a 'one-way map' where your partner never actually meets the real you." };
+            return { baseline: "The Observer: You are analytical, cautious, and favor observation over immediate reaction.", risk: "Delayed intensity can miss the window for repair, leaving your partner feeling isolated." };
+        }
+
+        function calculateScores(answersArr) {
+            const target = answersArr || state.answers;
+            const res = {};
+            for (let d = 1; d <= 5; d++) {
+                const domainAnswers = target.filter((a, idx) => QUESTIONS[idx].domain === d);
+                const counts = { A: 0, B: 0, C: 0, D: 0 };
+                domainAnswers.forEach(a => counts[a]++);
+                let strongest = 'C', max = -1;
+                for (const [key, val] of Object.entries(counts)) { if (val > max) { max = val; strongest = key; } }
+                res[d] = { counts, strongest, percentage: (counts[strongest] / 10) * 100 };
+            }
+            return res;
+        }
+
+        function getPrimaryArchetype(scores) {
+            const totals = { A: 0, B: 0, C: 0, D: 0 };
+            Object.values(scores).forEach(d => Object.entries(d.counts).forEach(([k, v]) => totals[k] += v));
+            let max = -1, arch = 'C';
+            for (const [k, v] of Object.entries(totals)) { if (v > max) { max = v; arch = k; } }
+            return arch;
+        }
+
+        function renderAlignmentForecast(p2Scores) {
+            const p1Scores = state.p1Data || calculateScores();
+            const p1Arch = getPrimaryArchetype(p1Scores);
+            const p2ScoresActual = p2Scores || calculateScores(); // Fallback for P1 view
+            const p2Arch = state.isPartner2 ? getPrimaryArchetype(p2ScoresActual) : "C";
+
+            const p1Name = state.isPartner2 ? state.p1Name : state.name;
+            const p2Name = state.isPartner2 ? state.name : "Partner";
+
+            const pairing = PAIRING_DYNAMICS[p1Arch + p2Arch] || PAIRING_DYNAMICS["CC"];
+            const frictionScore = state.isPartner2 ? calculateFrictionScore(state.p1Answers, state.answers) : 75;
+
+            const tier = frictionScore <= 150 ? 1 : frictionScore <= 300 ? 2 : frictionScore <= 450 ? 3 : 4;
+            const worksheet = TIER_WORKSHEETS[tier];
+
+            const p1Narrative = ARCHETYPE_DATA[p1Arch].shortDesc.replace("You are", `${p1Name}: You are`);
+            const p2Narrative = state.isPartner2 ? ARCHETYPE_DATA[p2Arch].shortDesc.replace("You are", `${p2Name}: You are`) : "Analysis pending partner participation...";
+
+            const p1Advice = ARCHETYPE_DATA[p1Arch].advice.replace("Fred", p1Name).replace("Cat", p2Name);
+            const p2Advice = state.isPartner2 ? ARCHETYPE_DATA[p2Arch].advice.replace("Fred", p1Name).replace("Cat", p2Name) : "Advice pending partner participation...";
+
+            const blurClass = state.isPartner2 ? "" : "blur-content";
+
+            // Generate interaction summaries for all domains
+            const domainSummaries = Object.entries(DOMAINS).map(([id, title]) => {
+                const p1DomArch = p1Scores[id].strongest;
+                const p2DomArch = state.isPartner2 ? p2ScoresActual[id].strongest : "C";
+                const interaction = DOMAIN_INTERACTIONS[id]?.[p1DomArch + p2DomArch] || DOMAIN_INTERACTIONS[id]?.["CC"] || "Balanced alignment expected with intentional effort.";
+                return `
+                    <div class="border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
+                        <p class="text-violet-400 font-bold text-[10px] uppercase tracking-tighter mb-1">${title}</p>
+                        <p class="text-slate-300 text-sm leading-relaxed">${interaction.replace("Fred", p1Name).replace("Cat", p2Name)}</p>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="space-y-12 pt-12 border-t border-slate-800 relative">
+                    ${!state.isPartner2 ? `
+                        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-[2px] rounded-3xl p-8 text-center pt-24">
+                            <div class="bg-violet-600 p-8 rounded-3xl shadow-2xl space-y-4 max-w-sm border border-violet-400/30">
+                                <h4 class="text-xl font-bold text-white">Unlock Combined Forecast</h4>
+                                <p class="text-slate-200 text-sm">Your individual data is ready. To reveal your interaction dynamic and growth plan, sync with your partner.</p>
+                                <button onclick="generatePartnerLink()" class="w-full py-3 bg-white text-violet-600 rounded-xl font-bold hover:bg-slate-100 transition-all">Copy Partner Link</button>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div class="text-center space-y-4">
+                        <h3 class="text-3xl font-bold text-violet-400">The Alignment Forecast: ${p1Name} & ${p2Name}</h3>
+                        <div class="inline-block px-4 py-1 rounded-full bg-violet-600/20 border border-violet-600/50 text-violet-400 font-bold uppercase tracking-widest text-xs">
+                            Overall Status: <span class="${blurClass}">${pairing.status} (${pairing.dynamic})</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-4">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500">How You Are Wired</h4>
+                            <div class="space-y-6 ${blurClass}">
+                                <p class="text-slate-200 leading-relaxed font-medium">${p1Narrative}</p>
+                                <p class="text-slate-200 leading-relaxed font-medium">${p2Narrative}</p>
+                            </div>
+                        </div>
+
+                        <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-4">
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500">The "Us" Dynamic (Holistic Areas)</h4>
+                            <div class="space-y-5 ${blurClass}">
+                                ${domainSummaries}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ASYMMETRY REPORT -->
+                    <div class="space-y-8 p-8 rounded-3xl bg-slate-800/20 border border-slate-800 border-dashed ${blurClass}">
+                        <div class="text-center space-y-2">
+                            <h4 class="text-xl font-bold text-white">The Enhanced Alignment Forecast (Asymmetry Report)</h4>
+                            <p class="text-slate-400 text-xs italic text-center">This provides the "Mirror" and the "Map."</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-4">
+                                <p class="text-violet-400 font-bold uppercase tracking-widest text-[10px]">I. Conflict Architecture & Repair Velocity</p>
+                                <p class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-violet-600 pl-4 py-1">${ASYMMETRY_DATA.conflict.diagnosis}</p>
+                                <div class="space-y-3">
+                                    ${ASYMMETRY_DATA.conflict.interventions.map(i => `
+                                        <div>
+                                            <p class="text-white text-xs font-bold">${i.title}</p>
+                                            <p class="text-slate-400 text-[11px] leading-relaxed">${i.desc}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <p class="text-emerald-400 font-bold uppercase tracking-widest text-[10px]">II. Boundary Integrity & Autonomy</p>
+                                <p class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-emerald-600 pl-4 py-1">${ASYMMETRY_DATA.boundary.diagnosis}</p>
+                                <div class="space-y-3">
+                                    ${ASYMMETRY_DATA.boundary.interventions.map(i => `
+                                        <div>
+                                            <p class="text-white text-xs font-bold">${i.title}</p>
+                                            <p class="text-slate-400 text-[11px] leading-relaxed">${i.desc}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WORKSHEET TIER -->
+                    <div class="p-8 rounded-3xl bg-violet-600/10 border border-violet-600/30 space-y-6 ${blurClass}">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-violet-600/20 pb-6">
+                            <div class="space-y-1">
+                                <p class="text-[10px] font-bold text-violet-400 uppercase tracking-widest">Relational Worksheet</p>
+                                <h4 class="text-2xl font-bold text-white">Tier ${tier}: ${worksheet.name}</h4>
+                            </div>
+                            <div class="bg-violet-600 px-4 py-2 rounded-xl text-xs font-bold text-white">Goal: ${worksheet.goal}</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            ${worksheet.steps.map(s => `
+                                <div class="space-y-2">
+                                    <p class="text-white font-bold text-sm">${s.title}</p>
+                                    <p class="text-slate-300 text-xs leading-relaxed">${s.desc}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <p class="text-xs italic text-violet-400 font-medium">${worksheet.verse}</p>
+                    </div>
+
+                    <!-- VETTING MRI -->
+                    <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-8 ${blurClass}">
+                        <div class="text-center space-y-2">
+                            <h4 class="text-xl font-bold text-white">Single Person's Filtration Worksheet</h4>
+                            <p class="text-slate-400 text-xs italic">Use this as a "Vetting MRI" before entering a serious relationship.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="space-y-4">
+                                <p class="text-violet-400 font-bold uppercase tracking-widest text-[10px]">The "Preparation" Phase</p>
+                                ${VETTING_MRI.prep.map(p => `
+                                    <div class="space-y-1">
+                                        <p class="text-white text-xs font-bold">${p.title}</p>
+                                        <p class="text-slate-400 text-[11px] leading-relaxed">${p.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="space-y-4">
+                                <p class="text-blue-400 font-bold uppercase tracking-widest text-[10px]">The Vetting Questions</p>
+                                ${VETTING_MRI.questions.map(q => `
+                                    <div class="space-y-1">
+                                        <p class="text-white text-xs font-bold">${q.q}</p>
+                                        <p class="text-slate-400 text-[11px] leading-relaxed">${q.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="space-y-4">
+                                <p class="text-rose-400 font-bold uppercase tracking-widest text-[10px]">Critical Red Flags</p>
+                                ${VETTING_MRI.redFlags.map(f => `
+                                    <div class="space-y-1">
+                                        <p class="text-white text-xs font-bold">${f.f}</p>
+                                        <p class="text-slate-400 text-[11px] leading-relaxed">${f.desc}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <p class="text-center text-sm font-bold text-rose-500 italic">"If this person never improves in their weakest area, can you joyfully live with that for 30 years?"</p>
+                    </div>
+
+                    <div class="p-8 rounded-3xl bg-violet-600/5 border border-violet-600/30 space-y-4">
+                        <h4 class="text-center text-sm font-bold uppercase tracking-widest text-violet-500">Your Growth Steps</h4>
+                        <div class="${blurClass} space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-violet-600/20">
+                                <p class="text-slate-200 text-sm leading-relaxed">${p1Advice}</p>
+                                <p class="text-slate-200 text-sm leading-relaxed">${p2Advice}</p>
+                            </div>
+
+                            <div class="pt-8 border-t border-violet-600/20">
+                                <p class="text-center text-xs font-bold uppercase tracking-widest text-violet-500 mb-6">2. Relational Growth Resources Library</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    ${RESOURCE_LIBRARY.map(res => `
+                                        <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                                            <p class="text-[10px] font-bold text-violet-400 uppercase mb-1">${res.cat}</p>
+                                            <p class="text-[11px] text-slate-300 italic leading-snug">${res.books}</p>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center space-y-4 pt-8">
+                        <p class="text-slate-400 text-sm">Request your full relationship architecture PDF diagnostic</p>
+                        <div class="max-w-md mx-auto flex gap-2">
+                            <input type="email" id="webhookEmail" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-violet-500">
+                            <button id="syncBtn" onclick="syncToWebhook()" class="px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg whitespace-nowrap uppercase tracking-widest">Send Report to Engine</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generatePartnerLink() {
+            const payload = btoa(JSON.stringify({ name: state.name, answers: state.answers }));
+            const url = new URL(window.location.href);
+            url.searchParams.set('p1', payload);
+            navigator.clipboard.writeText(url.toString());
+            alert("Secret link copied! Send this to your partner.");
+        }
+
+        function checkParams() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('p1')) {
+                try {
+                    const data = JSON.parse(atob(params.get('p1')));
+                    state.p1Name = data.name || "Partner 1";
+                    state.p1Data = calculateScores(data.answers);
+                    state.isPartner2 = true;
+                } catch (e) { }
+            }
+        }
+
+        async function syncToWebhook(isManual = false) {
+            const email = document.getElementById('email-capture')?.value || "";
+            const btn = document.getElementById('send-report-btn');
+            const syncText = document.getElementById('sync-text');
+
+            const payload = {
+                timestamp: new Date().toISOString(),
+                name: state.name,
+                partner_name: state.isPartner2 ? state.p1Name : null,
+                status: state.relationshipStatus,
+                user_type: state.isPartner2 ? "P2" : "P1",
+                answers: state.answers,
+                email: email
+            };
+
+            if (isManual) {
+                btn.disabled = true;
+                btn.textContent = "SENDING...";
+                syncText.textContent = "COMMUNICATING WITH ENGINE...";
+            }
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (isManual) {
+                    btn.textContent = "REPORT SENT";
+                    btn.classList.add('text-green-400');
+                    syncText.textContent = "RELATIONAL DATA ENCRYPTED & SYNCED";
+                }
+            } catch (e) {
+                if (isManual) {
+                    btn.disabled = false;
+                    btn.textContent = "SYNC FAILED - RETRY";
+                    syncText.textContent = "SYNC ERROR - CHECK CONNECTION";
+                }
+            }
+        }
+
+        function getLabel(t) { return { A: "Dominant", B: "Avoidant", C: "Secure", D: "Passive" }[t] || "Unknown"; }
+
+        checkParams();
+        render();
+    </script>
+</body>
+
+</html>
