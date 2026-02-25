@@ -45,6 +45,20 @@
             }
         }
 
+        .quick-fade {
+            animation: quickFade 0.2s ease-out forwards;
+        }
+
+        @keyframes quickFade {
+            from {
+                opacity: 0.8;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
         .progress-bar {
             transition: width 0.3s ease-in-out;
         }
@@ -55,8 +69,14 @@
         }
 
         .option-card:hover {
-            transform: scale(1.02);
-            background-color: rgba(51, 65, 85, 0.8);
+            transform: scale(1.01);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .option-card.selected {
+            background-color: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            transform: scale(0.98);
         }
 
         .option-card:active {
@@ -260,14 +280,14 @@
                 document.getElementById('progress-bar').style.width = `${progress}%`;
 
                 content.innerHTML = `
-                    <div class="slide-up space-y-8">
+                    <div class="quick-fade space-y-8">
                         <div class="space-y-2">
                             <span class="text-xs font-bold uppercase tracking-widest text-violet-400">${DOMAINS[q.domain]}</span>
                             <h2 class="text-2xl font-medium leading-snug">${q.text}</h2>
                         </div>
                         <div class="grid grid-cols-1 gap-4">
                             ${Object.entries(q.options).map(([key, text]) => `
-                                <div onclick="selectOption('${key}')" class="option-card p-5 rounded-2xl glass border-slate-800 hover:border-violet-500/50 flex items-center space-x-4">
+                                <div onclick="selectOption(this, '${key}')" class="option-card p-5 rounded-2xl glass border-slate-800 hover:border-violet-500/50 flex items-center space-x-4">
                                     <span class="w-8 h-8 rounded-full flex items-center justify-center bg-slate-800 text-slate-400 font-bold text-sm">${key}</span>
                                     <span class="text-lg text-slate-200">${text}</span>
                                 </div>
@@ -363,12 +383,18 @@
             setView('quiz');
         }
 
-        function selectOption(option) {
-            state.answers.push(option);
-            state.currentQuestion++;
-            if (state.currentQuestion === 5) setView('teaser');
-            else if (state.currentQuestion >= QUESTIONS.length) { syncToWebhook(false); setView('results'); }
-            else render();
+        function selectOption(el, option) {
+            // Add selected class to the clicked element
+            if (el) el.classList.add('selected');
+
+            // Slight delay for visual feedback before transition
+            setTimeout(() => {
+                state.answers.push(option);
+                state.currentQuestion++;
+                if (state.currentQuestion === 5) setView('teaser');
+                else if (state.currentQuestion >= QUESTIONS.length) { syncToWebhook(false); setView('results'); }
+                else render();
+            }, 100);
         }
 
         const DOMAIN_INTERACTIONS = {
