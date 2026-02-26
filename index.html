@@ -137,11 +137,12 @@
         const WEBHOOK_URL = "INSERT_YOUR_URL_HERE";
 
         const DOMAINS = {
-            1: "Conflict & Repair",
-            2: "Finance & Partnership",
-            3: "Intimacy & Loyalty",
-            4: "Attachment & Safety",
-            5: "Vision & Values"
+            1: "Conflict Escalation Risk (CER)",
+            2: "Repair Velocity Gap (RVG)",
+            3: "Financial Governance Misalignment (FGM)",
+            4: "Authority Structure Tension (AST)",
+            5: "Attachment Trigger Instability (ATI)",
+            6: "Stress Endurance Simulation"
         };
 
         const ARCHETYPE_DATA = {
@@ -214,26 +215,71 @@
             "DD": { status: "Moderate Risk", dynamic: "The Passive Merge", choices: "Decision-making is slow as neither wants to 'burden' the other.", social: "Extremely kind but can be socially indecisive or invisible." }
         };
 
-        const QUESTIONS = [];
-        for (let i = 1; i <= 50; i++) {
-            const domain = Math.ceil(i / 10);
-            QUESTIONS.push({
-                id: i,
-                domain: domain,
-                text: i === 1 ? "During a heated argument, what is your most common reaction?" :
-                    i === 2 ? "When your partner criticizes you, how do you usually respond?" :
-                        i === 3 ? "How quickly do you look to 'repair' after a disagreement?" :
-                            i === 4 ? "What is your stance on the phrase 'Never go to bed angry'?" :
-                                i === 5 ? "Do you ever feel 'contempt' (disgust or superiority) during a fight?" :
-                                    `Question ${i}: Assessment for ${DOMAINS[domain]}?`,
-                options: {
-                    A: i <= 5 ? ["I counterattack.", "I bring up their past mistakes.", "Only after they admit they were wrong.", "It's impossible; some things take days to settle.", "Yes, often when they seem incompetent."][i - 1] : "[Dominant/Ego] Highly driven or controlling choice.",
-                    B: i <= 5 ? ["I give the silent treatment.", "I walk away without a word.", "I prefer to wait days until it blows over.", "I prefer to sleep on it alone.", "No, I just feel numb and bored."][i - 1] : "[Avoidant] Withdrawn or detached choice.",
-                    C: i <= 5 ? ["I pause to regulate and understand.", "I try to find the kernel of truth in it.", "I try to reach out within hours.", "We should at least acknowledge our love before sleeping.", "Rarely; I try to remember their worth."][i - 1] : "[Secure] Collaborative and transparent choice.",
-                    D: i <= 5 ? ["I apologize immediately just to stop the fight.", "I accept all the blame to end the tension.", "I never let the argument start, I just give in.", "I will stay up all night begging for peace.", "No, I'm too busy feeling guilty myself."][i - 1] : "[Passive] Codependent or peacekeeping choice."
-                }
-            });
-        }
+        const QUESTIONS = [
+            // VIBE CHECK (Questions 1-5)
+            { id: 1, domain: 0, text: "During a heated argument, what is your most common reaction?", options: { A: "I counterattack.", B: "I give the silent treatment.", C: "I pause to regulate and understand.", D: "I apologize immediately just to stop the fight." } },
+            { id: 2, domain: 0, text: "When your partner criticizes you, how do you usually respond?", options: { A: "I bring up their past mistakes.", B: "I walk away without a word.", C: "I try to find the kernel of truth in it.", D: "I accept all the blame to end the tension." } },
+            { id: 3, domain: 0, text: "How quickly do you look to 'repair' after a disagreement?", options: { A: "Only after they admit they were wrong.", B: "I prefer to wait days until it blows over.", C: "I try to reach out within hours.", D: "I never let the argument start, I just give in." } },
+            { id: 4, domain: 0, text: "What is your stance on the phrase 'Never go to bed angry'?", options: { A: "It's impossible; some things take days to settle.", B: "I prefer to sleep on it alone.", C: "We should at least acknowledge our love before sleeping.", D: "I will stay up all night begging for peace." } },
+            { id: 5, domain: 0, text: "Do you ever feel 'contempt' (disgust or superiority) during a fight?", options: { A: "Yes, often when they seem incompetent.", B: "No, I just feel numb and bored.", C: "Rarely; I try to remember their worth.", D: "No, I'm too busy feeling guilty myself." } },
+
+            // AXIS 1: Conflict Escalation Risk (CER) (Questions 6-13)
+            { id: 6, domain: 1, text: "When conflict begins, my first instinct is:", options: { A: "Stay calm and discuss", B: "Clarify my point firmly", C: "Defend myself", D: "Raise intensity", E: "Shut down or withdraw" } },
+            { id: 7, domain: 1, text: "If I feel disrespected, I:", options: { A: "Address it calmly", B: "Bring it up later", C: "Become sarcastic", D: "Confront aggressively", E: "Emotionally detach" } },
+            { id: 8, domain: 1, text: "When tension rises, I:", options: { A: "Slow the conversation", B: "Try to reason logically", C: "Repeat my point", D: "Escalate to be heard", E: "Exit the conversation" } },
+            { id: 9, domain: 1, text: "I believe arguments should:", options: { A: "End in resolution", B: "Be paused if heated", C: "Be won if necessary", D: "Establish dominance", E: "Be avoided entirely" } },
+            { id: 10, domain: 1, text: "When my partner criticizes me, I:", options: { A: "Reflect and respond", B: "Clarify misunderstanding", C: "Justify myself", D: "Counter-attack", E: "Withdraw emotionally" } },
+            { id: 11, domain: 1, text: "I am comfortable apologizing:", options: { A: "Immediately", B: "After reflection", C: "If both share blame", D: "Rarely", E: "Almost never" } },
+            { id: 12, domain: 1, text: "During disagreement, my tone tends to:", options: { A: "Calm", B: "Firm", C: "Defensive", D: "Intense", E: "Cold" } },
+            { id: 13, domain: 1, text: "After conflict, I:", options: { A: "Reconnect quickly", B: "Need brief space", C: "Stay distant for hours", D: "Replay it internally", E: "Shut down for days" } },
+
+            // AXIS 2: Repair Velocity Gap (RVG) (Questions 14-21)
+            { id: 14, domain: 2, text: "After tension, I prefer:", options: { A: "Immediate repair", B: "Short pause then repair", C: "Time alone first", D: "Avoiding discussion", E: "Pretending nothing happened" } },
+            { id: 15, domain: 2, text: "Physical reassurance after conflict feels:", options: { A: "Necessary", B: "Helpful", C: "Neutral", D: "Uncomfortable", E: "Unwanted" } },
+            { id: 16, domain: 2, text: "If conflict lingers, I:", options: { A: "Initiate resolution", B: "Wait briefly", C: "Assume partner should fix it", D: "Grow resentful", E: "Stop caring" } },
+            { id: 17, domain: 2, text: "I define repair as:", options: { A: "Emotional clarity", B: "Verbal apology", C: "Behavioral change", D: "Silence restored", E: "Tension avoidance" } },
+            { id: 18, domain: 2, text: "If I caused hurt, I:", options: { A: "Acknowledge clearly", B: "Explain context", C: "Minimize impact", D: "Deflect blame", E: "Ignore it" } },
+            { id: 19, domain: 2, text: "When I’m hurt, I:", options: { A: "Say it directly", B: "Hint indirectly", C: "Expect them to know", D: "Become distant", E: "Withhold affection" } },
+            { id: 20, domain: 2, text: "I believe unresolved conflict:", options: { A: "Damages intimacy", B: "Eventually fades", C: "Is normal", D: "Strengthens dominance", E: "Doesn’t matter" } },
+            { id: 21, domain: 2, text: "Emotional distance after conflict makes me:", options: { A: "Uncomfortable quickly", B: "Slightly uneasy", C: "Neutral", D: "Relieved", E: "Safer" } },
+
+            // AXIS 3: Financial Governance Misalignment (FGM) (Questions 22-29)
+            { id: 22, domain: 3, text: "Financial decisions should be:", options: { A: "Joint and transparent", B: "Domain-based", C: "Led by higher earner", D: "Individual accounts separate", E: "Independent and private" } },
+            { id: 23, domain: 3, text: "Major purchases require:", options: { A: "Mutual agreement", B: "Consultation", C: "Notification only", D: "Individual discretion", E: "No discussion required" } },
+            { id: 24, domain: 3, text: "Debt is:", options: { A: "High caution", B: "Acceptable short-term", C: "Normal tool", D: "Necessary growth tool", E: "Not concerning" } },
+            { id: 25, domain: 3, text: "Provision responsibility:", options: { A: "Shared equally", B: "Role-defined", C: "Primary earner leads", D: "Individual responsibility", E: "Undefined" } },
+            { id: 26, domain: 3, text: "Financial secrecy is:", options: { A: "Unacceptable", B: "Rarely justified", C: "Situational", D: "Understandable", E: "Acceptable" } },
+            { id: 27, domain: 3, text: "Giving/charity should be:", options: { A: "Structured and agreed", B: "Encouraged individually", C: "Flexible", D: "Optional", E: "Personal only" } },
+            { id: 28, domain: 3, text: "Savings priority:", options: { A: "Mandatory", B: "Stronged encouraged", C: "If possible", D: "Minimal", E: "Not important" } },
+            { id: 29, domain: 3, text: "If partner overspends:", options: { A: "Calm discussion", B: "Concern raised", C: "Frustration expressed", D: "Anger", E: "Withdrawal" } },
+
+            // AXIS 4: Authority Structure Tension (AST) (Questions 30-37)
+            { id: 30, domain: 4, text: "In marriage, leadership should be:", options: { A: "Mutual influence", B: "Domain-based", C: "One primary leader", D: "Situational power shifts", E: "Individual autonomy" } },
+            { id: 31, domain: 4, text: "Final decision in stalemate:", options: { A: "Delayed until aligned", B: "Compromise", C: "Majority logic", D: "Stronger personality", E: "Whoever cares more" } },
+            { id: 32, domain: 4, text: "Respect means:", options: { A: "Mutual honor", B: "Listening seriously", C: "Not challenging publicly", D: "Obedience", E: "Avoiding disagreement" } },
+            { id: 33, domain: 4, text: "Submission means:", options: { A: "Voluntary cooperation", B: "Trusting leadership", C: "Role-based yielding", D: "Compliance", E: "Not applicable" } },
+            { id: 34, domain: 4, text: "If I disagree strongly:", options: { A: "Seek understanding", B: "State position calmly", C: "Push until accepted", D: "Override if needed", E: "Withdraw" } },
+            { id: 35, domain: 4, text: "I feel secure when:", options: { A: "Influence is mutual", B: "Structure is clear", C: "Authority is defined", D: "I retain autonomy", E: "I control decisions" } },
+            { id: 36, domain: 4, text: "If partner leads poorly:", options: { A: "Discuss respectfully", B: "Suggest adjustment", C: "Take control", D: "Undermine privately", E: "Disengage" } },
+            { id: 37, domain: 4, text: "Power imbalance makes me:", options: { A: "Curious", B: "Alert", C: "Defensive", D: "Angry", E: "Withdrawn" } },
+
+            // AXIS 5: Attachment Trigger Instability (ATI) (Questions 38-45)
+            { id: 38, domain: 5, text: "When I feel ignored:", options: { A: "Ask directly", B: "Seek reassurance", C: "Become distant", D: "Escalate", E: "Shut down" } },
+            { id: 39, domain: 5, text: "When partner needs space:", options: { A: "Respect it calmly", B: "Ask timeframe", C: "Feel uneasy", D: "Take it personally", E: "Assume rejection" } },
+            { id: 40, domain: 5, text: "Emotional closeness requires:", options: { A: "Consistency", B: "Verbal affirmation", C: "Physical affection", D: "Frequent contact", E: "Constant reassurance" } },
+            { id: 41, domain: 5, text: "I fear:", options: { A: "Betrayal", B: "Emotional neglect", C: "Loss of control", D: "Being replaced", E: "Abandonment" } },
+            { id: 42, domain: 5, text: "When stressed, I need:", options: { A: "Encouragement", B: "Problem-solving", C: "Silence", D: "Physical presence", E: "Withdrawal" } },
+            { id: 43, domain: 5, text: "If partner pulls away:", options: { A: "Check in gently", B: "Wait briefly", C: "Press for answers", D: "Accuse distance", E: "Retreat emotionally" } },
+            { id: 44, domain: 5, text: "Jealousy feels:", options: { A: "Rare", B: "Occasional", C: "Manageable", D: "Intense", E: "Overwhelming" } },
+            { id: 45, domain: 5, text: "I feel most secure when:", options: { A: "Stability is consistent", B: "Communication is frequent", C: "Roles are clear", D: "Attention is high", E: "I control closeness" } },
+
+            // AXIS 6: Stress Endurance Simulation
+            { id: 46, domain: 6, text: "If we lost income:", options: { A: "Strategize calmly", B: "Tighten spending", C: "Stress heavily", D: "Blame", E: "Withdraw" } },
+            { id: 47, domain: 6, text: "If extended family interferes:", options: { A: "Protect unity", B: "Mediate carefully", C: "Avoid confrontation", D: "Side with family", E: "Disengage" } },
+            { id: 48, domain: 6, text: "If partner struggles spiritually:", options: { A: "Support patiently", B: "Encourage gently", C: "Worry privately", D: "Pressure change", E: "Distance emotionally" } },
+            { id: 49, domain: 6, text: "Chronic illness would:", options: { A: "Deepen commitment", B: "Challenge but endure", C: "Cause fear", D: "Overwhelm", E: "Create resentment" } },
+            { id: 50, domain: 6, text: "Under long stress I:", options: { A: "Stay steady", B: "Become anxious", C: "Become critical", D: "Become distant", E: "Shut down" } }
+        ];
 
         // --- STATE ---
         let state = {
@@ -324,37 +370,25 @@
             } else if (state.view === 'results') {
                 progressContainer.classList.add('hidden');
                 const scores = calculateScores();
-                const primary = getPrimaryArchetype(scores);
-                const feedback = ARCHETYPE_DATA[primary];
 
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-12">
                         <div class="text-center space-y-2">
-                            <h2 class="text-4xl font-bold text-white">Your Private Blueprint</h2>
+                            <h2 class="text-4xl font-bold text-white">Your Relation Blueprint</h2>
                             <p class="text-slate-400">Comprehensive Relational Diagnostic for <b>${state.name || "User"}</b>.</p>
                         </div>
-                        <div class="bg-violet-600/5 border border-violet-600/20 p-8 rounded-3xl space-y-6">
-                            <div class="space-y-2">
-                                <p class="text-xs font-bold uppercase tracking-widest text-violet-500">Primary Behavioral Archetype</p>
-                                <h3 class="text-3xl font-bold text-white">${feedback.title}</h3>
-                                <p class="text-slate-300 italic leading-relaxed">"${feedback.description}"</p>
-                            </div>
-                            <div class="space-y-4">
-                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest">Core Behavioral Factors</h4>
-                                <ul class="space-y-3">
-                                    ${feedback.factors.map(f => `<li class="flex items-start space-x-3 text-slate-300"><span class="text-violet-500 mt-1">✦</span><span class="text-sm leading-relaxed">${f}</span></li>`).join('')}
-                                </ul>
-                            </div>
-                        </div>
+
                         <div class="space-y-4">
-                            <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest text-center mb-6">Structural Alignment Scores</h4>
+                            <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest text-center mb-6">Friction Axis Analysis</h4>
                             ${Object.entries(scores).map(([domain, data]) => `
                                 <div class="bg-slate-800/30 p-5 rounded-2xl border border-slate-800 space-y-3">
                                     <div class="flex justify-between items-end">
                                         <p class="text-xs font-bold uppercase tracking-widest text-slate-500">${DOMAINS[domain]}</p>
-                                        <p class="text-sm font-bold text-violet-400">${getLabel(data.strongest)} (${Math.round(data.percentage)}%)</p>
+                                        <p class="text-sm font-bold text-violet-400">${data.label}</p>
                                     </div>
-                                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden"><div class="h-full vibrant-gradient" style="width: ${data.percentage}%"></div></div>
+                                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+                                        <div class="h-full vibrant-gradient" style="width: ${data.score}%"></div>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -543,63 +577,61 @@
             return { baseline: "The Observer: You are analytical, cautious, and favor observation over immediate reaction.", risk: "Delayed intensity can miss the window for repair, leaving your partner feeling isolated." };
         }
 
+        const SCORING_MAP = { A: 1, B: 2, C: 3, D: 4, E: 5 };
+
         function calculateScores(answersArr) {
-            const target = answersArr || state.answers;
+            const target = (answersArr || state.answers).map(a => SCORING_MAP[a] || 3);
             const res = {};
-            for (let d = 1; d <= 5; d++) {
-                const domainAnswers = target.filter((a, idx) => QUESTIONS[idx].domain === d);
-                const counts = { A: 0, B: 0, C: 0, D: 0 };
-                domainAnswers.forEach(a => counts[a]++);
-                let strongest = 'C', max = -1;
-                for (const [key, val] of Object.entries(counts)) { if (val > max) { max = val; strongest = key; } }
-                res[d] = { counts, strongest, percentage: (counts[strongest] / 10) * 100 };
+
+            // If we have partner data, calculate friction
+            const partnerData = state.isPartner2 ? state.p1Answers.map(a => SCORING_MAP[a] || 3) : null;
+
+            for (let d = 1; d <= 6; d++) {
+                const domainQuestions = QUESTIONS.filter(q => q.domain === d);
+                const domainSize = domainQuestions.length;
+                const axisAnswers = [];
+
+                // Get answers for this domain.
+                domainQuestions.forEach(q => {
+                    // Find index in QUESTIONS array (matches state.answers index)
+                    const idx = QUESTIONS.findIndex(item => item.id === q.id);
+                    if (idx !== -1 && target[idx] !== undefined) {
+                        axisAnswers.push({ user: target[idx], partner: partnerData && partnerData[idx] !== undefined ? partnerData[idx] : null });
+                    }
+                });
+
+                let axisScore = 0;
+                if (partnerData) {
+                    const rawDiff = axisAnswers.reduce((sum, item) => sum + Math.abs(item.user - (item.partner || item.user)), 0);
+                    axisScore = (rawDiff / (domainSize * 5)) * 100;
+                } else {
+                    // For single user, just show a "baseline" or average (not strictly required by user but good for UI)
+                    const avg = axisAnswers.reduce((sum, item) => sum + item.user, 0) / domainSize;
+                    axisScore = (avg / 5) * 100;
+                }
+
+                res[d] = {
+                    score: axisScore,
+                    label: getThresholdLabel(axisScore)
+                };
             }
             return res;
         }
 
-        function getPrimaryArchetype(scores) {
-            const totals = { A: 0, B: 0, C: 0, D: 0 };
-            Object.values(scores).forEach(d => Object.entries(d.counts).forEach(([k, v]) => totals[k] += v));
-            let max = -1, arch = 'C';
-            for (const [k, v] of Object.entries(totals)) { if (v > max) { max = v; arch = k; } }
-            return arch;
+        function getThresholdLabel(score) {
+            if (score <= 20) return "Stable";
+            if (score <= 40) return "Watch Zone";
+            if (score <= 60) return "Moderate Risk";
+            if (score <= 80) return "High Tension";
+            return "Structural Instability";
         }
 
         function renderAlignmentForecast(p2Scores) {
-            const p1Scores = state.p1Data || calculateScores();
-            const p1Arch = getPrimaryArchetype(p1Scores);
-            const p2ScoresActual = p2Scores || calculateScores(); // Fallback for P1 view
-            const p2Arch = state.isPartner2 ? getPrimaryArchetype(p2ScoresActual) : "C";
-
+            const scores = p2Scores || calculateScores();
             const p1Name = state.isPartner2 ? state.p1Name : state.name;
             const p2Name = state.isPartner2 ? state.name : "Partner";
 
-            const pairing = PAIRING_DYNAMICS[p1Arch + p2Arch] || PAIRING_DYNAMICS["CC"];
-            const frictionScore = state.isPartner2 ? calculateFrictionScore(state.p1Answers, state.answers) : 75;
-
-            const tier = frictionScore <= 150 ? 1 : frictionScore <= 300 ? 2 : frictionScore <= 450 ? 3 : 4;
-            const worksheet = TIER_WORKSHEETS[tier];
-
-            const p1Narrative = ARCHETYPE_DATA[p1Arch].shortDesc.replace("You are", `${p1Name}: You are`);
-            const p2Narrative = state.isPartner2 ? ARCHETYPE_DATA[p2Arch].shortDesc.replace("You are", `${p2Name}: You are`) : "Analysis pending partner participation...";
-
-            const p1Advice = ARCHETYPE_DATA[p1Arch].advice.replace("Fred", p1Name).replace("Cat", p2Name);
-            const p2Advice = state.isPartner2 ? ARCHETYPE_DATA[p2Arch].advice.replace("Fred", p1Name).replace("Cat", p2Name) : "Advice pending partner participation...";
-
             const blurClass = state.isPartner2 ? "" : "blur-content";
-
-            // Generate interaction summaries for all domains
-            const domainSummaries = Object.entries(DOMAINS).map(([id, title]) => {
-                const p1DomArch = p1Scores[id].strongest;
-                const p2DomArch = state.isPartner2 ? p2ScoresActual[id].strongest : "C";
-                const interaction = DOMAIN_INTERACTIONS[id]?.[p1DomArch + p2DomArch] || DOMAIN_INTERACTIONS[id]?.["CC"] || "Balanced alignment expected with intentional effort.";
-                return `
-                    <div class="border-b border-slate-800/50 pb-4 last:border-0 last:pb-0">
-                        <p class="text-violet-400 font-bold text-[10px] uppercase tracking-tighter mb-1">${title}</p>
-                        <p class="text-slate-300 text-sm leading-relaxed">${interaction.replace("Fred", p1Name).replace("Cat", p2Name)}</p>
-                    </div>
-                `;
-            }).join('');
 
             return `
                 <div class="space-y-12 pt-12 border-t border-slate-800 relative">
@@ -615,141 +647,18 @@
 
                     <div class="text-center space-y-4">
                         <h3 class="text-3xl font-bold text-violet-400">The Alignment Forecast: ${p1Name} & ${p2Name}</h3>
-                        <div class="inline-block px-4 py-1 rounded-full bg-violet-600/20 border border-violet-600/50 text-violet-400 font-bold uppercase tracking-widest text-xs">
-                            Overall Status: <span class="${blurClass}">${pairing.status} (${pairing.dynamic})</span>
-                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 gap-6">
                         <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500">How You Are Wired</h4>
-                            <div class="space-y-6 ${blurClass}">
-                                <p class="text-slate-200 leading-relaxed font-medium">${p1Narrative}</p>
-                                <p class="text-slate-200 leading-relaxed font-medium">${p2Narrative}</p>
-                            </div>
-                        </div>
-
-                        <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500">The "Us" Dynamic (Holistic Areas)</h4>
+                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500 text-center">Joint Friction Analysis</h4>
                             <div class="space-y-5 ${blurClass}">
-                                ${domainSummaries}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ASYMMETRY REPORT -->
-                    <div class="space-y-8 p-8 rounded-3xl bg-slate-800/20 border border-slate-800 border-dashed ${blurClass}">
-                        <div class="text-center space-y-2">
-                            <h4 class="text-xl font-bold text-white">The Enhanced Alignment Forecast (Asymmetry Report)</h4>
-                            <p class="text-slate-400 text-xs italic text-center">This provides the "Mirror" and the "Map."</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-4">
-                                <p class="text-violet-400 font-bold uppercase tracking-widest text-[10px]">I. Conflict Architecture & Repair Velocity</p>
-                                <p class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-violet-600 pl-4 py-1">${ASYMMETRY_DATA.conflict.diagnosis}</p>
-                                <div class="space-y-3">
-                                    ${ASYMMETRY_DATA.conflict.interventions.map(i => `
-                                        <div>
-                                            <p class="text-white text-xs font-bold">${i.title}</p>
-                                            <p class="text-slate-400 text-[11px] leading-relaxed">${i.desc}</p>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                            <div class="space-y-4">
-                                <p class="text-emerald-400 font-bold uppercase tracking-widest text-[10px]">II. Boundary Integrity & Autonomy</p>
-                                <p class="text-slate-300 text-sm leading-relaxed italic border-l-2 border-emerald-600 pl-4 py-1">${ASYMMETRY_DATA.boundary.diagnosis}</p>
-                                <div class="space-y-3">
-                                    ${ASYMMETRY_DATA.boundary.interventions.map(i => `
-                                        <div>
-                                            <p class="text-white text-xs font-bold">${i.title}</p>
-                                            <p class="text-slate-400 text-[11px] leading-relaxed">${i.desc}</p>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- WORKSHEET TIER -->
-                    <div class="p-8 rounded-3xl bg-violet-600/10 border border-violet-600/30 space-y-6 ${blurClass}">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-violet-600/20 pb-6">
-                            <div class="space-y-1">
-                                <p class="text-[10px] font-bold text-violet-400 uppercase tracking-widest">Relational Worksheet</p>
-                                <h4 class="text-2xl font-bold text-white">Tier ${tier}: ${worksheet.name}</h4>
-                            </div>
-                            <div class="bg-violet-600 px-4 py-2 rounded-xl text-xs font-bold text-white">Goal: ${worksheet.goal}</div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            ${worksheet.steps.map(s => `
-                                <div class="space-y-2">
-                                    <p class="text-white font-bold text-sm">${s.title}</p>
-                                    <p class="text-slate-300 text-xs leading-relaxed">${s.desc}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <p class="text-xs italic text-violet-400 font-medium">${worksheet.verse}</p>
-                    </div>
-
-                    <!-- VETTING MRI -->
-                    <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-8 ${blurClass}">
-                        <div class="text-center space-y-2">
-                            <h4 class="text-xl font-bold text-white">Single Person's Filtration Worksheet</h4>
-                            <p class="text-slate-400 text-xs italic">Use this as a "Vetting MRI" before entering a serious relationship.</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div class="space-y-4">
-                                <p class="text-violet-400 font-bold uppercase tracking-widest text-[10px]">The "Preparation" Phase</p>
-                                ${VETTING_MRI.prep.map(p => `
-                                    <div class="space-y-1">
-                                        <p class="text-white text-xs font-bold">${p.title}</p>
-                                        <p class="text-slate-400 text-[11px] leading-relaxed">${p.desc}</p>
+                                ${Object.entries(scores).map(([id, data]) => `
+                                    <div class="border-b border-slate-800/50 pb-4 last:border-0 last:pb-0 flex justify-between items-center">
+                                        <p class="text-slate-200 text-sm font-bold">${DOMAINS[id]}</p>
+                                        <p class="text-violet-400 font-bold text-sm tracking-widest uppercase">${data.label}</p>
                                     </div>
                                 `).join('')}
-                            </div>
-                            <div class="space-y-4">
-                                <p class="text-blue-400 font-bold uppercase tracking-widest text-[10px]">The Vetting Questions</p>
-                                ${VETTING_MRI.questions.map(q => `
-                                    <div class="space-y-1">
-                                        <p class="text-white text-xs font-bold">${q.q}</p>
-                                        <p class="text-slate-400 text-[11px] leading-relaxed">${q.desc}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div class="space-y-4">
-                                <p class="text-rose-400 font-bold uppercase tracking-widest text-[10px]">Critical Red Flags</p>
-                                ${VETTING_MRI.redFlags.map(f => `
-                                    <div class="space-y-1">
-                                        <p class="text-white text-xs font-bold">${f.f}</p>
-                                        <p class="text-slate-400 text-[11px] leading-relaxed">${f.desc}</p>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                        <p class="text-center text-sm font-bold text-rose-500 italic">"If this person never improves in their weakest area, can you joyfully live with that for 30 years?"</p>
-                    </div>
-
-                    <div class="p-8 rounded-3xl bg-violet-600/5 border border-violet-600/30 space-y-4">
-                        <h4 class="text-center text-sm font-bold uppercase tracking-widest text-violet-500">Your Growth Steps</h4>
-                        <div class="${blurClass} space-y-8">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-violet-600/20">
-                                <p class="text-slate-200 text-sm leading-relaxed">${p1Advice}</p>
-                                <p class="text-slate-200 text-sm leading-relaxed">${p2Advice}</p>
-                            </div>
-
-                            <div class="pt-8 border-t border-violet-600/20">
-                                <p class="text-center text-xs font-bold uppercase tracking-widest text-violet-500 mb-6">2. Relational Growth Resources Library</p>
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                    ${RESOURCE_LIBRARY.map(res => `
-                                        <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
-                                            <p class="text-[10px] font-bold text-violet-400 uppercase mb-1">${res.cat}</p>
-                                            <p class="text-[11px] text-slate-300 italic leading-snug">${res.books}</p>
-                                        </div>
-                                    `).join('')}
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -779,7 +688,7 @@
                 try {
                     const data = JSON.parse(atob(params.get('p1')));
                     state.p1Name = data.name || "Partner 1";
-                    state.p1Data = calculateScores(data.answers);
+                    state.p1Answers = data.answers || [];
                     state.isPartner2 = true;
                 } catch (e) { }
             }
