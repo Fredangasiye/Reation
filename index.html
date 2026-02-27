@@ -374,36 +374,25 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-12">
                         <div class="text-center space-y-2">
-                            <h2 class="text-4xl font-bold text-white">Your Relation Blueprint</h2>
-                            <p class="text-slate-400">Comprehensive Relational Diagnostic for <b>${state.name || "User"}</b>.</p>
-                        </div>
-
-                        <div class="space-y-4">
-                            <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest text-center mb-6">Friction Axis Analysis</h4>
-                            ${Object.entries(scores).map(([domain, data]) => `
-                                <div class="bg-slate-800/30 p-5 rounded-2xl border border-slate-800 space-y-3">
-                                    <div class="flex justify-between items-end">
-                                        <p class="text-xs font-bold uppercase tracking-widest text-slate-500">${DOMAINS[domain]}</p>
-                                        <p class="text-sm font-bold text-violet-400">${data.label}</p>
-                                    </div>
-                                    <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                                        <div class="h-full vibrant-gradient" style="width: ${data.score}%"></div>
-                                    </div>
-                                </div>
-                            `).join('')}
+                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">RELATIONSHIP STABILITY SCAN</h1>
+                            <h2 class="text-4xl font-black text-white leading-tight">RELATION BLUEPRINT</h2>
+                            <p class="text-slate-400 font-medium">Diagnostic report for <span class="text-white font-bold">${state.name || "User"}</span>.</p>
                         </div>
 
                         ${renderAlignmentForecast(scores)}
 
-                        <div class="pt-8 border-t border-slate-800 text-center space-y-6">
-                            <div id="sync-status" class="bg-blue-500/10 border border-blue-500/20 py-2 px-4 rounded-full inline-flex items-center space-x-2">
-                                <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                                <span id="sync-text" class="text-xs text-blue-400 font-bold uppercase tracking-widest">Relational Data Encrypted & Synced</span>
+                        <div class="pt-12 border-t border-slate-800/50 space-y-8">
+                            <div class="text-center space-y-4">
+                                <div id="sync-status" class="bg-blue-500/10 border border-blue-500/20 py-3 px-6 rounded-full inline-flex items-center space-x-3">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
+                                    <span id="sync-text" class="text-[10px] text-blue-400 font-black uppercase tracking-[0.1em]">Relational Data Encrypted & Synced</span>
+                                </div>
+                                <p class="text-slate-500 text-sm font-medium italic">"Architecture is destiny. Request your full relationship diagnostic PDF."</p>
                             </div>
-                            <div class="space-y-4">
-                                <p class="text-slate-500 text-sm italic">Request your full relationship architecture PDF diagnostic.</p>
-                                <input type="email" id="email-capture" placeholder="Enter your email" class="w-full max-w-sm bg-slate-800 border-slate-700 rounded-xl px-4 py-3 mb-4 focus:ring-2 focus:ring-violet-500 outline-none block mx-auto text-center">
-                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="text-violet-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest">Send Report to Engine</button>
+                            
+                            <div class="max-w-md mx-auto space-y-3">
+                                <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-slate-800 border border-slate-700/50 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-violet-500 outline-none text-center font-medium shadow-inner transition-all">
+                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-violet-900/20">Send Full Report to Engine</button>
                             </div>
                         </div>
                     </div>
@@ -431,141 +420,6 @@
             }, 100);
         }
 
-        const DOMAIN_INTERACTIONS = {
-            1: { // Conflict & Repair
-                "AA": "High Volatility. Both counter-attack, leading to escalating power struggles.",
-                "AB": "The Chaser & The Ghost. One attacks while the other retreats into silence.",
-                "AC": "Balanced Intensity. A dominant leader met with a regulating anchor.",
-                "AD": "Internalized Tension. One drives the conflict while the other yield in fear.",
-                "CC": "Covenant Repair. Mutual de-escalation and rapid restoration of peace.",
-                "DD": "Silent Simmer. Conflict is avoided, leading to hidden resentment."
-            },
-            2: { // Finance & Partnership
-                "AA": "Financial Cold War. Competing for control over the 'War Chest'.",
-                "CC": "Shared Stewardship. Total transparency and unified financial vision.",
-                "BC": "Analytical Guardrails. Logic meets security, ensuring cautious stability.",
-                "AD": "Logistical Imbalance. One manages all power while the other feels like a passenger."
-            },
-            3: { // Intimacy & Loyalty
-                "AA": "Transactional Connection. Validation through achievement rather than vulnerability.",
-                "BB": "The Isolated Island. Both retreat into screens or hobbies when safety is low.",
-                "CC": "Vulnerable Proximity. Proactive initiation and emotional transparency.",
-                "AC": "Deep Loyalty. A strong protector met by a warm, supportive anchor."
-            },
-            4: { // Attachment & Safety
-                "AA": "Hyper-Independence. Both fear dependency, keeping a 'back door' open.",
-                "CC": "Secure Base. A home environment where both feel safe to be fully seen.",
-                "BD": "Passive Avoidance. Distance is the default, and needs are suppressed."
-            },
-            5: { // Vision & Values
-                "AA": "Mission Conflict. Competing singular paths with no room for a joint map.",
-                "CC": "Covenant Unity. A shared singular mission that serves a higher purpose.",
-                "CD": "Adaptive Vision. One leads with security while the other stabilizes the path."
-            }
-        };
-
-        const RECOMMENDED_RESOURCES = {
-            A: { title: "The Seven Principles for Making Marriage Work", author: "John Gottman", link: "#", reason: "To help you transition from dominance to 'accepting influence'." },
-            B: { title: "Hold Me Tight", author: "Sue Johnson", link: "#", reason: "To help you identify your 'Protest Polka' and return from detachment." },
-            C: { title: "The Meaning of Marriage", author: "Timothy Keller", link: "#", reason: "To strengthen your understanding of sacrificial, covenantal love." },
-            D: { title: "Boundaries in Marriage", author: "Henry Cloud", link: "#", reason: "To help you find your voice and stop the pattern of silent yielding." }
-        };
-
-        const ASYMMETRY_DATA = {
-            conflict: {
-                diagnosis: "Your data indicates a risk of 'The Crazy Cycle.' This occurs when a husband feels disrespected and reacts in ways that feel unloving, or a wife feels unloved and reacts in ways that seem disrespectful. If one partner defaults to Contempt (mockery or talking down) and the other to Stonewalling (withdrawal), your 'Relationship Wall' is accruing cracks that will eventually lead to structural failure. +4",
-                interventions: [
-                    { title: "Practice the 'Softened Start-up'", desc: "Never begin a difficult conversation with a 'Harsh Start-up' (criticism or 'You' statements). Instead, state a neutral feeling and a specific, positive need. +4" },
-                    { title: "The 20-Minute 'Flooding' Protocol", desc: "If your heart rate spikes, you are likely 'Flooding' and cannot process logic. You must take a mandatory 20-minute break to self-soothe before re-engaging. +4" },
-                    { title: "Accepting Influence", desc: "Success requires a 'Yield to Win' mentality. You must intentionally accept your partner's point of view as valid, even if you disagree with the set of facts. +4" }
-                ]
-            },
-            boundary: {
-                diagnosis: "We are scanning for 'Enmeshment' vs. 'Autonomy.' If your scores show a lack of 'Property Lines,' you are likely taking responsibility for your partner's feelings rather than being responsible to them. Yielding your boundaries just to keep the peace is a form of 'Courtship Deception' that leads to long-term resentment. +3",
-                interventions: [
-                    { title: "The Law of Responsibility", desc: "You are responsible for your own 'treasures'—your time, money, and feelings. You must stop 'Rescuing' your partner from the natural consequences of their actions. +3" },
-                    { title: "The 'Leave and Cleave' Boundary", desc: "Your primary allegiance must transfer from your family of origin to your partner. External family must not be allowed to overrule your internal consensus. +2" }
-                ]
-            }
-        };
-
-        const RESOURCE_LIBRARY = [
-            { cat: "Conflict Mastery", books: "Fight Right (Gottman) and The Lost Art of Listening (Nichols). +1" },
-            { cat: "Emotional Safety", books: "Hold Me Tight (Johnson) and Getting the Love You Want (Hendrix). +1" },
-            { cat: "Biblical Alignment", books: "Love & Respect (Eggerichs) and The Love Dare (Kendrick). +1" },
-            { cat: "Personal Autonomy", books: "Boundaries (Cloud & Townsend) and 8 Rules of Love (Shetty). +1" }
-        ];
-
-        const TIER_WORKSHEETS = {
-            1: {
-                name: "The Greenhouse (High Alignment)",
-                goal: "Creating Shared Meaning",
-                steps: [
-                    { title: "The Love Map Challenge", desc: "List your partner's best friends, current stressors, and biggest life dreams. +2" },
-                    { title: "The 'I Appreciate' Ritual", desc: "Every day for one week, pick one positive characteristic of your partner and tell them a specific incident where they displayed it. +1" }
-                ],
-                verse: "Biblical Foundation: 'Stimulate one another to love and good deeds' (Hebrews 10:24)."
-            },
-            2: {
-                name: "The Repair Shop (Moderate Friction)",
-                goal: "Mastering the 'Do-over'",
-                steps: [
-                    { title: "The Bagel Method", desc: "Draw two circles. In the small inner circle, write your non-negotiable needs regarding a conflict. In the outer circle, list areas where you can be flexible. Compare and find a 'Third Way' compromise. +4" },
-                    { title: "The Repair Checklist", desc: "Keep a physical list of repair phrases (e.g., 'I'm feeling defensive,' 'I see your point') and use them mid-fight to de-escalate. +1" }
-                ],
-                verse: "Biblical Foundation: 'Be quick to hear, slow to speak, and slow to anger' (James 1:19)."
-            },
-            3: {
-                name: "The Boundary Lab (High Tension)",
-                goal: "Establishing Property Lines",
-                steps: [
-                    { title: "The Emotional Inventory", desc: "Describe a recent argument using only 'I Feel' statements. Identify which 'Raw Spot' from your childhood was triggered. +3" },
-                    { title: "Closing the 'Exits'", desc: "Identify any 'exits' you use to avoid intimacy (e.g., overworking, social media, triangulation with parents) and commit to closing them for 30 days. +1" }
-                ],
-                verse: "Biblical Foundation: 'Let your 'Yes' be 'Yes' and your 'No,' 'No'' (Matthew 5:37)."
-            },
-            4: {
-                name: "The Crisis Reset (Critical Risk)",
-                goal: "Stopping the Bleeding",
-                steps: [
-                    { title: "The Love Dare 24-Hour Fast", desc: "For 24 hours, you are forbidden from speaking a single negative word to or about your partner. +1" },
-                    { title: "The Surrender Protocol", desc: "Identify one area where you are competing to 'win'. Commit to accepting your partner's influence in that area entirely for one week. +3" }
-                ],
-                verse: "Biblical Foundation: 'Love is patient... it keeps no record of wrongs' (1 Corinthians 13:4-5)."
-            }
-        };
-
-        const VETTING_MRI = {
-            prep: [
-                { title: "Define Your Non-Negotiables", desc: "Based on the 'Bagel Method,' what are your core values that you cannot sacrifice for chemistry? +1" },
-                { title: "Identify Your Imago", desc: "List the positive and negative traits of your primary caretakers. Be aware that you will naturally be attracted to someone who mirrors these traits. +2" }
-            ],
-            questions: [
-                { q: "Conflict Speed", desc: "Ask: 'What is the longest you've ever gone without speaking to someone you were mad at?' (Scanning for Stonewalling/Withdrawal). +2" },
-                { q: "Authority & Cleaving", desc: "Ask: 'How do you handle it when your parents disagree with a major decision you've made?' (Scanning for lack of boundaries). +1" },
-                { q: "Ownership", desc: "Ask: 'Tell me about a time you were 'the bad guy' in a past relationship and how you fixed it.' (Scanning for Defensiveness). +2" }
-            ],
-            redFlags: [
-                { f: "Contempt", desc: "Do they roll their eyes or use cutting sarcasm when you express a need? +1" },
-                { f: "Deactivating Strategies", desc: "Do they pull away or become cold the moment things get 'too close'? +1" },
-                { f: "Consumer Mindset", desc: "Do they view the relationship as a way to 'make them happy' rather than a shared mission? +1" }
-            ]
-        };
-
-        function calculateFrictionScore(p1Ans, p2Ans) {
-            const weights = {
-                AA: 10, AB: 9, BA: 9, BB: 8,
-                AD: 7, DA: 7, BD: 6, DB: 6,
-                DD: 4, AC: 2, CA: 2, BC: 2,
-                CB: 2, CD: 1, DC: 1, CC: 0
-            };
-            let total = 0;
-            p1Ans.forEach((ans, i) => {
-                const pair = ans + (p2Ans[i] || "C");
-                total += weights[pair] || 0;
-            });
-            return total;
-        }
 
         function getTeaserInsight() {
             const counts = { A: 0, B: 0, C: 0, D: 0 };
@@ -579,96 +433,214 @@
 
         const SCORING_MAP = { A: 1, B: 2, C: 3, D: 4, E: 5 };
 
+        const SCAN_CONTENT = {
+            1: {
+                title: "Section 1: Conflict Heat Index",
+                desc: "How intense your arguments become and how hard they are to calm down.",
+                brackets: {
+                    stable: { range: [0, 3], status: "STABLE", pattern: "Disagreements stay controlled. You usually avoid personal attacks.", risk: "Low conflict does not always mean full resolution. Issues can stay under the surface.", growth: "End every disagreement with a clear verbal reset within 12 hours.", prompt: "When we argue, what helps you feel understood fastest?", habit: "Slow your tone intentionally during conflict.", principle: "Controlled speech preserves strength." },
+                    growth: { range: [4, 6], status: "GROWTH ZONE", pattern: "Conflict sometimes gets heated but is usually manageable.", risk: "Repeated moderate escalation builds tension over time.", growth: "Use a 20-minute break rule before continuing heated arguments.", prompt: "What usually triggers me during conflict?", habit: "Replace blame statements with feeling statements.", principle: "Patience reduces damage." },
+                    watch: { range: [7, 8], status: "WATCH ZONE", pattern: "Arguments escalate quickly and may become personal.", risk: "Frequent intensity reduces emotional safety.", growth: "Commit to zero name-calling or sarcasm for 30 days.", prompt: "What part of our arguments feels unsafe?", habit: "Pause 10 seconds before responding when triggered.", principle: "Self-control protects unity." },
+                    risk: { range: [9, 10], status: "HIGH RISK", pattern: "Conflict often becomes destructive or unresolved.", risk: "Repeated hostility weakens respect and attachment.", growth: "Schedule weekly structured conflict review sessions.", prompt: "What would safe disagreement look like for us?", habit: "Stop discussion immediately if voices rise.", principle: "Strength is measured in restraint." }
+                }
+            },
+            2: {
+                title: "Section 2: Repair Speed Index",
+                desc: "How quickly you reconnect after arguments.",
+                brackets: {
+                    stable: { range: [0, 3], status: "ALIGNED", pattern: "You reconnect easily after conflict.", risk: "Under stress, repair speed can still slow down.", growth: "Always confirm closure verbally.", prompt: "How do you know we are okay again?", habit: "End conflict with appreciation.", principle: "Quick repair restores strength." },
+                    growth: { range: [4, 6], status: "MILD GAP", pattern: "One partner resets faster than the other.", risk: "One may feel rushed; the other may feel ignored.", growth: "Agree on a 24-hour reconnection rule.", prompt: "How much time do you need to calm down?", habit: "Send reassurance during cooldown.", principle: "Patience closes emotional gaps." },
+                    watch: { range: [7, 8], status: "WATCH ZONE", pattern: "Repair is inconsistent.", risk: "Unresolved tension quietly builds.", growth: "Two weekly reset conversations.", prompt: "Is anything still unresolved?", habit: "Physical reconnection after apology.", principle: "Silence hardens wounds." },
+                    risk: { range: [9, 10], status: "SEVERE GAP", pattern: "Conflict ends without real resolution.", risk: "Emotional distance increases.", growth: "Structured mediation or coaching.", prompt: "Why do we avoid finishing conflict?", habit: "Never sleep without acknowledgment.", principle: "Restoration prevents distance." }
+                }
+            },
+            3: {
+                title: "Section 3: Money Alignment Index",
+                desc: "How aligned you are about spending, saving, and financial control.",
+                brackets: {
+                    stable: { range: [0, 3], status: "ALIGNED", pattern: "You have similar financial values.", risk: "Alignment must be maintained during life changes.", growth: "Quarterly financial planning talk.", prompt: "What makes you feel financially secure?", habit: "Review major expenses together.", principle: "Shared stewardship builds trust." },
+                    growth: { range: [4, 6], status: "GROWTH ZONE", pattern: "Some financial differences exist.", risk: "Unspoken assumptions lead to friction.", growth: "Set a shared spending limit rule.", prompt: "What financial decision worries you most?", habit: "Full transparency on purchases.", principle: "Transparency protects unity." },
+                    watch: { range: [7, 8], status: "WATCH ZONE", pattern: "Clear differences in control or risk.", risk: "Money becomes linked to power.", growth: "Write joint financial principles.", prompt: "Where do you feel financially unheard?", habit: "No major decisions alone.", principle: "Integrity stabilizes partnership." },
+                    risk: { range: [9, 10], status: "HIGH RISK", pattern: "Frequent money conflict or secrecy.", risk: "Financial distrust weakens the foundation.", growth: "Full financial disclosure exercise.", prompt: "What are we hiding financially?", habit: "Weekly 10-minute budget check-in.", principle: "Honesty rebuilds strength." }
+                }
+            },
+            4: {
+                title: "Section 4: Leadership Balance Index",
+                desc: "How decisions are made and how power is shared.",
+                brackets: {
+                    stable: { range: [0, 3], status: "BALANCED", pattern: "Power is shared naturally and roles are respected.", risk: "Stagnation if neither partner takes a needed lead.", growth: "Rotate primary decision domains annually.", prompt: "Where do you feel most 'in your flow' as a lead?", habit: "Verbally invite partner's veto on major shifts.", principle: "Shared leadership doubles wisdom." },
+                    growth: { range: [4, 6], status: "TRANSITIONAL", pattern: "One partner carries more weight than agreed.", risk: "Passive resentment builds for the over-burdened one.", growth: "Define clear leadership 'buckets' for each person.", prompt: "What decision do you find most exhausting?", habit: "Ask 'Do you need me to lead or follow here?'", principle: "Clarity reduces friction." },
+                    watch: { range: [7, 8], status: "TENSION ZONE", pattern: "Power is contested or inconsistently applied.", risk: "Decision-making becomes a battle for autonomy.", growth: "Implement a 'Consensus or Delay' policy.", prompt: "Where do you feel controlled rather than led?", habit: "Stop the decision if tension rises.", principle: "Unity precedes action." },
+                    risk: { range: [9, 10], status: "POWER STRUGGLE", pattern: "Dominance or dependency creates structural gaps.", risk: "One partner feels invisible; the other feels lonely.", growth: "Formalize a relational 'constitution' for authority.", prompt: "Are we teammates or opponents today?", habit: "Surrender one small daily lead to your partner.", principle: "Surrender preserves connection." }
+                }
+            },
+            5: {
+                title: "Section 5: Emotional Security Index",
+                desc: "How safe and secure each partner feels emotionally.",
+                brackets: {
+                    stable: { range: [0, 3], status: "SECURE", pattern: "High trust and consistent emotional accessibility.", risk: "Complacency can mask internal shifts.", growth: "Daily 'emotional inventory' check-ins.", prompt: "How full is your emotional tank today?", habit: "Respond with 'I hear you' before solving.", principle: "Consistency builds a fortress." },
+                    growth: { range: [4, 6], status: "UNCERTAIN", pattern: "Safety feels situational rather than architectural.", risk: "Attachment triggers can cause unexpected retreats.", growth: "Share your 'top 3 emotional safety needs'.", prompt: "What makes you feel most 'seen' by me?", habit: "Consistency in small gestures of care.", principle: "Trust is built in small moments." },
+                    watch: { range: [7, 8], status: "FRAGILE", pattern: "Emotional distance is used as a defensive tool.", risk: "Isolation blocks repair and increases stress.", growth: "Commit to a 'no-withdrawal' rule for 24h post-fight.", prompt: "When do you feel safest pulling away?", habit: "Proactive physical touch during stress.", principle: "Vulnerability is the only way in." },
+                    risk: { range: [9, 10], status: "CRITICAL GAP", pattern: "Chronic detachment or betrayal of safety.", risk: "Relationship core feels like a 'danger zone'.", growth: "Intensive focus on 'primal' attachment repair.", prompt: "Do I still feel like a safe place for you?", habit: "Immediate acknowledgment of partner's pain.", principle: "Safety is the engine’s oxygen." }
+                }
+            },
+            6: {
+                title: "Section 6: Pressure Test Index",
+                desc: "How strong the relationship remains under stress.",
+                brackets: {
+                    stable: { range: [0, 3], status: "RESILIENT", pattern: "Stress unites you rather than divides you.", risk: "External shocks can still reveal hidden hairline cracks.", growth: "Prepare a 'crisis plan' for financial/health shocks.", prompt: "What is our biggest shared victory over stress?", habit: "Pivot to 'us-vs-the-problem' mindset immediately.", principle: "Pressure tempers true steel." },
+                    growth: { range: [4, 6], status: "STRAINED", pattern: "External pressure leaks into the internal dynamic.", risk: "Chronic stress begins to erode the 'Friendship Base'.", growth: "Separate life-admin from relationship-connection.", prompt: "Which stressor is bleeding into our intimacy?", habit: "Schedule 'stress-free' zones/times.", principle: "Endurance requires pauses." },
+                    watch: { range: [7, 8], status: "VULNERABLE", pattern: "The relationship starts to feel like a burden.", risk: "One or both begin to search for 'exits' from stress.", growth: "Identify and eliminate 'triangulation' with family.", prompt: "Is our relationship a source of rest or stress?", habit: "Active prayer/meditation together on stressors.", principle: "Focus on the anchor, not the storm." },
+                    risk: { range: [9, 10], status: "COLLAPSE RISK", pattern: "Stress has paralyzed the relational machinery.", risk: "Structural failure is imminent without immediate intervention.", growth: "Radical simplification of life to save the core.", prompt: "What can we stop doing to survive?", habit: "Zero blame for external events.", principle: "Survival requires total unity." }
+                }
+            }
+        };
+
+        function generateTextProgressBar(score) {
+            const filled = Math.min(10, Math.max(0, Math.round(score)));
+            const empty = 10 - filled;
+            return "[" + "█".repeat(filled) + "░".repeat(empty) + "] " + filled + "/10";
+        }
+
+        function getBracket(d, score) {
+            const content = SCAN_CONTENT[d];
+            if (!content) return null;
+            if (score <= 3) return content.brackets.stable;
+            if (score <= 6) return content.brackets.growth;
+            if (score <= 8) return content.brackets.watch;
+            return content.brackets.risk;
+        }
+
         function calculateScores(answersArr) {
             const target = (answersArr || state.answers).map(a => SCORING_MAP[a] || 3);
             const res = {};
 
-            // If we have partner data, calculate friction
-            const partnerData = state.isPartner2 ? state.p1Answers.map(a => SCORING_MAP[a] || 3) : null;
+            const partnerData = (state.isPartner2 || state.p1Answers) ? (state.p1Answers || state.answers).map(a => SCORING_MAP[a] || 3) : null;
+            const userData = target;
 
             for (let d = 1; d <= 6; d++) {
                 const domainQuestions = QUESTIONS.filter(q => q.domain === d);
                 const domainSize = domainQuestions.length;
                 const axisAnswers = [];
 
-                // Get answers for this domain.
                 domainQuestions.forEach(q => {
-                    // Find index in QUESTIONS array (matches state.answers index)
                     const idx = QUESTIONS.findIndex(item => item.id === q.id);
-                    if (idx !== -1 && target[idx] !== undefined) {
-                        axisAnswers.push({ user: target[idx], partner: partnerData && partnerData[idx] !== undefined ? partnerData[idx] : null });
+                    if (idx !== -1) {
+                        axisAnswers.push({
+                            user: userData[idx],
+                            partner: partnerData ? partnerData[idx] : userData[idx]
+                        });
                     }
                 });
 
                 let axisScore = 0;
                 if (partnerData) {
-                    const rawDiff = axisAnswers.reduce((sum, item) => sum + Math.abs(item.user - (item.partner || item.user)), 0);
-                    axisScore = (rawDiff / (domainSize * 5)) * 100;
+                    const rawDiff = axisAnswers.reduce((sum, item) => sum + Math.abs(item.user - item.partner), 0);
+                    // Max diff per question is 4 (1 vs 5). 
+                    // Normalizing to 10 scale: (rawDiff / (size * 4)) * 10
+                    axisScore = (rawDiff / (domainSize * 4)) * 10;
                 } else {
-                    // For single user, just show a "baseline" or average (not strictly required by user but good for UI)
-                    const avg = axisAnswers.reduce((sum, item) => sum + item.user, 0) / domainSize;
-                    axisScore = (avg / 5) * 100;
+                    // For single user, we can't show "friction" without a partner.
+                    // We'll show a baseline of 0 (no friction) or just skip details.
+                    axisScore = 0;
                 }
+
+                const bracket = getBracket(d, axisScore);
 
                 res[d] = {
                     score: axisScore,
-                    label: getThresholdLabel(axisScore)
+                    status: bracket ? bracket.status : "UNKNOWN",
+                    data: bracket
                 };
             }
             return res;
         }
 
-        function getThresholdLabel(score) {
-            if (score <= 20) return "Stable";
-            if (score <= 40) return "Watch Zone";
-            if (score <= 60) return "Moderate Risk";
-            if (score <= 80) return "High Tension";
-            return "Structural Instability";
-        }
 
         function renderAlignmentForecast(p2Scores) {
             const scores = p2Scores || calculateScores();
             const p1Name = state.isPartner2 ? state.p1Name : state.name;
-            const p2Name = state.isPartner2 ? state.name : "Partner";
+            const p2Name = state.isPartner2 ? state.name : "Cat"; // Defaulting to Cat as per request example
 
             const blurClass = state.isPartner2 ? "" : "blur-content";
 
             return `
                 <div class="space-y-12 pt-12 border-t border-slate-800 relative">
                     ${!state.isPartner2 ? `
-                        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/40 backdrop-blur-[2px] rounded-3xl p-8 text-center pt-24">
+                        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-[4px] rounded-3xl p-8 text-center pt-24">
                             <div class="bg-violet-600 p-8 rounded-3xl shadow-2xl space-y-4 max-w-sm border border-violet-400/30">
-                                <h4 class="text-xl font-bold text-white">Unlock Combined Forecast</h4>
-                                <p class="text-slate-200 text-sm">Your individual data is ready. To reveal your interaction dynamic and growth plan, sync with your partner.</p>
-                                <button onclick="generatePartnerLink()" class="w-full py-3 bg-white text-violet-600 rounded-xl font-bold hover:bg-slate-100 transition-all">Copy Partner Link</button>
+                                <h4 class="text-xl font-bold text-white uppercase tracking-tight">Unlock Combined Forecast</h4>
+                                <p class="text-slate-200 text-sm leading-relaxed">Your behavioral baseline is ready. To reveal your interaction dynamic and the full Stability Scan, sync with your partner.</p>
+                                <button onclick="generatePartnerLink()" class="w-full py-4 bg-white text-violet-600 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-slate-100 transition-all shadow-xl">Copy Secret Partner Link</button>
                             </div>
                         </div>
                     ` : ''}
 
-                    <div class="text-center space-y-4">
-                        <h3 class="text-3xl font-bold text-violet-400">The Alignment Forecast: ${p1Name} & ${p2Name}</h3>
+                    <div class="text-center space-y-2">
+                        <h3 class="text-sm font-black uppercase tracking-[0.2em] text-violet-500">Stability Scan Results</h3>
+                        <p class="text-3xl font-bold text-white">${p1Name} & ${p2Name}</p>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-6">
-                        <div class="p-8 rounded-3xl bg-slate-800/40 border border-slate-700 space-y-4">
-                            <h4 class="text-sm font-bold uppercase tracking-widest text-slate-500 text-center">Joint Friction Analysis</h4>
-                            <div class="space-y-5 ${blurClass}">
-                                ${Object.entries(scores).map(([id, data]) => `
-                                    <div class="border-b border-slate-800/50 pb-4 last:border-0 last:pb-0 flex justify-between items-center">
-                                        <p class="text-slate-200 text-sm font-bold">${DOMAINS[id]}</p>
-                                        <p class="text-violet-400 font-bold text-sm tracking-widest uppercase">${data.label}</p>
+                    <div class="space-y-10 ${blurClass}">
+                        ${Object.entries(scores).map(([id, result]) => {
+                const content = SCAN_CONTENT[id];
+                const d = result.data;
+                if (!content || !d) return '';
+
+                return `
+                                <div class="space-y-6">
+                                    <div class="bg-slate-800/40 p-8 rounded-3xl border border-slate-700/50 space-y-6">
+                                        <div class="space-y-1">
+                                            <h4 class="text-xs font-black uppercase tracking-widest text-slate-500">${content.title}</h4>
+                                            <p class="text-sm text-slate-400 font-medium">${content.desc}</p>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="space-y-1">
+                                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Score</p>
+                                                <p class="text-xl font-black text-white">${Math.round(result.score)}/10</p>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Status</p>
+                                                <p class="text-xl font-black ${result.score >= 7 ? 'text-red-500' : (result.score >= 4 ? 'text-yellow-500' : 'text-green-500')} uppercase tracking-tighter">${result.status}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="space-y-2">
+                                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Progress</p>
+                                            <p class="font-mono text-sm text-violet-400 font-bold">${generateTextProgressBar(result.score)}</p>
+                                        </div>
+
+                                        <div class="pt-6 border-t border-slate-700/50 space-y-6">
+                                            <div class="grid grid-cols-1 gap-6">
+                                                <div class="space-y-2">
+                                                    <p class="text-[10px] font-black uppercase tracking-widest text-violet-400">Your Pattern</p>
+                                                    <p class="text-sm text-slate-200 leading-relaxed">${d.pattern}</p>
+                                                </div>
+                                                <div class="space-y-2">
+                                                    <p class="text-[10px] font-black uppercase tracking-widest text-red-400">Risk Insight</p>
+                                                    <p class="text-sm text-slate-400 italic font-medium leading-relaxed">"${d.risk}"</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-700/30 space-y-4">
+                                                <p class="text-[10px] font-black uppercase tracking-widest text-blue-400">Growth Levers</p>
+                                                <div class="space-y-3">
+                                                    <p class="text-sm text-slate-200"><span class="font-bold text-slate-400 uppercase text-[10px] mr-2">Measurable:</span> ${d.growth}</p>
+                                                    <p class="text-sm text-slate-200"><span class="font-bold text-slate-400 uppercase text-[10px] mr-2">Prompt:</span> ${d.prompt}</p>
+                                                    <p class="text-sm text-slate-200"><span class="font-bold text-slate-400 uppercase text-[10px] mr-2">Habit:</span> ${d.habit}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex items-center space-x-3 text-slate-500 italic">
+                                                <span class="text-[10px] font-black uppercase tracking-widest">Principled Guidance:</span>
+                                                <span class="text-sm font-medium">"${d.principle}"</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-center space-y-4 pt-8">
-                        <p class="text-slate-400 text-sm">Request your full relationship architecture PDF diagnostic</p>
-                        <div class="max-w-md mx-auto flex gap-2">
-                            <input type="email" id="webhookEmail" placeholder="Enter your email" class="flex-1 px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:border-violet-500">
-                            <button id="syncBtn" onclick="syncToWebhook()" class="px-6 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-xl font-bold text-sm transition-all shadow-lg whitespace-nowrap uppercase tracking-widest">Send Report to Engine</button>
-                        </div>
+                                </div>
+                            `;
+            }).join('')}
                     </div>
                 </div>
             `;
