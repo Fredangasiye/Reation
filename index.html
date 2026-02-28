@@ -684,9 +684,9 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-12">
                         <div class="text-center space-y-2">
-                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">${state.mode === 'single' ? 'APP MODULE: SINGLE & LOOKING' : 'RELATIONSHIP STABILITY SCAN'}</h1>
-                            <h2 class="text-4xl font-black text-white leading-tight">${state.mode === 'single' ? 'DIAGNOSTIC REPORT' : 'RELATION BLUEPRINT'}</h2>
-                            <p class="text-slate-400 font-medium">Diagnostic report for <span class="text-white font-bold">${state.name || "User"}</span>.</p>
+                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">${state.mode === 'single' ? 'WHO YOU ARE IN DATING' : 'RELATIONSHIP STABILITY SCAN'}</h1>
+                            <h2 class="text-4xl font-black text-white leading-tight">${state.mode === 'single' ? 'YOUR REPORT' : 'RELATION BLUEPRINT'}</h2>
+                            <p class="text-slate-400 font-medium">Breakdown for <span class="text-white font-bold">${state.name || "User"}</span>.</p>
                         </div>
 
                         ${state.mode === 'single' ? renderSingleResults() : renderAlignmentForecast()}
@@ -697,15 +697,17 @@
                                     <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
                                     <span id="sync-text" class="text-[10px] text-blue-400 font-black uppercase tracking-[0.1em]">Relational Data Encrypted & Synced</span>
                                 </div>
-                                <p class="text-slate-500 text-sm font-medium italic">"Architecture is destiny. Request your full relationship diagnostic PDF."</p>
+                                <p class="text-slate-500 text-sm font-medium italic">"The habits you build now shape your future. Save your relationship guide below."</p>
                             </div>
                             
                             <div class="max-w-md mx-auto space-y-3">
                                 <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-slate-800 border border-slate-700/50 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-violet-500 outline-none text-center font-medium shadow-inner transition-all">
                                 <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-indigo-900/20">Send Report to Engine</button>
-                                <button onclick="downloadPDF()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-emerald-900/20">Download PDF Report</button>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <button onclick="state.mode = 'single'; setView('setup')" 
+                        class="w-full py-5 px-8 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-emerald-900/20 text-center flex items-center justify-center">
+                        Single, looking for a relationship: Am I ready?
+                    </button>    </div>
                     </div>
                 `;
             }
@@ -1034,7 +1036,7 @@
             return `
                 <div class="fade-in space-y-10">
                     <div class="bg-emerald-600/10 border border-emerald-600/20 p-8 rounded-3xl text-center space-y-4">
-                        <span class="text-xs font-black uppercase tracking-widest text-emerald-500">Your Core Archetype</span>
+                        <span class="text-xs font-black uppercase tracking-widest text-emerald-500">Who you are in dating</span>
                         <h3 class="text-4xl font-black text-white">${arcData.name}</h3>
                         <div class="flex items-center justify-center space-x-4">
                             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">${state.gender} track</span>
@@ -1045,12 +1047,12 @@
 
                     <div class="bg-slate-800/40 p-8 rounded-3xl border border-slate-700/50 space-y-6">
                         <div class="space-y-3">
-                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-400">Core Evaluation</h4>
+                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-400">What's going on</h4>
                             <p class="text-lg text-slate-200 leading-relaxed font-medium">${arcData.diagnosis}</p>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
                             <div class="space-y-4">
-                                <h5 class="text-[10px] font-black uppercase tracking-widest text-slate-500">Behavioral Patterns</h5>
+                                <h5 class="text-[10px] font-black uppercase tracking-widest text-slate-500">Things you do</h5>
                                 <ul class="space-y-2">
                                     ${arcData.pattern.map(p => `
                                         <li class="text-sm text-slate-300 flex items-start">
@@ -1063,11 +1065,11 @@
                             </div>
                             <div class="space-y-6">
                                 <div class="space-y-1">
-                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-violet-400">Attraction Signal Emitted</h5>
+                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-violet-400">The vibe you give off</h5>
                                     <p class="text-sm text-slate-200 italic">"${arcData.signal}"</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-red-400">Primary Failure Pivot</h5>
+                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-red-400">Where things usually go wrong</h5>
                                     <p class="text-sm text-slate-400 leading-relaxed font-medium">${arcData.failure}</p>
                                 </div>
                             </div>
@@ -1076,26 +1078,39 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 space-y-3">
-                            <h4 class="text-[10px] font-black uppercase tracking-widest text-blue-400">Marriage Readiness Level</h4>
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-blue-400">How ready you are for something serious</h4>
                             <p class="text-lg text-white font-black">${arcData.readiness}</p>
                         </div>
                          <div class="bg-red-900/10 p-6 rounded-3xl border border-red-900/20 space-y-3">
-                            <h4 class="text-[10px] font-black uppercase tracking-widest text-red-500">Risk Warning</h4>
-                             <p class="text-sm text-slate-300 italic font-medium">"${totalPercentage < 50 ? 'High Risk of Repeating Past Relationship Cycles.' : (pillarScores[lowestPillar].percentage < 45 ? 'Critical pillar weakness detected below baseline.' : 'Stable baseline with moderate growth requirements.')}"</p>
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-red-500">Heads up</h4>
+                             <p class="text-sm text-slate-300 italic font-medium">"${totalPercentage < 50 ? 'High Risk of Repeating Past Relationship Cycles.' : (pillarScores[lowestPillar].percentage < 45 ? 'Critical pillar weakness detected below baseline.' : 'You\'re doing okay, but there\'s room to level up.')}"</p>
                         </div>
                     </div>
 
                     <div class="bg-slate-900/50 p-8 rounded-3xl border border-slate-700/30 space-y-8">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-500 text-center">Pillar Score Interpretation</h4>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-500 text-center">Your dating breakdown</h4>
                         <div class="grid grid-cols-1 gap-6">
                             ${Object.entries(pillarScores).map(([p, data]) => {
-                const band = data.percentage <= 40 ? 'LOW' : (data.percentage <= 60 ? 'WEAK' : (data.percentage <= 75 ? 'MODERATE' : (data.percentage <= 90 ? 'STRONG' : 'EXCEPTIONAL')));
+                const band = data.percentage <= 40 ? 'needs work' : (data.percentage <= 60 ? 'growing' : (data.percentage <= 75 ? 'solid' : (data.percentage <= 90 ? 'strong' : 'boss level')));
                 const color = data.percentage <= 60 ? 'bg-red-500' : (data.percentage <= 75 ? 'bg-yellow-500' : 'bg-emerald-500');
+                const pillarNames = state.gender === 'male' ? {
+                    M1: "Identity & Vision",
+                    M2: "Attraction & Confidence",
+                    M3: "Emotional Control",
+                    M4: "Leading & Boundaries",
+                    M5: "Stability & Character"
+                } : {
+                    F1: "Self-Worth",
+                    F2: "Warmth & Openness",
+                    F3: "Emotional Balance",
+                    F4: "Filtering & Wisdom",
+                    F5: "Long-term Intentions"
+                };
                 return `
                                     <div class="space-y-2">
                                         <div class="flex justify-between items-end">
                                             <div class="flex flex-col">
-                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${p} Pillar</span>
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${pillarNames[p]}</span>
                                                 <span class="text-[10px] font-bold text-slate-600">${band}</span>
                                             </div>
                                             <span class="text-xs font-black text-white">${data.percentage}%</span>
@@ -1111,7 +1126,7 @@
 
                     <div class="bg-emerald-600/5 p-8 rounded-3xl border border-emerald-600/10 space-y-10">
                         <div class="space-y-6">
-                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-500">30-Day Action Plan</h4>
+                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-500">Your next 30 days</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
                                 ${arcData.action.map((a, i) => `
                                     <div class="text-sm text-slate-200 flex items-start">
@@ -1121,7 +1136,7 @@
                             </div>
                         </div>
                         <div class="pt-10 border-t border-emerald-600/10 space-y-4">
-                            <h4 class="text-xs font-black uppercase tracking-widest text-blue-400">6–12 Month Development Path</h4>
+                            <h4 class="text-xs font-black uppercase tracking-widest text-blue-400">Long-term growth</h4>
                             <div class="p-6 rounded-2xl bg-slate-900/50 border border-slate-800">
                                 <p class="text-md text-slate-200 leading-relaxed font-medium">${arcData.growthPath}</p>
                             </div>
