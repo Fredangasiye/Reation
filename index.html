@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relation | Relational Alignment & Survival Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -113,6 +114,25 @@
             pointer-events: none;
             user-select: none;
         }
+
+        .no-scroll {
+            overflow: hidden !important;
+            height: 100% !important;
+        }
+
+        .overlay-container {
+            position: absolute;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -215,6 +235,205 @@
             "DD": { status: "Moderate Risk", dynamic: "The Passive Merge", choices: "Decision-making is slow as neither wants to 'burden' the other.", social: "Extremely kind but can be socially indecisive or invisible." }
         };
 
+        const MALE_TRACK = {
+            gender: "male",
+            questions: [
+                { id: 1, pillar: "M1", reverse: false, text: "I have a clear vision for where my life is headed in the next five years." },
+                { id: 2, pillar: "M1", reverse: true, text: "I often feel lost or unsure about my long-term direction." },
+                { id: 3, pillar: "M1", reverse: false, text: "I take responsibility for my mistakes without blaming others." },
+                { id: 4, pillar: "M1", reverse: true, text: "I rely heavily on external validation to feel confident." },
+                { id: 5, pillar: "M1", reverse: false, text: "I pursue meaningful goals consistently." },
+                { id: 6, pillar: "M1", reverse: true, text: "I frequently procrastinate on important life decisions." },
+                { id: 7, pillar: "M2", reverse: false, text: "I am comfortable initiating conversations with women I’m interested in." },
+                { id: 8, pillar: "M2", reverse: true, text: "I hesitate to express romantic interest directly." },
+                { id: 9, pillar: "M2", reverse: false, text: "I can confidently ask a woman out without overthinking." },
+                { id: 10, pillar: "M2", reverse: true, text: "I avoid taking the lead because I fear rejection." },
+                { id: 11, pillar: "M2", reverse: false, text: "I maintain strong eye contact and grounded body language." },
+                { id: 12, pillar: "M2", reverse: true, text: "I try to impress women by over-agreeing with them." },
+                { id: 13, pillar: "M3", reverse: false, text: "I stay calm during emotional conflict." },
+                { id: 14, pillar: "M3", reverse: true, text: "I shut down or withdraw when criticized." },
+                { id: 15, pillar: "M3", reverse: false, text: "I rarely act impulsively when emotionally triggered." },
+                { id: 16, pillar: "M3", reverse: true, text: "Jealousy or insecurity quickly affects my behavior." },
+                { id: 17, pillar: "M3", reverse: false, text: "I regulate my habits (sleep, media, sexual content)." },
+                { id: 18, pillar: "M3", reverse: true, text: "I use distractions to avoid dealing with emotions." },
+                { id: 19, pillar: "M4", reverse: false, text: "I set clear boundaries when something feels wrong." },
+                { id: 20, pillar: "M4", reverse: true, text: "I tolerate disrespect to avoid losing a woman." },
+                { id: 21, pillar: "M4", reverse: false, text: "I communicate expectations early in dating." },
+                { id: 22, pillar: "M4", reverse: true, text: "I struggle to make decisions in relationships." },
+                { id: 23, pillar: "M4", reverse: false, text: "I aim to serve and protect in relationships." },
+                { id: 24, pillar: "M4", reverse: true, text: "I become passive once things get serious." },
+                { id: 25, pillar: "M5", reverse: false, text: "My finances are stable and responsibly managed." },
+                { id: 26, pillar: "M5", reverse: true, text: "I pursue pleasure more than long-term stability." },
+                { id: 27, pillar: "M5", reverse: false, text: "I would feel prepared to lead a household." },
+                { id: 28, pillar: "M5", reverse: true, text: "I avoid commitment conversations." },
+                { id: 29, pillar: "M5", reverse: false, text: "I evaluate a woman’s character before pursuing deeper involvement." },
+                { id: 30, pillar: "M5", reverse: true, text: "Physical attraction outweighs deeper compatibility in my choices." }
+            ]
+        };
+
+        const FEMALE_TRACK = {
+            gender: "female",
+            questions: [
+                { id: 1, pillar: "F1", reverse: false, text: "I feel secure in who I am without needing constant reassurance." },
+                { id: 2, pillar: "F1", reverse: true, text: "I compare myself to other women frequently." },
+                { id: 3, pillar: "F1", reverse: false, text: "I believe I bring value beyond appearance." },
+                { id: 4, pillar: "F1", reverse: true, text: "I fear being alone more than being in the wrong relationship." },
+                { id: 5, pillar: "F1", reverse: false, text: "I maintain personal standards consistently." },
+                { id: 6, pillar: "F1", reverse: true, text: "I tolerate inconsistent treatment when emotionally attached." },
+                { id: 7, pillar: "F2", reverse: false, text: "I express warmth and appreciation openly." },
+                { id: 8, pillar: "F2", reverse: true, text: "I test men to see how much they will tolerate." },
+                { id: 9, pillar: "F2", reverse: false, text: "I allow a man to take initiative in healthy situations." },
+                { id: 10, pillar: "F2", reverse: true, text: "I resist male leadership even when it is constructive." },
+                { id: 11, pillar: "F2", reverse: false, text: "I communicate admiration when I respect someone." },
+                { id: 12, pillar: "F2", reverse: true, text: "I assume most men will disappoint me." },
+                { id: 13, pillar: "F3", reverse: false, text: "I handle emotional conflict calmly." },
+                { id: 14, pillar: "F3", reverse: true, text: "I overanalyze messages or changes in tone frequently." },
+                { id: 15, pillar: "F3", reverse: false, text: "I take time before reacting emotionally." },
+                { id: 16, pillar: "F3", reverse: true, text: "I escalate minor issues into larger conflicts." },
+                { id: 17, pillar: "F3", reverse: false, text: "I seek clarity rather than assumptions." },
+                { id: 18, pillar: "F3", reverse: true, text: "I fear abandonment strongly." },
+                { id: 19, pillar: "F4", reverse: false, text: "I observe a man’s consistency before deep emotional investment." },
+                { id: 20, pillar: "F4", reverse: true, text: "I prioritize chemistry over character." },
+                { id: 21, pillar: "F4", reverse: false, text: "I value shared beliefs and life direction." },
+                { id: 22, pillar: "F4", reverse: true, text: "I stay connected to men who are emotionally unavailable." },
+                { id: 23, pillar: "F4", reverse: false, text: "I seek wise input when unsure in dating." },
+                { id: 24, pillar: "F4", reverse: true, text: "I hide relationship struggles from trusted mentors." },
+                { id: 25, pillar: "F5", reverse: false, text: "I date with long-term potential in mind." },
+                { id: 26, pillar: "F5", reverse: true, text: "I rush physical intimacy to secure emotional connection." },
+                { id: 27, pillar: "F5", reverse: false, text: "I am patient when timing feels uncertain." },
+                { id: 28, pillar: "F5", reverse: true, text: "I ignore red flags because I feel strong attraction." },
+                { id: 29, pillar: "F5", reverse: false, text: "I protect my emotional and physical boundaries early." },
+                { id: 30, pillar: "F5", reverse: true, text: "I confuse intense feelings with long-term compatibility." }
+            ]
+        };
+
+        const MALE_ARCHETYPES = {
+            "M1": {
+                name: "The Drifter",
+                trigger: "M1 LOW or WEAK",
+                diagnosis: "You lack visible direction and long-term clarity. While you may be intelligent or kind, romantic attraction in serious women often depends on perceived stability and future security. When your life feels unstructured, women struggle to emotionally anchor themselves to you. This doesn’t mean you’re incapable of commitment — it means your life foundation isn’t strong enough yet to inspire confidence.",
+                pattern: ["Delayed decisions", "Low urgency in self-development", "Overthinking instead of acting", "Pursuing connection before building your base"],
+                signal: "“Good guy… but I don’t feel led.”",
+                failure: "When momentum slowed, she subconsciously questioned long-term stability. Emotional energy drops when forward motion disappears.",
+                readiness: "LOW–MODERATE. You may desire marriage, but your structure doesn’t yet support it.",
+                action: ["Write a detailed 5-year life vision.", "Create a weekly schedule and stick to it strictly.", "Establish a financial budget and track spending.", "Remove one major distraction (gaming, scrolling).", "Commit to physical training 4x per week.", "Stop delaying difficult conversations.", "Reduce passive entertainment by 50%.", "Identify one male mentor.", "Practice decisive communication.", "Do not pursue serious dating until stable."],
+                growthPath: "Build mission first. Then pursue partnership. Purpose before romance."
+            },
+            "M2": {
+                name: "The Passive Nice Guy",
+                trigger: "M2 LOW + M4 WEAK",
+                diagnosis: "You over-prioritize approval. You soften your opinions to avoid rejection. While kindness is valuable, lack of assertive clarity removes polarity and attraction.",
+                pattern: ["Over-invest early", "Say what she wants to hear", "Avoid stating standards", "Fear losing her more than losing yourself"],
+                signal: "“I feel safe… but not excited.”",
+                failure: "You created comfort without direction. She slowly lost romantic energy.",
+                readiness: "MODERATE but undeveloped leadership.",
+                action: ["Initiate all early-stage plans confidently.", "Stop over-texting — limit fluff.", "Say “no” at least once weekly.", "Express romantic intent clearly.", "Stop apologizing for harmless mistakes.", "Build physical presence.", "Clarify non-negotiable standards.", "Avoid pedestal behavior.", "Practice calm disagreement.", "Date intentionally, not desperately."],
+                growthPath: "Develop calm authority. Lead without aggression."
+            },
+            "M3": {
+                name: "The Emotionally Reactive Man",
+                trigger: "M3 LOW",
+                diagnosis: "Your internal state controls your relationship outcomes.",
+                pattern: ["Become distant when hurt", "Act from jealousy", "Escalate emotionally before thinking"],
+                signal: "Intensity without groundedness.",
+                failure: "Emotional unpredictability erodes trust.",
+                readiness: "Varies based on other pillars.",
+                action: ["Sleep 7–8 hours consistently.", "Eliminate digital overstimulation.", "Delay reactions by 24 hours.", "Journal during conflict.", "Reduce inflammatory content.", "Exercise consistently.", "Seek emotional mentorship.", "Cut impulsive behaviors.", "Avoid reactive accusations.", "Strengthen personal discipline."],
+                growthPath: "Stability before intimacy."
+            },
+            "M4": {
+                name: "The Avoidant Escaper",
+                trigger: "M4 LOW + M5 LOW",
+                diagnosis: "You retreat when commitment approaches.",
+                pattern: ["Ghosting", "Deflection humor", "Avoid “where is this going?” talks"],
+                signal: "Charming early, distant later.",
+                failure: "Women sense long-term insecurity.",
+                readiness: "LOW. Attracting only casual connections.",
+                action: ["Initiate serious conversations.", "Clarify dating intentions early.", "Evaluate based on character.", "Stop ghosting.", "Practice vulnerability.", "Commit to small things first.", "Be honest about fears.", "Avoid mixed signals.", "Set clear expectations.", "Follow through on every promise."],
+                growthPath: "Depth over avoidance."
+            },
+            "M5": {
+                name: "The Pleasure-Driven Romantic",
+                trigger: "M5 LOW + High M2",
+                diagnosis: "You prioritize spark over substance. Strong chemistry often overrides deeper screening. Short-term intensity sabotages long-term stability.",
+                pattern: ["Prioritize attraction over alignment", "Rush intimacy", "Ignore belief misalignment"],
+                signal: "High intensity, low safety.",
+                failure: "Short-term passion → long-term instability. Repeating high-drama cycles.",
+                readiness: "LOW. High risk of rushing intimacy.",
+                action: ["Delay physical progression.", "Evaluate shared beliefs early.", "Pause after emotional highs.", "Remove casual temptations.", "Seek accountability.", "Clarify marriage vision.", "Avoid mismatching depth.", "Observe consistency for 60+ days.", "Reduce stimulating media.", "Reassess character before escalating."],
+                growthPath: "Develop long-term discernment."
+            },
+            "STABLE": {
+                name: "The Strong Foundation Builder",
+                trigger: "All pillars MODERATE–STRONG",
+                diagnosis: "You are stable and serious. Your issue may be selection, not self.",
+                pattern: ["Overlooking available partners", "Unrealistic ideals", "Narrow pool"],
+                signal: "Reliable, competent, ready.",
+                failure: "Waiting indefinitely or choosing based on speed.",
+                readiness: "HIGH. Structurally ready.",
+                action: ["Increase exposure.", "Clarify non-negotiables.", "Invite wise accountability.", "Be more proactive.", "Expand your social circle.", "Challenge perfectionism.", "Stay consistent.", "Lead with warmth.", "Be patient.", "Value alignment first."],
+                growthPath: "Discernment and patience."
+            }
+        };
+
+        const FEMALE_ARCHETYPES = {
+            "F1": {
+                name: "The Insecure Seeker",
+                trigger: "F1 LOW",
+                diagnosis: "You may enter relationships seeking reassurance instead of partnership. Attraction built on need collapses under pressure.",
+                pattern: ["Over-attach early", "Fear abandonment", "Tolerate inconsistency"],
+                signal: "Intense but fragile.",
+                failure: "Selects inconsistent men for validation. Confusing attention with love.",
+                readiness: "LOW. Higher risk of unstable outcomes.",
+                action: ["Build internal confidence rituals.", "Reduce validation-seeking.", "Strengthen independent joy.", "Limit obsessive text checking.", "Avoid immediate exclusivity.", "Set consistency standards.", "Practice calm communication.", "Delay emotional declarations.", "Avoid inconsistent men.", "Seek accountability."],
+                growthPath: "Internal stability before attachment."
+            },
+            "F2": {
+                name: "The Guarded Independent",
+                trigger: "F2 LOW + F1 STRONG",
+                diagnosis: "You are strong but guarded. Healthy leadership may feel uncomfortable. Attraction weakens when respect and warmth are withheld.",
+                pattern: ["Resists masculine leadership", "Hyper self-reliant", "Defensive"],
+                signal: "Competent but emotionally closed.",
+                failure: "Attracts passive men or pushes strong ones away. Loneliness masked as strength.",
+                readiness: "MODERATE. Intentions are positive but habits inconsistent.",
+                action: ["Practice appreciation.", "Allow healthy initiative.", "Reduce defensive sarcasm.", "Avoid testing behavior.", "Clarify standards calmly.", "Remove “prove yourself” energy.", "Evaluate character over chemistry.", "Seek wise counsel.", "Slow emotional escalation.", "Practice receptive communication."],
+                growthPath: "Balance strength with warmth."
+            },
+            "F3": {
+                name: "The Emotionally Volatile Partner",
+                trigger: "F3 LOW",
+                diagnosis: "Emotional escalation drives conflict fatigue.",
+                pattern: ["Overthinking", "Escalation", "Fear-driven reactions"],
+                signal: "Deep but high-maintenance.",
+                failure: "Conflict exhaustion. Driving away stable men.",
+                readiness: "Varies. High risk of reactive conflict.",
+                action: ["Pause 24 hours before confrontation.", "Journal instead of rapid texting.", "Regulate sleep routines.", "Reduce emotional speculation.", "Seek wise feedback before ending.", "Replace assumptions with questions.", "Avoid public airing of struggles.", "Stabilize daily rhythms.", "Practice calm tone modulation.", "Strengthen internal reassurance."],
+                growthPath: "Stability before intimacy."
+            },
+            "F4": {
+                name: "The Chemistry Chaser",
+                trigger: "F4 LOW + F5 LOW",
+                diagnosis: "You follow feelings over alignment. Intensity feels like compatibility.",
+                pattern: ["Prioritizes spark over substance", "Falls for unavailable men"],
+                signal: "High passion / low safety pattern.",
+                failure: "High emotion cycles. Intensity over stability.",
+                readiness: "LOW. Risk of rushing intimacy.",
+                action: ["Delay physical intimacy.", "Observe consistency before attachment.", "Clarify life direction early.", "Remove inconsistent men quickly.", "Seek trusted accountability.", "Evaluate shared worldview.", "Avoid secrecy in dating.", "Strengthen patience muscle.", "Replace validation with discernment.", "Practice calm dating pacing."],
+                growthPath: "Depth over intensity."
+            },
+            "STABLE": {
+                name: "The Stable but Waiting",
+                trigger: "All moderate, none low",
+                diagnosis: "Solid foundation. May hold unrealistic preference standards.",
+                pattern: ["Delaying commitment", "Minor filters", "Narrow pool"],
+                signal: "Ready, wise, secure.",
+                failure: "Choosing based on speed or minor aesthetic preferences.",
+                readiness: "HIGH. Structurally ready.",
+                action: ["Reassess must-haves.", "Increase social exposure.", "Consult trusted mentor.", "Stay open-minded.", "Practice warmth.", "Be more approachable.", "Stay consistent.", "Value depth over speed.", "Pace the relationship.", "Lead with wisdom."],
+                growthPath: "Slow evaluation and protection of emotional purity."
+            }
+        };
+
         const QUESTIONS = [
             // VIBE CHECK (Questions 1-5)
             { id: 1, domain: 0, text: "During a heated argument, what is your most common reaction?", options: { A: "I counterattack.", B: "I give the silent treatment.", C: "I pause to regulate and understand.", D: "I apologize immediately just to stop the fight." } },
@@ -284,6 +503,7 @@
         // --- STATE ---
         let state = {
             view: 'landing',
+            mode: 'standard', // 'standard' or 'single'
             name: '',
             relationshipStatus: null,
             currentQuestion: 0,
@@ -291,10 +511,39 @@
             p1Name: '',
             p1Data: null,
             isPartner2: false,
-            syncing: false
+            syncing: false,
+            // Single Module State
+            singleStep: 1,
+            gender: null,
+            singleAnswers: [] // will store {id, score, pillar}
         };
 
         const setView = (view) => { state.view = view; render(); };
+
+        function startSingleFlow() {
+            state.name = document.getElementById('user-name').value || "User";
+            state.mode = 'single';
+            state.singleStep = 1;
+            setView('single-flow');
+        }
+
+        function handleSingleLogic(choice) {
+            if (state.singleStep === 1) {
+                if (choice === 'Yes') {
+                    state.singleStep = 2;
+                    render();
+                } else {
+                    // Exit Module
+                    location.reload();
+                }
+            } else if (state.singleStep === 2) {
+                state.gender = choice.toLowerCase();
+                state.singleStep = 'quiz';
+                state.currentQuestion = 0;
+                state.singleAnswers = [];
+                render();
+            }
+        }
 
         function render() {
             const content = document.getElementById('view-content');
@@ -312,8 +561,8 @@
                         <div class="max-w-sm mx-auto space-y-6">
                             <input id="user-name" type="text" placeholder="Enter your name" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-4 text-center text-lg outline-none focus:ring-2 focus:ring-violet-500 transition-all">
                             <div class="space-y-4 flex flex-col items-center">
-                                <button onclick="startApp('Single')" class="w-full bg-violet-600 py-4 rounded-xl font-semibold text-lg hover:bg-violet-500 transition-all shadow-lg shadow-violet-500/20">Single: Preparing for my future</button>
-                                <button onclick="startApp('Coupled')" class="w-full glass py-4 rounded-xl font-semibold text-lg hover:bg-slate-800 transition-all border border-slate-700">In a Relationship: Strengthening us</button>
+                                <button onclick="startSingleFlow()" class="w-full bg-emerald-600 py-4 rounded-xl font-bold text-lg hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-500/20 px-4">SINGLE: AM I READY?</button>
+                                <button onclick="startApp('Coupled')" class="w-full bg-indigo-600 py-4 rounded-xl font-bold text-lg hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-500/20">In a Relationship: Strengthening us</button>
                             </div>
                         </div>
                         <p class="text-sm text-slate-500 italic">"Start your project with a 5-Question Vibe Check."</p>
@@ -367,6 +616,67 @@
                         <button onclick="setView('quiz')" class="w-full py-4 bg-violet-600 rounded-xl font-bold animate-pulse shadow-lg shadow-violet-500/40">Continue for a full assessment (FREE)</button>
                     </div>
                 `;
+            } else if (state.view === 'single-flow') {
+                progressContainer.classList.add('hidden');
+                if (state.singleStep === 1) {
+                    content.innerHTML = `
+                        <div class="fade-in space-y-8 text-center my-auto">
+                            <div class="space-y-4">
+                                <span class="text-emerald-500 font-black uppercase text-xs tracking-widest">Screen 1</span>
+                                <h2 class="text-3xl font-bold">Are you currently single and looking for a serious relationship?</h2>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4 max-w-sm mx-auto">
+                                <button onclick="handleSingleLogic('Yes')" class="w-full bg-emerald-600 py-4 rounded-xl font-bold text-lg hover:bg-emerald-500 transition-all">Yes</button>
+                                <button onclick="handleSingleLogic('No')" class="w-full glass py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-all">No (Exit Module)</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.singleStep === 2) {
+                    content.innerHTML = `
+                        <div class="fade-in space-y-8 text-center my-auto">
+                            <div class="space-y-4">
+                                <span class="text-emerald-500 font-black uppercase text-xs tracking-widest">Screen 2</span>
+                                <h2 class="text-3xl font-bold">Select Your Gender</h2>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4 max-w-sm mx-auto">
+                                <button onclick="handleSingleLogic('Male')" class="w-full bg-blue-600 py-4 rounded-xl font-bold text-lg hover:bg-blue-500 transition-all">Male</button>
+                                <button onclick="handleSingleLogic('Female')" class="w-full bg-pink-600 py-4 rounded-xl font-bold text-lg hover:bg-pink-500 transition-all">Female</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (state.singleStep === 'quiz') {
+                    progressContainer.classList.remove('hidden');
+                    const track = state.gender === 'male' ? MALE_TRACK : FEMALE_TRACK;
+                    const q = track.questions[state.currentQuestion];
+                    const progress = (state.currentQuestion / track.questions.length) * 100;
+                    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+                    content.innerHTML = `
+                        <div class="quick-fade space-y-8">
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Pillar: ${q.pillar}</span>
+                                <h2 class="text-2xl font-medium leading-snug">${q.text}</h2>
+                            </div>
+                            <div class="grid grid-cols-1 gap-3">
+                                <button onclick="selectSingleOption(5)" class="option-card p-4 rounded-xl glass border-slate-800 hover:border-emerald-500/50 text-left flex items-center justify-between">
+                                    <span>Strongly Agree</span>
+                                </button>
+                                <button onclick="selectSingleOption(4)" class="option-card p-4 rounded-xl glass border-slate-800 hover:border-emerald-500/50 text-left flex items-center justify-between">
+                                    <span>Agree</span>
+                                </button>
+                                <button onclick="selectSingleOption(3)" class="option-card p-4 rounded-xl glass border-slate-800 hover:border-emerald-500/50 text-left flex items-center justify-between">
+                                    <span>Neutral</span>
+                                </button>
+                                <button onclick="selectSingleOption(2)" class="option-card p-4 rounded-xl glass border-slate-800 hover:border-emerald-500/50 text-left flex items-center justify-between">
+                                    <span>Disagree</span>
+                                </button>
+                                <button onclick="selectSingleOption(1)" class="option-card p-4 rounded-xl glass border-slate-800 hover:border-emerald-500/50 text-left flex items-center justify-between">
+                                    <span>Strongly Disagree</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
             } else if (state.view === 'results') {
                 progressContainer.classList.add('hidden');
                 const scores = calculateScores();
@@ -374,12 +684,12 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-12">
                         <div class="text-center space-y-2">
-                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">RELATIONSHIP STABILITY SCAN</h1>
-                            <h2 class="text-4xl font-black text-white leading-tight">RELATION BLUEPRINT</h2>
+                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">${state.mode === 'single' ? 'APP MODULE: SINGLE & LOOKING' : 'RELATIONSHIP STABILITY SCAN'}</h1>
+                            <h2 class="text-4xl font-black text-white leading-tight">${state.mode === 'single' ? 'DIAGNOSTIC REPORT' : 'RELATION BLUEPRINT'}</h2>
                             <p class="text-slate-400 font-medium">Diagnostic report for <span class="text-white font-bold">${state.name || "User"}</span>.</p>
                         </div>
 
-                        ${renderAlignmentForecast(scores)}
+                        ${state.mode === 'single' ? renderSingleResults() : renderAlignmentForecast()}
 
                         <div class="pt-12 border-t border-slate-800/50 space-y-8">
                             <div class="text-center space-y-4">
@@ -392,7 +702,8 @@
                             
                             <div class="max-w-md mx-auto space-y-3">
                                 <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-slate-800 border border-slate-700/50 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-violet-500 outline-none text-center font-medium shadow-inner transition-all">
-                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-violet-900/20">Send Full Report to Engine</button>
+                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-indigo-900/20">Send Report to Engine</button>
+                                <button onclick="downloadPDF()" class="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-emerald-900/20">Download PDF Report</button>
                             </div>
                         </div>
                     </div>
@@ -418,6 +729,23 @@
                 else if (state.currentQuestion >= QUESTIONS.length) { syncToWebhook(false); setView('results'); }
                 else render();
             }, 100);
+        }
+
+        function selectSingleOption(userAnswer) {
+            const track = state.gender === 'male' ? MALE_TRACK : FEMALE_TRACK;
+            const q = track.questions[state.currentQuestion];
+
+            // Scoring Logic: If reverse:true → score = 6 - userAnswer, Else → score = userAnswer
+            const score = q.reverse ? (6 - userAnswer) : userAnswer;
+            state.singleAnswers.push({ id: q.id, pillar: q.pillar, score: score });
+
+            state.currentQuestion++;
+            if (state.currentQuestion >= track.questions.length) {
+                syncToWebhook(false);
+                setView('results');
+            } else {
+                render();
+            }
         }
 
 
@@ -557,21 +885,34 @@
         }
 
 
-        function renderAlignmentForecast(p2Scores) {
-            const scores = p2Scores || calculateScores();
+        function renderAlignmentForecast() {
+            const scores = calculateScores();
             const p1Name = state.isPartner2 ? state.p1Name : state.name;
-            const p2Name = state.isPartner2 ? state.name : "Cat"; // Defaulting to Cat as per request example
+            const p2Name = state.isPartner2 ? state.name : "Partner 2";
 
-            const blurClass = state.isPartner2 ? "" : "blur-content";
+            const isLocked = !state.isPartner2;
+            const blurClass = isLocked ? "blur-content" : "";
+
+            // Fix: Add no-scroll to body if locked to prevent long scrolling background
+            if (isLocked) document.body.classList.add('no-scroll');
+            else document.body.classList.remove('no-scroll');
 
             return `
-                <div class="space-y-12 pt-12 border-t border-slate-800 relative">
-                    ${!state.isPartner2 ? `
-                        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-[4px] rounded-3xl p-8 text-center pt-24">
-                            <div class="bg-violet-600 p-8 rounded-3xl shadow-2xl space-y-4 max-w-sm border border-violet-400/30">
-                                <h4 class="text-xl font-bold text-white uppercase tracking-tight">Unlock Combined Forecast</h4>
-                                <p class="text-slate-200 text-sm leading-relaxed">Your behavioral baseline is ready. To reveal your interaction dynamic and the full Stability Scan, sync with your partner.</p>
-                                <button onclick="generatePartnerLink()" class="w-full py-4 bg-white text-violet-600 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-slate-100 transition-all shadow-xl">Copy Secret Partner Link</button>
+                <div class="${isLocked ? 'h-[400px] overflow-hidden' : ''} space-y-12 pt-12 border-t border-slate-800 relative">
+                    ${isLocked ? `
+                        <div class="overlay-container">
+                            <div class="bg-violet-600 p-8 rounded-3xl shadow-2xl space-y-6 max-w-sm border border-violet-400/30">
+                                <div class="space-y-2">
+                                    <h4 class="text-xl font-bold text-white uppercase tracking-tight">Unlock Combined Forecast</h4>
+                                    <p class="text-slate-200 text-sm leading-relaxed">Your behavioral baseline is ready. To reveal your interaction dynamic and the full Stability Scan, sync with your partner.</p>
+                                </div>
+                                <div class="space-y-4 pt-4">
+                                    <div class="space-y-2">
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-violet-200">Request Final Report via Email</p>
+                                        <input type="email" id="email-capture-overlay" placeholder="Enter your email" class="w-full bg-violet-700/50 border border-violet-400/30 rounded-xl px-4 py-3 text-center text-white placeholder-violet-200 outline-none focus:ring-2 focus:ring-white transition-all text-sm font-medium">
+                                    </div>
+                                    <button onclick="generatePartnerLink()" class="w-full py-4 bg-white text-violet-600 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-slate-100 transition-all shadow-xl">Copy Secret Partner Link</button>
+                                </div>
                             </div>
                         </div>
                     ` : ''}
@@ -646,6 +987,156 @@
             `;
         }
 
+        function renderSingleResults() {
+            document.body.classList.remove('no-scroll');
+            const track = state.gender === 'male' ? MALE_TRACK : FEMALE_TRACK;
+            const pillars = state.gender === 'male' ? ["M1", "M2", "M3", "M4", "M5"] : ["F1", "F2", "F3", "F4", "F5"];
+
+            const pillarScores = {};
+            pillars.forEach(p => {
+                const pillarAns = state.singleAnswers.filter(a => a.pillar === p);
+                const sum = pillarAns.reduce((s, a) => s + a.score, 0);
+                pillarScores[p] = {
+                    sum: sum,
+                    percentage: Math.round((sum / 30) * 100)
+                };
+            });
+
+            const totalScore = Object.values(pillarScores).reduce((s, p) => s + p.sum, 0);
+            const totalPercentage = Math.round((totalScore / 150) * 100);
+
+            // Determine Archetype (Find lowest pillar)
+            let lowestPillar = pillars[0];
+            pillars.forEach(p => {
+                if (pillarScores[p].percentage < pillarScores[lowestPillar].percentage) {
+                    lowestPillar = p;
+                }
+            });
+
+            // Trigger mapping for special conditions
+            let archetypeKey = lowestPillar;
+            if (pillarScores[lowestPillar].percentage > 60) {
+                archetypeKey = "STABLE";
+            }
+
+            const arcData = (state.gender === 'male' ? MALE_ARCHETYPES : FEMALE_ARCHETYPES)[archetypeKey];
+
+            const getBand = (p) => {
+                if (p <= 40) return { label: "High Self-Sabotage", color: "text-red-500" };
+                if (p <= 60) return { label: "Inconsistent Patterns", color: "text-orange-500" };
+                if (p <= 75) return { label: "Stable but Developing", color: "text-yellow-500" };
+                if (p <= 90) return { label: "Strong Foundation", color: "text-emerald-500" };
+                return { label: "Mature & Intentional", color: "text-blue-500" };
+            };
+
+            const band = getBand(totalPercentage);
+
+            return `
+                <div class="fade-in space-y-10">
+                    <div class="bg-emerald-600/10 border border-emerald-600/20 p-8 rounded-3xl text-center space-y-4">
+                        <span class="text-xs font-black uppercase tracking-widest text-emerald-500">Your Core Archetype</span>
+                        <h3 class="text-4xl font-black text-white">${arcData.name}</h3>
+                        <div class="flex items-center justify-center space-x-4">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">${state.gender} track</span>
+                            <span class="text-slate-700">|</span>
+                            <span class="text-sm font-bold ${band.color}">${band.label} (${totalPercentage}%)</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-800/40 p-8 rounded-3xl border border-slate-700/50 space-y-6">
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-400">Core Evaluation</h4>
+                            <p class="text-lg text-slate-200 leading-relaxed font-medium">${arcData.diagnosis}</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                            <div class="space-y-4">
+                                <h5 class="text-[10px] font-black uppercase tracking-widest text-slate-500">Behavioral Patterns</h5>
+                                <ul class="space-y-2">
+                                    ${arcData.pattern.map(p => `
+                                        <li class="text-sm text-slate-300 flex items-start">
+                                            <span class="text-emerald-500 mr-2 mt-1">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/></svg>
+                                            </span>
+                                            ${p}
+                                        </li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="space-y-6">
+                                <div class="space-y-1">
+                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-violet-400">Attraction Signal Emitted</h5>
+                                    <p class="text-sm text-slate-200 italic">"${arcData.signal}"</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <h5 class="text-[10px] font-black uppercase tracking-widest text-red-400">Primary Failure Pivot</h5>
+                                    <p class="text-sm text-slate-400 leading-relaxed font-medium">${arcData.failure}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 space-y-3">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-blue-400">Marriage Readiness Level</h4>
+                            <p class="text-lg text-white font-black">${arcData.readiness}</p>
+                        </div>
+                         <div class="bg-red-900/10 p-6 rounded-3xl border border-red-900/20 space-y-3">
+                            <h4 class="text-[10px] font-black uppercase tracking-widest text-red-500">Risk Warning</h4>
+                             <p class="text-sm text-slate-300 italic font-medium">"${totalPercentage < 50 ? 'High Risk of Repeating Past Relationship Cycles.' : (pillarScores[lowestPillar].percentage < 45 ? 'Critical pillar weakness detected below baseline.' : 'Stable baseline with moderate growth requirements.')}"</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 p-8 rounded-3xl border border-slate-700/30 space-y-8">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-500 text-center">Pillar Score Interpretation</h4>
+                        <div class="grid grid-cols-1 gap-6">
+                            ${Object.entries(pillarScores).map(([p, data]) => {
+                const band = data.percentage <= 40 ? 'LOW' : (data.percentage <= 60 ? 'WEAK' : (data.percentage <= 75 ? 'MODERATE' : (data.percentage <= 90 ? 'STRONG' : 'EXCEPTIONAL')));
+                const color = data.percentage <= 60 ? 'bg-red-500' : (data.percentage <= 75 ? 'bg-yellow-500' : 'bg-emerald-500');
+                return `
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-end">
+                                            <div class="flex flex-col">
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">${p} Pillar</span>
+                                                <span class="text-[10px] font-bold text-slate-600">${band}</span>
+                                            </div>
+                                            <span class="text-xs font-black text-white">${data.percentage}%</span>
+                                        </div>
+                                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                            <div class="h-full ${color} transition-all duration-1000" style="width: ${data.percentage}%"></div>
+                                        </div>
+                                    </div>
+                                `;
+            }).join('')}
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-600/5 p-8 rounded-3xl border border-emerald-600/10 space-y-10">
+                        <div class="space-y-6">
+                            <h4 class="text-xs font-black uppercase tracking-widest text-emerald-500">30-Day Action Plan</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                ${arcData.action.map((a, i) => `
+                                    <div class="text-sm text-slate-200 flex items-start">
+                                        <span class="w-6 h-6 rounded-full bg-emerald-600/20 text-emerald-500 flex items-center justify-center text-[10px] font-black mr-3 flex-shrink-0">${i + 1}</span>
+                                        <span class="pt-0.5">${a}</span>
+                                    </div>`).join('')}
+                            </div>
+                        </div>
+                        <div class="pt-10 border-t border-emerald-600/10 space-y-4">
+                            <h4 class="text-xs font-black uppercase tracking-widest text-blue-400">6–12 Month Development Path</h4>
+                            <div class="p-6 rounded-2xl bg-slate-900/50 border border-slate-800">
+                                <p class="text-md text-slate-200 leading-relaxed font-medium">${arcData.growthPath}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center px-8 pt-4">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest leading-relaxed">
+                            Wisdom Layer: Patience over rushing • Character over chemistry • Mutual alignment
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
         function generatePartnerLink() {
             const payload = btoa(JSON.stringify({ name: state.name, answers: state.answers }));
             const url = new URL(window.location.href);
@@ -667,17 +1158,22 @@
         }
 
         async function syncToWebhook(isManual = false) {
-            const email = document.getElementById('email-capture')?.value || "";
+            const overlayEmail = document.getElementById('email-capture-overlay')?.value;
+            const mainEmail = document.getElementById('email-capture')?.value;
+            const email = overlayEmail || mainEmail || "";
+
             const btn = document.getElementById('send-report-btn');
             const syncText = document.getElementById('sync-text');
 
             const payload = {
                 timestamp: new Date().toISOString(),
+                mode: state.mode,
                 name: state.name,
+                gender: state.gender,
                 partner_name: state.isPartner2 ? state.p1Name : null,
                 status: state.relationshipStatus,
                 user_type: state.isPartner2 ? "P2" : "P1",
-                answers: state.answers,
+                answers: state.mode === 'single' ? state.singleAnswers : state.answers,
                 email: email
             };
 
@@ -706,6 +1202,29 @@
                     btn.textContent = "SYNC FAILED - RETRY";
                     syncText.textContent = "SYNC ERROR - CHECK CONNECTION";
                 }
+            }
+        }
+
+        async function downloadPDF() {
+            const element = document.getElementById('view-content');
+            const opt = {
+                margin: 0.5,
+                filename: `Relation_Report_${state.name || 'User'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // Add a temporary class to ensure dark background is captured correctly
+            element.classList.add('pdf-capture');
+
+            try {
+                await html2pdf().set(opt).from(element).save();
+            } catch (error) {
+                console.error('PDF generation dimmed:', error);
+                alert('Could not generate PDF. Please try again.');
+            } finally {
+                element.classList.remove('pdf-capture');
             }
         }
 
