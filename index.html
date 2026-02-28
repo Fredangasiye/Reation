@@ -153,7 +153,486 @@
     </div>
 
     <script>
-        // --- CONSTANTS & DATA ---
+        const RELATIONAL_SIMULATOR_DATA = {
+            "performance_tiers": {
+                "0-5": "Unstable Reaction Pattern",
+                "6-10": "Developing but Inconsistent",
+                "11-13": "Strong Relational Presence",
+                "14-15": "High-Level Maturity & Control"
+            },
+            "simulations": [
+                {
+                    "id": "SIM_M1_DIRECTION",
+                    "gender": "male",
+                    "title": "Direction & Purpose Training",
+                    "scenes": [
+                        {
+                            "scene": "During dinner she smiles and asks: 'So where do you actually see yourself in five years?' She leans in, clearly assessing long-term stability.",
+                            "options": {
+                                "A": { "text": "Honestly? I’m still figuring it out.", "score": -2 },
+                                "B": { "text": "I’m building toward financial stability and leadership responsibility. I have measurable goals already in motion.", "score": 3 },
+                                "C": { "text": "Wherever life takes me, I try not to over-plan.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She asks about your career path. 'Are you happy with where you’re headed?'",
+                            "options": {
+                                "A": { "text": "I don’t really think that far ahead.", "score": -2 },
+                                "B": { "text": "Yes — and if something stops serving my long-term mission, I pivot strategically.", "score": 3 },
+                                "C": { "text": "It changes sometimes. I go with the flow.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "Conversation shifts toward financial habits. 'Are you more of a saver or spender?'",
+                            "options": {
+                                "A": { "text": "I don’t track it much.", "score": -2 },
+                                "B": { "text": "I budget intentionally. Structure creates freedom later.", "score": 3 },
+                                "C": { "text": "I try when I remember.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She says: 'What kind of husband would you want to become one day?'",
+                            "options": {
+                                "A": { "text": "I haven’t really thought about it seriously.", "score": -2 },
+                                "B": { "text": "Protective, steady, and disciplined. Leadership is responsibility.", "score": 3 },
+                                "C": { "text": "Probably something in between.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You face a professional setback. She notices you’re quieter than usual.",
+                            "options": {
+                                "A": { "text": "Withdraw and avoid the topic.", "score": -2 },
+                                "B": { "text": "Acknowledge it calmly and explain your adjustment plan.", "score": 3 },
+                                "C": { "text": "Complain emotionally about circumstances.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_M2_ASSERTIVENESS",
+                    "gender": "male",
+                    "title": "Assertiveness & Initiative Training",
+                    "scenes": [
+                        {
+                            "scene": "You’ve just had a strong 20-minute conversation at a bookstore. She’s smiling and clearly engaged. The moment to lead has arrived.",
+                            "options": {
+                                "A": { "text": "Maybe we’ll run into each other again.", "score": -2 },
+                                "B": { "text": "Let’s continue this Tuesday evening. What’s your number?", "score": 3 },
+                                "C": { "text": "Keep talking casually without escalating.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She cancels dinner last minute with: 'Something came up. Can we reschedule?'",
+                            "options": {
+                                "A": { "text": "No worries! Anytime works for me!!", "score": -2 },
+                                "B": { "text": "Sure. Let me know which day works best for you.", "score": 3 },
+                                "C": { "text": "Ignore her emotionally for two days.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She laughs and says: 'You’re too nice. I don’t know if you’re dangerous enough.'",
+                            "options": {
+                                "A": { "text": "Haha yeah I guess I’m just nice.", "score": -2 },
+                                "B": { "text": "Nice is intentional. Dangerous is controlled.", "score": 3 },
+                                "C": { "text": "Change subject nervously.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She strongly disagrees with your opinion during debate.",
+                            "options": {
+                                "A": { "text": "Immediately agree to avoid tension.", "score": -2 },
+                                "B": { "text": "Calmly explain your view without aggression.", "score": 3 },
+                                "C": { "text": "Laugh it off and avoid clarity.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "After four dates, she asks directly: 'What are you looking for?'",
+                            "options": {
+                                "A": { "text": "Just seeing where it goes.", "score": -2 },
+                                "B": { "text": "I date intentionally. If we align long-term, I pursue seriously.", "score": 3 },
+                                "C": { "text": "I’m not ready for that conversation.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_M3_EMOTIONAL_STABILITY",
+                    "gender": "male",
+                    "title": "Emotional Stability Under Pressure",
+                    "scenes": [
+                        {
+                            "scene": "She takes 6 hours to reply after normally texting quickly.",
+                            "options": {
+                                "A": { "text": "Double text anxiously.", "score": -2 },
+                                "B": { "text": "Stay calm and continue your day.", "score": 3 },
+                                "C": { "text": "Send a passive-aggressive joke.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You see her laughing with another attractive man.",
+                            "options": {
+                                "A": { "text": "Act distant and cold.", "score": -2 },
+                                "B": { "text": "Maintain composure and greet confidently.", "score": 3 },
+                                "C": { "text": "Interrogate her later.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She says, 'I didn’t like how you handled earlier.'",
+                            "options": {
+                                "A": { "text": "Shut down emotionally.", "score": -2 },
+                                "B": { "text": "Ask for specifics calmly.", "score": 3 },
+                                "C": { "text": "Defend yourself aggressively.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She changes plans unexpectedly.",
+                            "options": {
+                                "A": { "text": "Take it personally.", "score": -2 },
+                                "B": { "text": "Adapt without emotional shift.", "score": 3 },
+                                "C": { "text": "Express annoyance briefly.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You feel jealous after browsing social media.",
+                            "options": {
+                                "A": { "text": "Confront immediately.", "score": -2 },
+                                "B": { "text": "Regulate internally before discussing calmly.", "score": 3 },
+                                "C": { "text": "Withdraw silently.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_M4_LEADERSHIP",
+                    "gender": "male",
+                    "title": "Leadership & Boundary Training",
+                    "scenes": [
+                        {
+                            "scene": "On the third date she says: 'You choose where we go tonight.' She’s watching how decisive you are.",
+                            "options": {
+                                "A": { "text": "I don’t mind, whatever you prefer.", "score": -2 },
+                                "B": { "text": "I know a great place nearby. Let’s go.", "score": 3 },
+                                "C": { "text": "What are you in the mood for?", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She makes a slightly disrespectful joke about your ambition in front of friends.",
+                            "options": {
+                                "A": { "text": "Laugh it off even though it bothers you.", "score": -2 },
+                                "B": { "text": "Later calmly tell her you didn’t appreciate that.", "score": 3 },
+                                "C": { "text": "Fire back with sarcasm publicly.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She pushes for physical escalation earlier than you're comfortable with.",
+                            "options": {
+                                "A": { "text": "Go along to keep momentum.", "score": -2 },
+                                "B": { "text": "Slow it down confidently without shaming her.", "score": 3 },
+                                "C": { "text": "Pull away awkwardly without explanation.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She asks if you're talking to other women.",
+                            "options": {
+                                "A": { "text": "Lie to avoid tension.", "score": -2 },
+                                "B": { "text": "Answer honestly and clarify your standards.", "score": 3 },
+                                "C": { "text": "Deflect with humor.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She frequently interrupts you mid-sentence.",
+                            "options": {
+                                "A": { "text": "Say nothing and accept it.", "score": -2 },
+                                "B": { "text": "Calmly say, 'Let me finish this point.'", "score": 3 },
+                                "C": { "text": "Interrupt her back later.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_M5_VETTING",
+                    "gender": "male",
+                    "title": "Vetting & Long-Term Discernment",
+                    "scenes": [
+                        {
+                            "scene": "You feel strong chemistry but discover she mocks long-term commitment.",
+                            "options": {
+                                "A": { "text": "Ignore it because attraction is high.", "score": -2 },
+                                "B": { "text": "Ask deeper questions about her long-term vision.", "score": 3 },
+                                "C": { "text": "Hope she changes over time.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She avoids discussing finances entirely.",
+                            "options": {
+                                "A": { "text": "Avoid the topic forever.", "score": -2 },
+                                "B": { "text": "Bring it up respectfully before exclusivity.", "score": 3 },
+                                "C": { "text": "Let attraction outweigh structure.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She speaks negatively about past partners repeatedly.",
+                            "options": {
+                                "A": { "text": "Join in and criticize them too.", "score": -2 },
+                                "B": { "text": "Observe pattern and ask growth-oriented questions.", "score": 3 },
+                                "C": { "text": "Brush it off as emotional venting.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You discover misalignment in core values.",
+                            "options": {
+                                "A": { "text": "Compromise your own values.", "score": -2 },
+                                "B": { "text": "Reassess compatibility calmly.", "score": 3 },
+                                "C": { "text": "Ignore it temporarily.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "She pushes for exclusivity quickly.",
+                            "options": {
+                                "A": { "text": "Agree impulsively.", "score": -2 },
+                                "B": { "text": "Suggest continuing intentional evaluation.", "score": 3 },
+                                "C": { "text": "Delay indefinitely without clarity.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_F1_SECURITY",
+                    "gender": "female",
+                    "title": "Self-Worth & Emotional Security",
+                    "scenes": [
+                        {
+                            "scene": "He hasn’t texted for 5 hours during a workday.",
+                            "options": {
+                                "A": { "text": "Send multiple follow-ups.", "score": -2 },
+                                "B": { "text": "Continue your day confidently.", "score": 3 },
+                                "C": { "text": "Post indirectly on social media.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He compliments another woman publicly.",
+                            "options": {
+                                "A": { "text": "Become instantly jealous.", "score": -2 },
+                                "B": { "text": "Maintain composure unless boundaries are crossed.", "score": 3 },
+                                "C": { "text": "Withdraw emotionally.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He shares a minor criticism about you.",
+                            "options": {
+                                "A": { "text": "Take it as rejection.", "score": -2 },
+                                "B": { "text": "Ask for clarification calmly.", "score": 3 },
+                                "C": { "text": "React defensively.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He doesn’t immediately define exclusivity.",
+                            "options": {
+                                "A": { "text": "Pressure him emotionally.", "score": -2 },
+                                "B": { "text": "Clarify expectations directly.", "score": 3 },
+                                "C": { "text": "Assume disinterest.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You feel anxious after a great date.",
+                            "options": {
+                                "A": { "text": "Confess intense feelings early.", "score": -2 },
+                                "B": { "text": "Allow momentum to build naturally.", "score": 3 },
+                                "C": { "text": "Overanalyze everything.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_F2_RECEPTIVITY",
+                    "gender": "female",
+                    "title": "Warmth & Receptive Strength",
+                    "scenes": [
+                        {
+                            "scene": "He plans the date confidently.",
+                            "options": {
+                                "A": { "text": "Criticize his choice instantly.", "score": -2 },
+                                "B": { "text": "Appreciate the initiative openly.", "score": 3 },
+                                "C": { "text": "Say nothing and remain neutral.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He compliments you sincerely.",
+                            "options": {
+                                "A": { "text": "Dismiss it awkwardly.", "score": -2 },
+                                "B": { "text": "Smile and receive it warmly.", "score": 3 },
+                                "C": { "text": "Deflect the compliment.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He shares long-term goals.",
+                            "options": {
+                                "A": { "text": "Challenge his ability harshly.", "score": -2 },
+                                "B": { "text": "Ask thoughtful encouraging questions.", "score": 3 },
+                                "C": { "text": "Change topic quickly.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He takes longer to decide something minor.",
+                            "options": {
+                                "A": { "text": "Take control immediately.", "score": -2 },
+                                "B": { "text": "Allow space while observing calmly.", "score": 3 },
+                                "C": { "text": "Express subtle frustration.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He sets a respectful boundary.",
+                            "options": {
+                                "A": { "text": "See it as control.", "score": -2 },
+                                "B": { "text": "Respect it and evaluate his consistency.", "score": 3 },
+                                "C": { "text": "Test it later.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_F3_EMOTIONAL_REGULATION",
+                    "gender": "female",
+                    "title": "Emotional Regulation in Dating",
+                    "scenes": [
+                        {
+                            "scene": "He cancels a date due to work stress.",
+                            "options": {
+                                "A": { "text": "Take it personally.", "score": -2 },
+                                "B": { "text": "Respond understandingly and reschedule calmly.", "score": 3 },
+                                "C": { "text": "Withdraw affection.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You misinterpret his tone via text.",
+                            "options": {
+                                "A": { "text": "Confront immediately.", "score": -2 },
+                                "B": { "text": "Ask directly for clarity.", "score": 3 },
+                                "C": { "text": "Assume negative intent.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He likes another woman's photo.",
+                            "options": {
+                                "A": { "text": "React emotionally.", "score": -2 },
+                                "B": { "text": "Evaluate pattern before reacting.", "score": 3 },
+                                "C": { "text": "Make a passive comment.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You feel overwhelmed after a disagreement.",
+                            "options": {
+                                "A": { "text": "End it abruptly.", "score": -2 },
+                                "B": { "text": "Pause and revisit later calmly.", "score": 3 },
+                                "C": { "text": "Continue arguing intensely.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He asks for space to think.",
+                            "options": {
+                                "A": { "text": "Panic and demand explanation.", "score": -2 },
+                                "B": { "text": "Respect his space confidently.", "score": 3 },
+                                "C": { "text": "Act cold intentionally.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_F4_VETTING",
+                    "gender": "female",
+                    "title": "Discernment Over Chemistry",
+                    "scenes": [
+                        {
+                            "scene": "He suggests coming over after Date 1.",
+                            "options": {
+                                "A": { "text": "Go along for chemistry.", "score": -2 },
+                                "B": { "text": "Suggest continuing in public settings.", "score": 3 },
+                                "C": { "text": "Ghost him without clarity.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He says intense future promises on Date 2.",
+                            "options": {
+                                "A": { "text": "Mirror the intensity.", "score": -2 },
+                                "B": { "text": "Slow the pace deliberately.", "score": 3 },
+                                "C": { "text": "Believe immediately.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He avoids discussing values.",
+                            "options": {
+                                "A": { "text": "Ignore because spark is strong.", "score": -2 },
+                                "B": { "text": "Ask direct alignment questions.", "score": 3 },
+                                "C": { "text": "Assume alignment.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You spot inconsistency in stories.",
+                            "options": {
+                                "A": { "text": "Overlook it.", "score": -2 },
+                                "B": { "text": "Address calmly.", "score": 3 },
+                                "C": { "text": "Investigate obsessively.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He pressures exclusivity quickly.",
+                            "options": {
+                                "A": { "text": "Agree from excitement.", "score": -2 },
+                                "B": { "text": "Suggest continued observation.", "score": 3 },
+                                "C": { "text": "Withdraw suddenly.", "score": 1 }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "SIM_F5_LONG_TERM",
+                    "gender": "female",
+                    "title": "Long-Term Alignment Evaluation",
+                    "scenes": [
+                        {
+                            "scene": "He avoids discussing marriage entirely.",
+                            "options": {
+                                "A": { "text": "Stay silent indefinitely.", "score": -2 },
+                                "B": { "text": "Ask about long-term intentions directly.", "score": 3 },
+                                "C": { "text": "Hope it changes later.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He dismisses family as unimportant.",
+                            "options": {
+                                "A": { "text": "Ignore your discomfort.", "score": -2 },
+                                "B": { "text": "Explore compatibility seriously.", "score": 3 },
+                                "C": { "text": "Argue emotionally.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "Financial discipline differs greatly.",
+                            "options": {
+                                "A": { "text": "Assume love will fix it.", "score": -2 },
+                                "B": { "text": "Discuss long-term financial habits.", "score": 3 },
+                                "C": { "text": "Avoid the topic.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "You discover differing worldviews.",
+                            "options": {
+                                "A": { "text": "Compromise your own values.", "score": -2 },
+                                "B": { "text": "Assess whether alignment is realistic.", "score": 3 },
+                                "C": { "text": "Ignore and focus on attraction.", "score": 1 }
+                            }
+                        },
+                        {
+                            "scene": "He says he’s unsure about children long-term.",
+                            "options": {
+                                "A": { "text": "Suppress your desire.", "score": -2 },
+                                "B": { "text": "Clarify expectations before progressing.", "score": 3 },
+                                "C": { "text": "Delay discussion indefinitely.", "score": 1 }
+                            }
+                        }
+                    ]
+                }
+            ]
+        };
         const WEBHOOK_URL = "INSERT_YOUR_URL_HERE";
 
         const DOMAINS = {
@@ -515,7 +994,12 @@
             // Single Module State
             singleStep: 1,
             gender: null,
-            singleAnswers: [] // will store {id, score, pillar}
+            singleAnswers: [], // will store {id, score, pillar}
+            // Simulator State
+            currentSim: null,
+            currentSimScene: 0,
+            simScore: 0,
+            simResults: null
         };
 
         const setView = (view) => { state.view = view; render(); };
@@ -677,6 +1161,49 @@
                         </div>
                     `;
                 }
+            } else if (state.view === 'simulator') {
+                progressContainer.classList.add('hidden');
+                if (state.simResults) {
+                    content.innerHTML = `
+                        <div class="fade-in space-y-10 text-center my-auto">
+                            <div class="space-y-4">
+                                <span class="text-violet-400 font-black uppercase text-xs tracking-widest">Training Complete</span>
+                                <h2 class="text-4xl font-black text-white">${state.currentSim.title}</h2>
+                            </div>
+                            <div class="bg-violet-600/10 border border-violet-600/20 p-8 rounded-3xl space-y-4">
+                                <p class="text-slate-400 text-sm font-bold uppercase tracking-widest">Performance Tier</p>
+                                <p class="text-2xl font-black text-white">${state.simResults.tier}</p>
+                                <div class="pt-4">
+                                    <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                        <div class="h-full bg-violet-500" style="width: ${Math.max(0, (state.simResults.score / 15) * 100)}%"></div>
+                                    </div>
+                                    <p class="text-[10px] text-slate-500 mt-2">Score: ${state.simResults.score}/15</p>
+                                </div>
+                            </div>
+                            <button onclick="setView('results')" class="w-full py-5 glass border-slate-700 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-800 transition-all">Back to Report</button>
+                        </div>
+                    `;
+                } else {
+                    const scene = state.currentSim.scenes[state.currentSimScene];
+                    content.innerHTML = `
+                        <div class="quick-fade space-y-8">
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-black uppercase tracking-widest text-violet-400">${state.currentSim.title}</span>
+                                    <span class="text-[10px] font-bold text-slate-500">Scene ${state.currentSimScene + 1}/5</span>
+                                </div>
+                                <h2 class="text-21 font-medium leading-relaxed text-slate-200">${scene.scene}</h2>
+                            </div>
+                            <div class="grid grid-cols-1 gap-4">
+                                ${Object.entries(scene.options).map(([key, opt]) => `
+                                    <button onclick="selectSimOption('${key}')" class="option-card p-6 rounded-2xl glass border-slate-800 hover:border-violet-500/50 text-left transition-all">
+                                        <p class="text-slate-200 font-medium">${opt.text}</p>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
             } else if (state.view === 'results') {
                 progressContainer.classList.add('hidden');
                 const scores = calculateScores();
@@ -703,11 +1230,8 @@
                             <div class="max-w-md mx-auto space-y-3">
                                 <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-slate-800 border border-slate-700/50 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-violet-500 outline-none text-center font-medium shadow-inner transition-all">
                                 <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-indigo-900/20">Send Report to Engine</button>
-                <div class="grid grid-cols-1 gap-4">
-                    <button onclick="state.mode = 'single'; setView('setup')" 
-                        class="w-full py-5 px-8 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-emerald-900/20 text-center flex items-center justify-center">
-                        Single, looking for a relationship: Am I ready?
-                    </button>    </div>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
@@ -717,6 +1241,42 @@
             state.name = document.getElementById('user-name').value || (state.isPartner2 ? "Partner 2" : "Partner 1");
             state.relationshipStatus = status;
             setView('quiz');
+        }
+
+        function startSimulator(pillarId) {
+            const genderSims = RELATIONAL_SIMULATOR_DATA.simulations.filter(s => s.gender === state.gender);
+            const pillarMap = {
+                M1: "DIRECTION", M2: "ASSERTIVENESS", M3: "EMOTIONAL_STABILITY", M4: "LEADERSHIP", M5: "VETTING",
+                F1: "SECURITY", F2: "RECEPTIVITY", F3: "EMOTIONAL_REGULATION", F4: "VETTING", F5: "LONG_TERM"
+            };
+            const targetSimIdPart = pillarMap[pillarId];
+            let sim = genderSims.find(s => s.id.includes(targetSimIdPart));
+            if (!sim) sim = genderSims[0];
+
+            state.currentSim = sim;
+            state.currentSimScene = 0;
+            state.simScore = 0;
+            state.simResults = null;
+            setView('simulator');
+        }
+
+        function selectSimOption(optionKey) {
+            const scene = state.currentSim.scenes[state.currentSimScene];
+            const option = scene.options[optionKey];
+            state.simScore += option.score;
+
+            state.currentSimScene++;
+            if (state.currentSimScene >= state.currentSim.scenes.length) {
+                const score = state.simScore;
+                let tier = "";
+                if (score <= 5) tier = RELATIONAL_SIMULATOR_DATA.performance_tiers["0-5"];
+                else if (score <= 10) tier = RELATIONAL_SIMULATOR_DATA.performance_tiers["6-10"];
+                else if (score <= 13) tier = RELATIONAL_SIMULATOR_DATA.performance_tiers["11-13"];
+                else tier = RELATIONAL_SIMULATOR_DATA.performance_tiers["14-15"];
+
+                state.simResults = { score, tier };
+            }
+            render();
         }
 
         function selectOption(el, option) {
@@ -1141,6 +1701,14 @@
                                 <p class="text-md text-slate-200 leading-relaxed font-medium">${arcData.growthPath}</p>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="bg-violet-600/10 border border-violet-600/20 p-8 rounded-3xl text-center space-y-6">
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-black uppercase tracking-widest text-violet-500">Relational Simulator</h4>
+                            <p class="text-slate-300 text-sm">Test your reactions in real-world scenarios based on your weakest pillar: <span class="text-white font-bold">${state.gender === 'male' ? { M1: "Direction", M2: "Assertiveness", M3: "Emotional Stability", M4: "Leadership", M5: "Vetting" }[lowestPillar] : { F1: "Self-Worth", F2: "Receptivity", F3: "Emotional Regulation", F4: "Vetting", F5: "Long-Term" }[lowestPillar]}</span></p>
+                        </div>
+                        <button onclick="startSimulator('${lowestPillar}')" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-violet-900/40">Try Training Simulation</button>
                     </div>
 
                     <div class="text-center px-8 pt-4">
