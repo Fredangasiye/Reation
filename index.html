@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relation | Relational Alignment & Survival Engine</title>
+    <title>RINGREADY | Alignment & Training Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -1039,7 +1039,7 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-8 text-center my-auto">
                         <div class="space-y-4">
-                            <h1 class="text-5xl font-bold tracking-tight text-white">Relation</h1>
+                            <h1 class="text-5xl font-bold tracking-tight text-white">RINGREADY</h1>
                             <p class="text-xl text-slate-400 font-light max-w-md mx-auto">"Identify hidden friction points and align your relationship architecture."</p>
                         </div>
                         <div class="max-w-sm mx-auto space-y-6">
@@ -1211,8 +1211,8 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-12">
                         <div class="text-center space-y-2">
-                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">${state.mode === 'single' ? 'WHO YOU ARE IN DATING' : 'RELATIONSHIP STABILITY SCAN'}</h1>
-                            <h2 class="text-4xl font-black text-white leading-tight">${state.mode === 'single' ? 'YOUR REPORT' : 'RELATION BLUEPRINT'}</h2>
+                            <h1 class="text-sm font-black uppercase tracking-[0.3em] text-violet-500">${state.mode === 'single' ? 'WHO YOU ARE IN DATING' : 'RINGREADY STABILITY SCAN'}</h1>
+                            <h2 class="text-4xl font-black text-white leading-tight">${state.mode === 'single' ? 'YOUR REPORT' : 'RINGREADY BLUEPRINT'}</h2>
                             <p class="text-slate-400 font-medium">Breakdown for <span class="text-white font-bold">${state.name || "User"}</span>.</p>
                         </div>
 
@@ -1705,7 +1705,7 @@
 
                     <div class="bg-violet-600/10 border border-violet-600/20 p-8 rounded-3xl text-center space-y-6">
                         <div class="space-y-2">
-                            <h4 class="text-xs font-black uppercase tracking-widest text-violet-500">Relational Simulator</h4>
+                            <h4 class="text-xs font-black uppercase tracking-widest text-violet-500">RINGREADY Simulator</h4>
                             <p class="text-slate-300 text-sm">Test your reactions in real-world scenarios based on your weakest pillar: <span class="text-white font-bold">${state.gender === 'male' ? { M1: "Direction", M2: "Assertiveness", M3: "Emotional Stability", M4: "Leadership", M5: "Vetting" }[lowestPillar] : { F1: "Self-Worth", F2: "Receptivity", F3: "Emotional Regulation", F4: "Vetting", F5: "Long-Term" }[lowestPillar]}</span></p>
                         </div>
                         <button onclick="startSimulator('${lowestPillar}')" class="w-full py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-violet-900/40">Try Training Simulation</button>
@@ -1792,7 +1792,7 @@
             const element = document.getElementById('view-content');
             const opt = {
                 margin: 0.5,
-                filename: `Relation_Report_${state.name || 'User'}.pdf`,
+                filename: `RINGREADY_Report_${state.name || 'User'}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0f172a' },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
