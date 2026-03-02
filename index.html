@@ -153,6 +153,13 @@
     </div>
 
     <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         const RELATIONAL_SIMULATOR_DATA = {
             "performance_tiers": {
                 "0-5": "Unstable Reaction Pattern",
@@ -1025,6 +1032,11 @@
                 state.singleStep = 'quiz';
                 state.currentQuestion = 0;
                 state.singleAnswers = [];
+
+                // Randomize questions for the chosen track
+                const track = state.gender === 'male' ? MALE_TRACK : FEMALE_TRACK;
+                shuffleArray(track.questions);
+
                 render();
             }
         }
@@ -1138,7 +1150,6 @@
                     content.innerHTML = `
                         <div class="quick-fade space-y-8">
                             <div class="space-y-2">
-                                <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Pillar: ${q.pillar}</span>
                                 <h2 class="text-2xl font-medium leading-snug">${q.text}</h2>
                             </div>
                             <div class="grid grid-cols-1 gap-3">
