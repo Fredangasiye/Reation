@@ -11,8 +11,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #fff9f9;
-            color: #1e1b4b;
+            background-color: #F3EFE6;
+            color: #2C2C2C;
             overflow-x: hidden;
         }
 
@@ -71,14 +71,14 @@
 
         .option-card:hover {
             transform: scale(1.01);
-            border-color: rgba(244, 63, 94, 0.3);
+            border-color: #6B7D6D;
             background: white;
-            box-shadow: 0 10px 15px -3px rgba(244, 63, 94, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(31, 42, 56, 0.1);
         }
 
         .option-card.selected {
-            background-color: rgba(244, 63, 94, 0.05);
-            border-color: #f43f5e;
+            background-color: #F3EFE6;
+            border-color: #1F2A38;
             transform: scale(0.98);
         }
 
@@ -87,7 +87,7 @@
         }
 
         .loader {
-            border-top-color: #f43f5e;
+            border-top-color: #1F2A38;
             animation: spinner 0.8s linear infinite;
         }
 
@@ -102,14 +102,13 @@
         }
 
         .vibrant-gradient {
-            background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);
+            background: linear-gradient(135deg, #1F2A38 0%, #6B7D6D 100%);
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(244, 63, 94, 0.1);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            background: #FFFFFF;
+            border: 1px solid #1F2A38;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .blur-content {
@@ -131,33 +130,33 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 249, 249, 0.9);
+            background: #F3EFE6;
             backdrop-filter: blur(12px);
             padding: 2rem;
             text-align: center;
         }
 
         .pdf-capture {
-            background-color: #fff9f9 !important;
-            color: #1e1b4b !important;
+            background-color: #F3EFE6 !important;
+            color: #2C2C2C !important;
             width: 800px !important;
-            /* Fixed width for better PDF layout */
             margin: 0 auto !important;
             padding: 40px !important;
         }
 
         .pdf-capture * {
-            color: #1e1b4b !important;
+            color: #2C2C2C !important;
         }
 
         .pdf-capture .bg-rose-50,
         .pdf-capture .bg-white {
             background-color: transparent !important;
-            border-color: #fee2e2 !important;
+            border-color: #1F2A38 !important;
         }
 
-        .pdf-capture [class*='bg-[#1e1b4b]'] {
-            background-color: #1e1b4b !important;
+        .pdf-capture [class*='bg-[#1e1b4b]'],
+        .pdf-capture [class*='bg-[#1F2A38]'] {
+            background-color: #1F2A38 !important;
             color: white !important;
         }
 
@@ -1095,23 +1094,23 @@
                     <div class="fade-in space-y-8 text-center my-auto">
                         <div class="space-y-4 flex flex-col items-center">
                             <div class="flex items-center justify-center space-x-2">
-                                <svg class="w-12 h-12 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-12 h-12 text-[#6B7D6D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="14" r="7" />
                                     <path d="M12 7l-2-3h4l-2 3z" />
                                     <path d="M10 4l2-2 2 2" />
                                 </svg>
-                                <h1 class="text-5xl font-black tracking-tight text-[#1e1b4b]">RING<span class="font-medium">READY</span></h1>
+                                <h1 class="text-5xl font-black tracking-tight text-[#1F2A38]">RING<span class="font-medium text-[#6B7D6D]">READY</span></h1>
                             </div>
-                            <p class="text-xl text-rose-500/80 font-light max-w-md mx-auto italic">"Make your next one the right one."</p>
+                            <p class="text-xl text-[#6B7D6D] font-light max-w-md mx-auto italic">"Make your next one the right one."</p>
                         </div>
                         <div class="max-w-sm mx-auto space-y-6">
-                            <input id="user-name" type="text" placeholder="Enter your name" class="w-full bg-white border border-rose-100 rounded-xl px-4 py-4 text-center text-lg outline-none focus:ring-2 focus:ring-rose-500 transition-all shadow-sm">
+                            <input id="user-name" type="text" placeholder="Enter your name" class="w-full bg-white border border-[#1F2A38]/20 rounded-xl px-4 py-4 text-center text-lg outline-none focus:ring-2 focus:ring-[#1F2A38] transition-all shadow-sm">
                             <div class="space-y-4 flex flex-col items-center">
-                                <button onclick="startSingleFlow()" class="w-full bg-rose-600 py-4 rounded-xl font-bold text-lg hover:bg-rose-500 transition-all shadow-lg shadow-rose-500/20 px-4 text-white">Single: Am I ready?</button>
-                                <button onclick="startApp('Coupled')" class="w-full bg-[#1e1b4b] py-4 rounded-xl font-bold text-lg hover:bg-[#2e2a6e] transition-all shadow-lg shadow-indigo-500/10 text-white">In a Relationship: Strengthening us</button>
+                                <button onclick="startSingleFlow()" class="w-full bg-[#1F2A38] py-4 rounded-xl font-bold text-lg hover:bg-[#2c3e50] transition-all shadow-lg shadow-[#1F2A38]/20 px-4 text-white uppercase tracking-widest">Single: Am I ready?</button>
+                                <button onclick="startApp('Coupled')" class="w-full bg-[#6B7D6D] py-4 rounded-xl font-bold text-lg hover:bg-[#5a6a5c] transition-all shadow-lg shadow-[#6B7D6D]/10 text-white uppercase tracking-widest">In a Relationship: Strengthening us</button>
                             </div>
                         </div>
-                        <p class="text-sm text-rose-400 italic">"Start your journey with a 5-Question Vibe Check."</p>
+                        <p class="text-sm text-[#6B7D6D] italic">"Start your journey with a 5-Question Vibe Check."</p>
                     </div>
                 `;
             } else if (state.view === 'quiz') {
@@ -1123,13 +1122,13 @@
                 content.innerHTML = `
                     <div class="quick-fade space-y-8">
                         <div class="space-y-2">
-                            <h2 class="text-2xl font-medium leading-snug">${q.text}</h2>
+                            <h2 class="text-2xl font-bold leading-snug text-[#1F2A38]">${q.text}</h2>
                         </div>
                         <div class="grid grid-cols-1 gap-4">
                             ${Object.entries(q.options).map(([key, text]) => `
-                                <div onclick="selectOption(this, '${key}')" class="option-card p-5 rounded-2xl glass border-rose-100/50 hover:border-rose-500/50 flex items-center space-x-4">
-                                    <span class="w-8 h-8 rounded-full flex items-center justify-center bg-rose-50 text-rose-500 font-bold text-sm">${key}</span>
-                                    <span class="text-lg text-[#1e1b4b] font-medium">${text}</span>
+                                <div onclick="selectOption(this, '${key}')" class="option-card p-5 rounded-2xl glass border-[#1F2A38]/20 hover:border-[#1F2A38] flex items-center space-x-4">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center bg-[#F3EFE6] text-[#1F2A38] font-bold text-sm">${key}</span>
+                                    <span class="text-lg text-[#2C2C2C] font-medium">${text}</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -1141,36 +1140,36 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-10 text-center my-auto">
                         <div class="flex flex-col items-center space-y-6">
-                            <div class="loader w-14 h-14 border-4 border-rose-100 rounded-full mb-4"></div>
-                            <h3 class="text-2xl font-black text-[#1e1b4b]">Analyzing Your Behavioral Baseline...</h3>
+                            <div class="loader w-14 h-14 border-4 border-[#F3EFE6] rounded-full mb-4"></div>
+                            <h3 class="text-2xl font-black text-[#1F2A38] uppercase tracking-widest">Analyzing Your Behavioral Baseline...</h3>
                         </div>
                         <div class="space-y-6 text-left">
-                            <div class="p-8 rounded-[2.5rem] bg-white border border-rose-100 space-y-3 shadow-sm">
-                                <p class="text-rose-500 font-black uppercase text-[10px] tracking-widest flex items-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2"></span>
+                            <div class="p-8 rounded-[2.5rem] bg-white border border-[#1F2A38]/10 space-y-3 shadow-sm">
+                                <p class="text-[#6B7D6D] font-black uppercase text-[10px] tracking-widest flex items-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#6B7D6D] mr-2"></span>
                                     1. Your Baseline Tendency
                                 </p>
-                                <p class="text-xl text-[#1e1b4b] font-bold leading-tight">${teaser.baseline}</p>
+                                <p class="text-xl text-[#2C2C2C] font-bold leading-tight">${teaser.baseline}</p>
                             </div>
-                            <div class="p-8 rounded-[2.5rem] bg-rose-50/50 border border-rose-100 space-y-3 shadow-sm">
-                                <p class="text-rose-500 font-black uppercase text-[10px] tracking-widest flex items-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-2"></span>
+                            <div class="p-8 rounded-[2.5rem] bg-[#F3EFE6] border border-[#1F2A38]/10 space-y-3 shadow-sm">
+                                <p class="text-[#6B7D6D] font-black uppercase text-[10px] tracking-widest flex items-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#6B7D6D] mr-2"></span>
                                     2. The Hidden Risk
                                 </p>
-                                <p class="text-xl text-rose-900/80 italic font-medium leading-tight">"${teaser.risk}"</p>
+                                <p class="text-xl text-[#2C2C2C]/80 italic font-medium leading-tight">"${teaser.risk}"</p>
                             </div>
-                            <div class="p-8 rounded-[2.5rem] bg-[#1e1b4b] space-y-4 shadow-xl">
-                                <p class="text-rose-400 font-black uppercase text-[10px] tracking-widest flex items-center">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-rose-400 mr-2"></span>
+                            <div class="p-8 rounded-[2.5rem] bg-[#1F2A38] space-y-4 shadow-xl">
+                                <p class="text-[#6B7D6D] font-black uppercase text-[10px] tracking-widest flex items-center">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#6B7D6D] mr-2"></span>
                                     3. The Missing Mapping
                                 </p>
-                                <p class="text-base text-rose-100 leading-relaxed font-light">
+                                <p class="text-base text-[#F3EFE6]/70 leading-relaxed font-light">
                                     Your surface baseline is clear, but we haven't mapped your relational architecture. Most relationships collapse because they ignore the 'MRI' level—attachment triggers, financial transparency, and conflict repair speed.
                                 </p>
                                 <p class="text-sm text-white font-bold italic">You are 10% away from your full Blueprint.</p>
                             </div>
                         </div>
-                        <button onclick="setView('quiz')" class="w-full py-5 bg-rose-600 rounded-2xl font-black uppercase tracking-widest text-xs animate-pulse shadow-xl shadow-rose-500/20 text-white">Continue to Full Assessment (FREE)</button>
+                        <button onclick="setView('quiz')" class="w-full py-5 bg-[#1F2A38] rounded-2xl font-black uppercase tracking-widest text-xs animate-pulse shadow-xl shadow-[#1F2A38]/20 text-white">Continue to Full Assessment (FREE)</button>
                     </div>
                 `;
             } else if (state.view === 'single-flow') {
@@ -1182,8 +1181,8 @@
                                 <h2 class="text-3xl font-bold">Are you currently single and looking for a serious relationship?</h2>
                             </div>
                             <div class="grid grid-cols-1 gap-4 max-w-sm mx-auto">
-                                <button onclick="handleSingleLogic('Yes')" class="w-full bg-rose-600 py-4 rounded-xl font-bold text-lg hover:bg-rose-500 transition-all text-white shadow-lg shadow-rose-500/20">Yes</button>
-                                <button onclick="handleSingleLogic('No')" class="w-full bg-white border border-rose-100 py-4 rounded-xl font-bold text-lg hover:bg-rose-50 transition-all text-rose-500">No (Exit Module)</button>
+                                <button onclick="handleSingleLogic('Yes')" class="w-full bg-[#1F2A38] py-4 rounded-xl font-bold text-lg hover:bg-[#2c3e50] transition-all text-white shadow-lg shadow-[#1F2A38]/20">Yes</button>
+                                <button onclick="handleSingleLogic('No')" class="w-full bg-white border border-[#1F2A38]/20 py-4 rounded-xl font-bold text-lg hover:bg-[#F3EFE6] transition-all text-[#1F2A38]">No (Exit Module)</button>
                             </div>
                         </div>
                     `;
@@ -1194,8 +1193,8 @@
                                 <h2 class="text-3xl font-bold">Select Your Gender</h2>
                             </div>
                             <div class="grid grid-cols-1 gap-4 max-w-sm mx-auto">
-                                <button onclick="handleSingleLogic('Male')" class="w-full bg-rose-500 py-4 rounded-xl font-bold text-lg hover:bg-rose-400 transition-all text-white shadow-lg shadow-rose-500/20">Male</button>
-                                <button onclick="handleSingleLogic('Female')" class="w-full bg-rose-400 py-4 rounded-xl font-bold text-lg hover:bg-rose-300 transition-all text-white shadow-lg shadow-rose-400/20">Female</button>
+                                <button onclick="handleSingleLogic('Male')" class="w-full bg-[#1F2A38] py-4 rounded-xl font-bold text-lg hover:bg-[#2c3e50] transition-all text-white shadow-lg shadow-[#1F2A38]/20">Male</button>
+                                <button onclick="handleSingleLogic('Female')" class="w-full bg-[#6B7D6D] py-4 rounded-xl font-bold text-lg hover:bg-[#5a6a5c] transition-all text-white shadow-lg shadow-[#6B7D6D]/20">Female</button>
                             </div>
                         </div>
                     `;
@@ -1209,23 +1208,23 @@
                     content.innerHTML = `
                         <div class="quick-fade space-y-8">
                             <div class="space-y-4">
-                                <h2 class="text-2xl font-bold leading-snug text-[#1e1b4b]">${q.text}</h2>
+                                <h2 class="text-2xl font-bold leading-snug text-[#1F2A38]">${q.text}</h2>
                             </div>
                             <div class="grid grid-cols-1 gap-3">
-                                <button onclick="selectSingleOption(5)" class="option-card p-4 rounded-xl glass border-rose-100 hover:border-rose-500/50 text-left flex items-center justify-between shadow-sm">
-                                    <span class="text-[#1e1b4b] font-medium">Strongly Agree</span>
+                                <button onclick="selectSingleOption(5)" class="option-card p-4 rounded-xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left flex items-center justify-between shadow-sm">
+                                    <span class="text-[#2C2C2C] font-medium">Strongly Agree</span>
                                 </button>
-                                <button onclick="selectSingleOption(4)" class="option-card p-4 rounded-xl glass border-rose-100 hover:border-rose-500/50 text-left flex items-center justify-between shadow-sm">
-                                    <span class="text-[#1e1b4b] font-medium">Agree</span>
+                                <button onclick="selectSingleOption(4)" class="option-card p-4 rounded-xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left flex items-center justify-between shadow-sm">
+                                    <span class="text-[#2C2C2C] font-medium">Agree</span>
                                 </button>
-                                <button onclick="selectSingleOption(3)" class="option-card p-4 rounded-xl glass border-rose-100 hover:border-rose-500/50 text-left flex items-center justify-between shadow-sm">
-                                    <span class="text-[#1e1b4b] font-medium">Neutral</span>
+                                <button onclick="selectSingleOption(3)" class="option-card p-4 rounded-xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left flex items-center justify-between shadow-sm">
+                                    <span class="text-[#2C2C2C] font-medium">Neutral</span>
                                 </button>
-                                <button onclick="selectSingleOption(2)" class="option-card p-4 rounded-xl glass border-rose-100 hover:border-rose-500/50 text-left flex items-center justify-between shadow-sm">
-                                    <span class="text-[#1e1b4b] font-medium">Disagree</span>
+                                <button onclick="selectSingleOption(2)" class="option-card p-4 rounded-xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left flex items-center justify-between shadow-sm">
+                                    <span class="text-[#2C2C2C] font-medium">Disagree</span>
                                 </button>
-                                <button onclick="selectSingleOption(1)" class="option-card p-4 rounded-xl glass border-rose-100 hover:border-rose-500/50 text-left flex items-center justify-between shadow-sm">
-                                    <span class="text-[#1e1b4b] font-medium">Strongly Disagree</span>
+                                <button onclick="selectSingleOption(1)" class="option-card p-4 rounded-xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left flex items-center justify-between shadow-sm">
+                                    <span class="text-[#2C2C2C] font-medium">Strongly Disagree</span>
                                 </button>
                             </div>
                         </div>
@@ -1237,20 +1236,20 @@
                     content.innerHTML = `
                         <div class="fade-in space-y-12 text-center my-auto">
                             <div class="space-y-4">
-                                <span class="text-rose-500 font-black uppercase text-xs tracking-widest">Training Complete</span>
-                                <h2 class="text-5xl font-black text-[#1e1b4b] tracking-tight">${state.currentSim.title}</h2>
+                                <span class="text-[#6B7D6D] font-black uppercase text-xs tracking-widest">Training Complete</span>
+                                <h2 class="text-5xl font-black text-[#1F2A38] tracking-tight">${state.currentSim.title}</h2>
                             </div>
-                            <div class="bg-white border border-rose-100 p-10 rounded-[3rem] space-y-6 shadow-sm">
-                                <p class="text-rose-400 text-[10px] font-black uppercase tracking-widest">Performance Tier</p>
-                                <p class="text-3xl font-black text-[#1e1b4b] italic">"${state.simResults.tier}"</p>
+                            <div class="bg-white border border-[#1F2A38]/20 p-10 rounded-[3rem] space-y-6 shadow-sm">
+                                <p class="text-[#6B7D6D] text-[10px] font-black uppercase tracking-widest">Performance Tier</p>
+                                <p class="text-3xl font-black text-[#1F2A38] italic">"${state.simResults.tier}"</p>
                                 <div class="pt-6">
-                                    <div class="w-full h-3 bg-rose-50 rounded-full overflow-hidden">
-                                        <div class="h-full bg-rose-500 transition-all duration-1000" style="width: ${Math.max(0, (state.simResults.score / 15) * 100)}%"></div>
+                                    <div class="w-full h-3 bg-[#F3EFE6] rounded-full overflow-hidden">
+                                        <div class="h-full bg-[#1F2A38] transition-all duration-1000" style="width: ${Math.max(0, (state.simResults.score / 15) * 100)}%"></div>
                                     </div>
-                                    <p class="text-[10px] text-rose-300 mt-3 font-black uppercase tracking-widest">Score: ${state.simResults.score}/15 points</p>
+                                    <p class="text-[10px] text-[#6B7D6D]/40 mt-3 font-black uppercase tracking-widest">Score: ${state.simResults.score}/15 points</p>
                                 </div>
                             </div>
-                            <button onclick="setView('results')" class="w-full py-6 bg-[#1e1b4b] text-white rounded-[2rem] font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl">Back to Report</button>
+                            <button onclick="setView('results')" class="w-full py-6 bg-[#1F2A38] text-white rounded-[2rem] font-black uppercase tracking-widest text-xs hover:bg-[#2c3e50] transition-all shadow-xl">Back to Report</button>
                         </div>
                     `;
                 } else {
@@ -1259,15 +1258,15 @@
                         <div class="quick-fade space-y-10">
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-black uppercase tracking-widest text-rose-500">${state.currentSim.title}</span>
-                                    <span class="text-[10px] font-bold text-rose-300 uppercase tracking-widest">Scene ${state.currentSimScene + 1} of 5</span>
+                                    <span class="text-xs font-black uppercase tracking-widest text-[#6B7D6D]">${state.currentSim.title}</span>
+                                    <span class="text-[10px] font-bold text-[#6B7D6D]/40 uppercase tracking-widest">Scene ${state.currentSimScene + 1} of 5</span>
                                 </div>
-                                <h2 class="text-2xl font-bold leading-snug text-[#1e1b4b]">${scene.scene}</h2>
+                                <h2 class="text-2xl font-bold leading-snug text-[#1F2A38]">${scene.scene}</h2>
                             </div>
                             <div class="grid grid-cols-1 gap-4">
                                 ${Object.entries(scene.options).map(([key, opt]) => `
-                                    <button onclick="selectSimOption('${key}')" class="option-card p-6 rounded-2xl glass border-rose-100 hover:border-rose-500/50 text-left transition-all shadow-sm group">
-                                        <p class="text-[#1e1b4b] font-medium text-lg leading-tight group-hover:text-rose-600 transition-colors">${opt.text}</p>
+                                    <button onclick="selectSimOption('${key}')" class="option-card p-6 rounded-2xl glass border-[#1F2A38]/10 hover:border-[#1F2A38] text-left transition-all shadow-sm group">
+                                        <p class="text-[#2C2C2C] font-medium text-lg leading-tight group-hover:text-[#1F2A38] transition-colors">${opt.text}</p>
                                     </button>
                                 `).join('')}
                             </div>
@@ -1281,37 +1280,37 @@
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-20">
                         <div class="text-center space-y-4">
-                            <span class="text-[10px] font-black uppercase tracking-[0.4em] text-rose-500 bg-white px-6 py-2 rounded-full border border-rose-100 shadow-sm">${state.mode === 'single' ? 'WHO YOU ARE IN DATING' : 'RINGREADY STABILITY SCAN'}</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#6B7D6D] bg-white px-6 py-2 rounded-full border border-[#1F2A38]/20 shadow-sm">${state.mode === 'single' ? 'WHO YOU ARE IN DATING' : 'RINGREADY STABILITY SCAN'}</span>
                             <div class="flex flex-col items-center justify-center space-y-2">
-                                <svg class="w-10 h-10 text-rose-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="w-10 h-10 text-[#6B7D6D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="14" r="7" />
                                     <path d="M12 7l-2-3h4l-2 3z" />
                                     <path d="M10 4l2-2 2 2" />
                                 </svg>
-                                <h2 class="text-5xl font-black text-[#1e1b4b] leading-tight tracking-tight">${state.mode === 'single' ? 'YOUR REPORT' : 'RING<span class="font-medium">READY</span> BLUEPRINT'}</h2>
+                                <h2 class="text-5xl font-black text-[#1F2A38] leading-tight tracking-tight">${state.mode === 'single' ? 'YOUR REPORT' : 'RING<span class="font-medium text-[#6B7D6D]">READY</span> BLUEPRINT'}</h2>
                             </div>
-                            <p class="text-rose-900/40 font-medium text-lg italic">Diagnostic Analysis for <span class="text-[#1e1b4b] font-bold not-italic underline decoration-rose-300 decoration-4 underline-offset-4">${state.name || "User"}</span></p>
+                            <p class="text-[#6B7D6D]/60 font-medium text-lg italic">Diagnostic Analysis for <span class="text-[#1F2A38] font-bold not-italic underline decoration-[#6B7D6D] decoration-4 underline-offset-4">${state.name || "User"}</span></p>
                         </div>
 
                         ${state.mode === 'single' ? renderSingleResults() : renderAlignmentForecast()}
 
-                        <div class="pt-16 border-t border-rose-100 space-y-10">
+                        <div class="pt-16 border-t border-[#1F2A38]/10 space-y-10">
                             <div class="text-center space-y-6">
-                                <div id="sync-status" class="bg-rose-50 border border-rose-100 py-4 px-8 rounded-full inline-flex items-center space-x-4 shadow-sm">
-                                    <span class="w-3 h-3 rounded-full bg-rose-500 animate-pulse shadow-[0_0_15px_rgba(244,63,94,0.4)]"></span>
-                                    <span id="sync-text" class="text-xs text-rose-600 font-black uppercase tracking-[0.15em]">Relational Data Encrypted & Synced</span>
+                                <div id="sync-status" class="bg-white border border-[#1F2A38]/20 py-4 px-8 rounded-full inline-flex items-center space-x-4 shadow-sm">
+                                    <span class="w-3 h-3 rounded-full bg-[#6B7D6D] animate-pulse shadow-[0_0_15px_rgba(107,125,109,0.4)]"></span>
+                                    <span id="sync-text" class="text-xs text-[#1F2A38] font-black uppercase tracking-[0.15em]">Relational Data Encrypted & Synced</span>
                                 </div>
-                                <p class="text-rose-900/60 text-base font-medium italic max-w-sm mx-auto">"The habits you build now shape your future. Secure your relationship guide below."</p>
+                                <p class="text-[#2C2C2C]/60 text-base font-medium italic max-w-sm mx-auto">"The habits you build now shape your future. Secure your relationship guide below."</p>
                             </div>
                             
                             <div class="max-w-md mx-auto space-y-4">
-                                <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-white border border-rose-100 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-rose-500 outline-none text-center font-medium shadow-sm transition-all text-[#1e1b4b] placeholder-rose-200">
-                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-6 bg-[#1e1b4b] hover:bg-black text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-black/10">Deliver Report to Inbox</button>
+                                <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-white border border-[#1F2A38]/20 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-[#6B7D6D] outline-none text-center font-medium shadow-sm transition-all text-[#2C2C2C] placeholder-[#6B7D6D]/30">
+                                <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-6 bg-[#1F2A38] hover:bg-[#2c3e50] text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-black/10">Deliver Report to Inbox</button>
                             </div>
 
                             <div class="pt-10 flex flex-col items-center space-y-6">
-                                <p class="text-[10px] font-black text-rose-300 uppercase tracking-widest">Advanced Options</p>
-                                <button onclick="downloadPDF()" class="flex items-center space-x-2 text-rose-500 hover:text-rose-700 transition-colors font-bold uppercase text-[10px] tracking-widest">
+                                <p class="text-[10px] font-black text-[#6B7D6D] uppercase tracking-widest">Advanced Options</p>
+                                <button onclick="downloadPDF()" class="flex items-center space-x-2 text-[#1F2A38] hover:text-[#6B7D6D] transition-colors font-bold uppercase text-[10px] tracking-widest">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                                     <span>Download PDF Analysis</span>
                                 </button>
@@ -1548,28 +1547,28 @@
                 <div class="${isLocked ? 'h-[500px] overflow-hidden' : ''} space-y-16 pt-16 border-t border-rose-100 relative pb-20">
                     ${isLocked ? `
                         <div class="overlay-container">
-                            <div class="bg-white p-10 rounded-[3rem] shadow-2xl space-y-8 max-w-md border border-rose-100">
+                            <div class="bg-white p-10 rounded-[3rem] shadow-2xl space-y-8 max-w-md border border-[#1F2A38]/20">
                                 <div class="space-y-3">
-                                    <div class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <svg class="w-8 h-8 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    <div class="w-16 h-16 bg-[#F3EFE6] rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg class="w-8 h-8 text-[#1F2A38]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                     </div>
-                                    <h4 class="text-2xl font-black text-[#1e1b4b] tracking-tight">Unlock Your Full Forecast</h4>
-                                    <p class="text-rose-900/60 text-base leading-relaxed">Your behavioral baseline is ready. To reveal your interaction dynamic and the full Stability Scan, sync with your partner.</p>
+                                    <h4 class="text-2xl font-black text-[#1F2A38] tracking-tight">Unlock Your Full Forecast</h4>
+                                    <p class="text-[#2C2C2C]/60 text-base leading-relaxed">Your behavioral baseline is ready. To reveal your interaction dynamic and the full Stability Scan, sync with your partner.</p>
                                 </div>
                                 <div class="space-y-6">
                                     <div class="space-y-2">
-                                        <p class="text-[10px] font-black uppercase tracking-widest text-[#1e1b4b]">Receive Final Report via Email</p>
-                                        <input type="email" id="email-capture-overlay" placeholder="Enter your email" class="w-full bg-rose-50/50 border border-rose-100 rounded-2xl px-4 py-4 text-center text-[#1e1b4b] placeholder-rose-300 outline-none focus:ring-2 focus:ring-rose-500 transition-all font-medium">
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-[#1F2A38]">Receive Final Report via Email</p>
+                                        <input type="email" id="email-capture-overlay" placeholder="Enter your email" class="w-full bg-[#F3EFE6]/50 border border-[#1F2A38]/20 rounded-2xl px-4 py-4 text-center text-[#1F2A38] placeholder-[#6B7D6D]/40 outline-none focus:ring-2 focus:ring-[#1F2A38] transition-all font-medium">
                                     </div>
-                                    <button onclick="generatePartnerLink()" class="w-full py-5 bg-[#1e1b4b] text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl">Copy Secret Partner Link</button>
+                                    <button onclick="generatePartnerLink()" class="w-full py-5 bg-[#1F2A38] text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#2c3e50] transition-all shadow-xl">Copy Secret Partner Link</button>
                                 </div>
                             </div>
                         </div>
                     ` : ''}
 
                     <div class="text-center space-y-3 px-4">
-                        <span class="text-xs font-black uppercase tracking-[0.3em] text-rose-500 bg-rose-50 px-6 py-2 rounded-full border border-rose-100/50 shadow-sm">Stability Scan Results</span>
-                        <h3 class="text-5xl font-black text-[#1e1b4b] tracking-tight pt-4">${p1Name} & ${p2Name}</h3>
+                        <span class="text-xs font-black uppercase tracking-[0.3em] text-[#6B7D6D] bg-[#F3EFE6] px-6 py-2 rounded-full border border-[#1F2A38]/20 shadow-sm">Stability Scan Results</span>
+                        <h3 class="text-5xl font-black text-[#1F2A38] tracking-tight pt-4">${p1Name} & ${p2Name}</h3>
                     </div>
 
                     <div class="space-y-10 ${blurClass}">
@@ -1580,66 +1579,66 @@
 
                 return `
                                 <div class="space-y-4">
-                                    <div class="bg-white p-8 rounded-[2.5rem] border border-rose-100 shadow-sm space-y-8">
+                                    <div class="bg-white p-8 rounded-[2.5rem] border border-[#1F2A38]/10 shadow-sm space-y-8">
                                         <div class="flex justify-between items-start">
                                             <div class="space-y-2">
-                                                <h4 class="text-sm font-black uppercase tracking-widest text-[#1e1b4b]">${content.title}</h4>
-                                                <p class="text-base text-rose-900/60 font-medium leading-tight">${content.desc}</p>
+                                                <h4 class="text-sm font-black uppercase tracking-widest text-[#1F2A38]">${content.title}</h4>
+                                                <p class="text-base text-[#2C2C2C]/60 font-medium leading-tight">${content.desc}</p>
                                             </div>
                                             <div class="text-right">
-                                                <span class="text-xs font-black uppercase tracking-widest ${result.score >= 7 ? 'text-red-500' : (result.score >= 4 ? 'text-rose-400' : 'text-emerald-500')}">${result.status}</span>
-                                                <p class="text-4xl font-black text-[#1e1b4b] leading-none mt-1">${Math.round(result.score)}<span class="text-base text-rose-200 font-bold">/10</span></p>
+                                                <span class="text-xs font-black uppercase tracking-widest ${result.score >= 7 ? 'text-[#be123c]' : (result.score >= 4 ? 'text-[#6B7D6D]' : 'text-emerald-700')}">${result.status}</span>
+                                                <p class="text-4xl font-black text-[#1F2A38] leading-none mt-1">${Math.round(result.score)}<span class="text-base text-[#6B7D6D]/30 font-bold">/10</span></p>
                                             </div>
                                         </div>
 
                                         <div class="space-y-3">
-                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-rose-200">
+                                            <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-[#6B7D6D]/40">
                                                 <span>Friction Analysis</span>
-                                                <span class="text-rose-400">${Math.round(result.score * 10)}% Scale</span>
+                                                <span class="text-[#6B7D6D]">${Math.round(result.score * 10)}% Scale</span>
                                             </div>
-                                            <div class="w-full h-2 bg-rose-50 rounded-full overflow-hidden">
-                                                <div class="h-full bg-rose-500 transition-all duration-1000" style="width: ${result.score * 10}%"></div>
+                                            <div class="w-full h-2 bg-[#F3EFE6] rounded-full overflow-hidden">
+                                                <div class="h-full bg-[#1F2A38] transition-all duration-1000" style="width: ${result.score * 10}%"></div>
                                             </div>
                                         </div>
 
-                                        <div class="pt-8 border-t border-rose-50 space-y-8">
+                                        <div class="pt-8 border-t border-[#F3EFE6] space-y-8">
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                                 <div class="space-y-3">
-                                                    <h5 class="text-xs font-black uppercase tracking-widest text-[#1e1b4b] flex items-center">
-                                                        <span class="w-2 h-2 rounded-full bg-rose-400 mr-2"></span>
+                                                    <h5 class="text-xs font-black uppercase tracking-widest text-[#1F2A38] flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-[#6B7D6D] mr-2"></span>
                                                         Interaction Dynamic
                                                     </h5>
-                                                    <p class="text-lg text-[#1e1b4b] leading-snug font-medium italic">"${d.pattern}"</p>
+                                                    <p class="text-lg text-[#2C2C2C] leading-snug font-medium italic">"${d.pattern}"</p>
                                                 </div>
                                                 <div class="space-y-3">
-                                                    <h5 class="text-xs font-black uppercase tracking-widest text-red-500 flex items-center">
-                                                        <span class="w-2 h-2 rounded-full bg-red-400 mr-2"></span>
+                                                    <h5 class="text-xs font-black uppercase tracking-widest text-[#be123c] flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-[#be123c] mr-2"></span>
                                                         The Hidden Risk
-                                                    </h5>
-                                                    <p class="text-lg text-rose-900/80 leading-snug font-medium italic">"${d.risk}"</p>
++                                                    </h5>
+                                                    <p class="text-lg text-[#2C2C2C]/80 leading-snug font-medium italic">"${d.risk}"</p>
                                                 </div>
                                             </div>
 
-                                            <div class="bg-rose-50/50 p-8 rounded-[2rem] border border-rose-100 space-y-6">
-                                                <h5 class="text-xs font-black uppercase tracking-widest text-[#1e1b4b]">Stability Blueprint</h5>
+                                            <div class="bg-[#F3EFE6]/50 p-8 rounded-[2rem] border border-[#1F2A38]/10 space-y-6">
+                                                <h5 class="text-xs font-black uppercase tracking-widest text-[#1F2A38]">Stability Blueprint</h5>
                                                 <div class="grid grid-cols-1 gap-4">
                                                     <div class="flex items-start">
-                                                        <span class="text-rose-400 mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
-                                                        <p class="text-[#1e1b4b] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-rose-300">Target Metric</span> ${d.growth}</p>
+                                                        <span class="text-[#6B7D6D] mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
+                                                        <p class="text-[#2C2C2C] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-[#6B7D6D]">Target Metric</span> ${d.growth}</p>
                                                     </div>
                                                     <div class="flex items-start">
-                                                        <span class="text-rose-400 mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
-                                                        <p class="text-[#1e1b4b] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-rose-300">Romantic Prompt</span> ${d.prompt}</p>
+                                                        <span class="text-[#6B7D6D] mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
+                                                        <p class="text-[#2C2C2C] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-[#6B7D6D]">Romantic Prompt</span> ${d.prompt}</p>
                                                     </div>
                                                     <div class="flex items-start">
-                                                        <span class="text-rose-400 mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
-                                                        <p class="text-[#1e1b4b] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-rose-300">Habit Anchor</span> ${d.habit}</p>
+                                                        <span class="text-[#6B7D6D] mr-3 mt-1 shrink-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg></span>
+                                                        <p class="text-[#2C2C2C] text-base"><span class="font-black text-[10px] uppercase tracking-widest block text-[#6B7D6D]">Habit Anchor</span> ${d.habit}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                            <div class="flex items-center space-x-3 text-rose-900/60 italic">
+                                            <div class="flex items-center space-x-3 text-[#2C2C2C]/60 italic">
                                                 <span class="text-[10px] font-black uppercase tracking-widest">Principled Guidance:</span>
                                                 <span class="text-sm font-medium">"${d.principle}"</span>
                                             </div>
@@ -1700,34 +1699,34 @@
             return `
                 <div class="fade-in space-y-12 pb-12">
                     <!-- Archetype Header -->
-                    <div class="bg-rose-50 border border-rose-100 p-10 rounded-[3rem] text-center space-y-6 shadow-sm">
-                        <span class="text-xs font-black uppercase tracking-widest text-rose-500">Your Dating Archetype</span>
-                        <h3 class="text-5xl font-black text-[#1e1b4b] tracking-tight">${arcData.name}</h3>
+                    <div class="bg-white border border-[#1F2A38]/20 p-10 rounded-[3rem] text-center space-y-6 shadow-sm">
+                        <span class="text-xs font-black uppercase tracking-widest text-[#6B7D6D]">Your Dating Archetype</span>
+                        <h3 class="text-5xl font-black text-[#1F2A38] tracking-tight">${arcData.name}</h3>
                         <div class="flex items-center justify-center space-x-4">
-                            <span class="text-xs font-bold text-rose-300 uppercase tracking-widest">${state.gender} track</span>
-                            <span class="text-rose-200">|</span>
-                            <span class="text-sm font-bold ${band.color} bg-white px-4 py-1.5 rounded-full shadow-sm">${band.label} (${totalPercentage}%)</span>
+                            <span class="text-xs font-bold text-[#6B7D6D] uppercase tracking-widest">${state.gender} track</span>
+                            <span class="text-[#6B7D6D]/40">|</span>
+                            <span class="text-sm font-bold ${band.color} bg-[#F3EFE6] px-4 py-1.5 rounded-full shadow-sm">${band.label} (${totalPercentage}%)</span>
                         </div>
                     </div>
 
                     <!-- Diagnosis Section -->
                     <div class="space-y-4 px-2">
-                        <h4 class="text-sm font-black uppercase tracking-widest text-[#1e1b4b]">The Assessment</h4>
-                        <p class="text-2xl text-rose-900/80 leading-snug font-medium italic">"${arcData.diagnosis}"</p>
+                        <h4 class="text-sm font-black uppercase tracking-widest text-[#1F2A38]">The Assessment</h4>
+                        <p class="text-2xl text-[#2C2C2C]/80 leading-snug font-medium italic">"${arcData.diagnosis}"</p>
                     </div>
 
                     <!-- Key Insights Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <!-- Things you do -->
-                        <div class="bg-white p-8 rounded-[2.5rem] border border-rose-100 shadow-sm space-y-6">
-                            <h5 class="text-xs font-black uppercase tracking-widest text-emerald-500 flex items-center">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>
+                        <div class="bg-white p-8 rounded-[2.5rem] border border-[#1F2A38]/10 shadow-sm space-y-6">
+                            <h5 class="text-xs font-black uppercase tracking-widest text-emerald-700 flex items-center">
+                                <span class="w-2 h-2 rounded-full bg-emerald-700 mr-2"></span>
                                 Things you do
                             </h5>
                             <ul class="space-y-4">
                                 ${arcData.pattern.map(p => `
-                                    <li class="text-lg text-[#1e1b4b] flex items-start leading-tight">
-                                        <span class="text-emerald-500 mr-3 mt-1.5 shrink-0">
+                                    <li class="text-lg text-[#2C2C2C] flex items-start leading-tight">
+                                        <span class="text-emerald-700 mr-3 mt-1.5 shrink-0">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                                         </span>
                                         ${p}
@@ -1737,43 +1736,43 @@
 
                         <div class="space-y-8">
                             <!-- The vibe you give off -->
-                            <div class="bg-rose-50 p-8 rounded-[2.5rem] border border-rose-100 shadow-sm space-y-4">
-                                <h5 class="text-xs font-black uppercase tracking-widest text-rose-500 flex items-center">
-                                    <span class="w-2 h-2 rounded-full bg-rose-500 mr-2"></span>
+                            <div class="bg-[#F3EFE6] p-8 rounded-[2.5rem] border border-[#1F2A38]/10 shadow-sm space-y-4">
+                                <h5 class="text-xs font-black uppercase tracking-widest text-[#1F2A38] flex items-center">
+                                    <span class="w-2 h-2 rounded-full bg-[#1F2A38] mr-2"></span>
                                     The vibe you give off
                                 </h5>
-                                <p class="text-xl text-rose-900 italic font-medium leading-relaxed">"${arcData.signal}"</p>
+                                <p class="text-xl text-[#2C2C2C]/80 italic font-medium leading-relaxed">"${arcData.signal}"</p>
                             </div>
 
                             <!-- Where things go wrong -->
-                            <div class="bg-red-50 p-8 rounded-[2.5rem] border border-red-100 shadow-sm space-y-4">
-                                <h5 class="text-xs font-black uppercase tracking-widest text-red-500 flex items-center">
-                                    <span class="w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                            <div class="bg-rose-50 p-8 rounded-[2.5rem] border border-rose-200 shadow-sm space-y-4">
+                                <h5 class="text-xs font-black uppercase tracking-widest text-rose-700 flex items-center">
+                                    <span class="w-2 h-2 rounded-full bg-rose-600 mr-2"></span>
                                     Where things usually go wrong
                                 </h5>
-                                <p class="text-lg text-[#1e1b4b] leading-relaxed font-medium">${arcData.failure}</p>
+                                <p class="text-lg text-[#2C2C2C] leading-relaxed font-medium">${arcData.failure}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Readiness Section -->
-                    <div class="bg-[#1e1b4b] p-10 rounded-[3rem] text-center space-y-4 shadow-xl">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-rose-400">Relationship Readiness</h4>
+                    <div class="bg-[#1F2A38] p-10 rounded-[3rem] text-center space-y-4 shadow-xl">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-[#6B7D6D]">Relationship Readiness</h4>
                         <p class="text-3xl text-white font-black">${arcData.readiness}</p>
                     </div>
                     <!-- Heads Up / Risk Section -->
-                    <div class="bg-red-50 p-8 rounded-[2.5rem] border border-red-100 space-y-3">
-                        <h4 class="text-xs font-black uppercase tracking-widest text-red-500">Heads up</h4>
-                        <p class="text-lg text-rose-900 italic font-medium">"${totalPercentage < 50 ? 'High Risk of Repeating Past Relationship Cycles.' : (pillarScores[lowestPillar].percentage < 45 ? 'Critical pillar weakness detected below baseline.' : 'You\'re doing okay, but there\'s room to level up.')}"</p>
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-[#1F2A38]/20 shadow-[inset_0_2px_4px_rgba(31,42,56,0.05)] space-y-3">
+                        <h4 class="text-xs font-black uppercase tracking-widest text-[#1F2A38]">Heads up</h4>
+                        <p class="text-lg text-[#2C2C2C] italic font-medium">"${totalPercentage < 50 ? 'High Risk of Repeating Past Relationship Cycles.' : (pillarScores[lowestPillar].percentage < 45 ? 'Critical pillar weakness detected below baseline.' : 'You\'re doing okay, but there\'s room to level up.')}"</p>
                     </div>
 
                     <!-- Detailed Breakdown -->
-                    <div class="bg-white p-10 rounded-[3rem] border border-rose-100 shadow-sm space-y-10">
-                        <h4 class="text-sm font-black uppercase tracking-widest text-[#1e1b4b] text-center">Your dating breakdown</h4>
+                    <div class="bg-white p-10 rounded-[3rem] border border-[#1F2A38]/20 shadow-sm space-y-10">
+                        <h4 class="text-sm font-black uppercase tracking-widest text-[#1F2A38] text-center">Your dating breakdown</h4>
                         <div class="grid grid-cols-1 gap-8">
                             ${Object.entries(pillarScores).map(([p, data]) => {
                 const band = data.percentage <= 40 ? 'needs work' : (data.percentage <= 60 ? 'growing' : (data.percentage <= 75 ? 'solid' : (data.percentage <= 90 ? 'strong' : 'boss level')));
-                const color = data.percentage <= 60 ? 'bg-rose-400' : (data.percentage <= 75 ? 'bg-rose-300' : 'bg-rose-500');
+                const color = data.percentage <= 60 ? 'bg-rose-400' : (data.percentage <= 75 ? 'bg-[#6B7D6D]' : 'bg-[#1F2A38]');
                 const pillarNames = state.gender === 'male' ? {
                     M1: "Identity & Vision",
                     M2: "Attraction & Confidence",
@@ -1791,12 +1790,12 @@
                                     <div class="space-y-3">
                                         <div class="flex justify-between items-end">
                                             <div class="flex flex-col">
-                                                <span class="text-xs font-black text-[#1e1b4b] uppercase tracking-widest">${pillarNames[p]}</span>
-                                                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest">${band}</span>
+                                                <span class="text-xs font-black text-[#1F2A38] uppercase tracking-widest">${pillarNames[p]}</span>
+                                                <span class="text-[10px] font-bold text-[#6B7D6D] uppercase tracking-widest">${band}</span>
                                             </div>
-                                            <span class="text-sm font-black text-[#1e1b4b]">${data.percentage}%</span>
+                                            <span class="text-sm font-black text-[#1F2A38]">${data.percentage}%</span>
                                         </div>
-                                        <div class="w-full h-2 bg-rose-50 rounded-full overflow-hidden">
+                                        <div class="w-full h-2 bg-[#F3EFE6] rounded-full overflow-hidden">
                                             <div class="h-full ${color} transition-all duration-1000" style="width: ${data.percentage}%"></div>
                                         </div>
                                     </div>
@@ -1806,43 +1805,43 @@
                     </div>
 
                     <!-- Action Plan -->
-                    <div class="bg-rose-50/50 p-10 rounded-[3rem] border border-rose-100 space-y-10">
+                    <div class="bg-[#F3EFE6]/50 p-10 rounded-[3rem] border border-[#1F2A38]/20 space-y-10">
                         <div class="space-y-8">
-                            <h4 class="text-sm font-black uppercase tracking-widest text-[#1e1b4b]">Your next 30 days</h4>
+                            <h4 class="text-sm font-black uppercase tracking-widest text-[#1F2A38]">Your next 30 days</h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                                 ${arcData.action.map((a, i) => `
-                                    <div class="text-lg text-[#1e1b4b] flex items-start leading-tight">
-                                        <span class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center text-[11px] font-black mr-4 flex-shrink-0 shadow-sm">${i + 1}</span>
+                                    <div class="text-lg text-[#2C2C2C] flex items-start leading-tight">
+                                        <span class="w-8 h-8 rounded-full bg-[#1F2A38] text-white flex items-center justify-center text-[11px] font-black mr-4 flex-shrink-0 shadow-sm">${i + 1}</span>
                                         <span class="pt-1">${a}</span>
                                     </div>`).join('')}
                             </div>
                         </div>
-                        <div class="pt-10 border-t border-rose-100 space-y-6">
-                            <h4 class="text-xs font-black uppercase tracking-widest text-rose-500">Long-term growth path</h4>
-                            <div class="p-8 rounded-[2.5rem] bg-white border border-rose-100 shadow-sm">
-                                <p class="text-xl text-[#1e1b4b] leading-relaxed font-medium">${arcData.growthPath}</p>
+                        <div class="pt-10 border-t border-[#1F2A38]/10 space-y-6">
+                            <h4 class="text-xs font-black uppercase tracking-widest text-[#6B7D6D]">Long-term growth path</h4>
+                            <div class="p-8 rounded-[2.5rem] bg-white border border-[#1F2A38]/10 shadow-sm">
+                                <p class="text-xl text-[#2C2C2C] leading-relaxed font-medium">${arcData.growthPath}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Simulator CTA -->
-                    <div class="bg-[#1e1b4b] p-10 rounded-[3rem] text-center space-y-8 shadow-xl">
+                    <div class="bg-[#1F2A38] p-10 rounded-[3rem] text-center space-y-8 shadow-xl">
                         <div class="space-y-4 flex flex-col items-center">
-                            <svg class="w-8 h-8 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="w-8 h-8 text-[#6B7D6D]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="14" r="7" />
                                 <path d="M12 7l-2-3h4l-2 3z" />
                                 <path d="M10 4l2-2 2 2" />
                             </svg>
                             <div class="space-y-2">
-                                <h4 class="text-xs font-black uppercase tracking-widest text-rose-400">RINGREADY Simulator</h4>
-                                <p class="text-rose-100 text-lg font-light leading-relaxed">Test your reactions in real-world scenarios based on your weakest pillar: <span class="text-white font-bold underline decoration-rose-500 underline-offset-4">${state.gender === 'male' ? { M1: "Direction", M2: "Assertiveness", M3: "Emotional Stability", M4: "Leadership", M5: "Vetting" }[lowestPillar] : { F1: "Self-Worth", F2: "Receptivity", F3: "Emotional Regulation", F4: "Vetting", F5: "Long-Term" }[lowestPillar]}</span></p>
+                                <h4 class="text-xs font-black uppercase tracking-widest text-[#6B7D6D]">RINGREADY Simulator</h4>
+                                <p class="text-[#F3EFE6]/80 text-lg font-light leading-relaxed">Test your reactions in real-world scenarios based on your weakest pillar: <span class="text-white font-bold underline decoration-[#6B7D6D] underline-offset-4">${state.gender === 'male' ? { M1: "Direction", M2: "Assertiveness", M3: "Emotional Stability", M4: "Leadership", M5: "Vetting" }[lowestPillar] : { F1: "Self-Worth", F2: "Receptivity", F3: "Emotional Regulation", F4: "Vetting", F5: "Long-Term" }[lowestPillar]}</span></p>
                             </div>
                         </div>
-                        <button onclick="startSimulator('${lowestPillar}')" class="w-full py-6 bg-rose-600 hover:bg-rose-500 text-white rounded-[2rem] font-black uppercase tracking-widest text-sm transition-all shadow-xl shadow-black/20">Try Training Simulation</button>
+                        <button onclick="startSimulator('${lowestPillar}')" class="w-full py-6 bg-[#6B7D6D] hover:bg-[#5a6a5c] text-white rounded-[2rem] font-black uppercase tracking-widest text-sm transition-all shadow-xl shadow-black/20">Try Training Simulation</button>
                     </div>
 
                     <div class="text-center px-8 pt-8 opacity-40">
-                        <p class="text-[#1e1b4b] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
+                        <p class="text-[#1F2A38] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                             Patience over rushing • Character over chemistry • Mutual alignment
                         </p>
                     </div>
@@ -1917,7 +1916,7 @@
                 if (response.ok || response.type === 'opaque') {
                     if (isManual) {
                         btn.textContent = "REPORT SENT";
-                        btn.classList.remove('bg-[#1e1b4b]');
+                        btn.classList.remove('bg-[#1F2A38]');
                         btn.classList.add('bg-green-600');
                         syncText.textContent = "RELATIONAL DATA ENCRYPTED & SYNCED";
                     }
