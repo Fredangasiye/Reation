@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RINGREADY | Alignment & Training Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="growth-modules-data.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -148,19 +149,23 @@
             color: #2C2C2C !important;
         }
 
-        .pdf-capture .bg-rose-50,
         .pdf-capture .bg-white {
             background-color: transparent !important;
             border-color: #1F2A38 !important;
         }
 
-        .pdf-capture [class*='bg-[#1e1b4b]'],
-        .pdf-capture [class*='bg-[#1F2A38]'] {
+        .pdf-capture [class*="bg-[#F3EFE6]"],
+        .pdf-capture [class*="bg-white"] {
+            background-color: white !important;
+            color: #2C2C2C !important;
+        }
+
+        .pdf-capture [class*="bg-[#1F2A38]"] {
             background-color: #1F2A38 !important;
             color: white !important;
         }
 
-        .pdf-capture [class*='bg-[#1e1b4b]'] * {
+        .pdf-capture [class*="bg-[#1F2A38]"] * {
             color: white !important;
         }
     </style>
@@ -172,7 +177,7 @@
     <div id="app"
         class="w-full max-w-2xl mx-auto shadow-2xl rounded-3xl overflow-hidden glass min-h-[600px] flex flex-col uppercase-none">
         <!-- Progress Bar -->
-        <div id="progress-container" class="hidden w-full h-1 bg-rose-50">
+        <div id="progress-container" class="hidden w-full h-1 bg-[#F3EFE6]">
             <div id="progress-bar" class="h-full vibrant-gradient progress-bar" style="width: 0%"></div>
         </div>
 
@@ -1043,6 +1048,12 @@
             // Single Module State
             singleStep: 1,
             gender: null,
+            growthLab: {
+                selectedModule: null,
+                recommended: [],
+                progress: JSON.parse(localStorage.getItem('growthLabProgress') || '{}'),
+                showBiblical: true
+            },
             singleAnswers: [], // will store {id, score, pillar}
             // Simulator State
             currentSim: null,
@@ -1081,6 +1092,255 @@
 
                 render();
             }
+        }
+
+        function getRecommendedModules(scores, answers) {
+            const recommended = [];
+
+            // Logic Mapping (The "Brain")
+            // 1. Conflict Style (Axis 1: CER) > 30%
+            if (scores[1] && scores[1].score > 3) {
+                recommended.push('communication_problems', 'emotional_regulation');
+            }
+
+            // 2. Attachment (Axis 5: ATI) > 30%
+            if (scores[5] && scores[5].score > 3) {
+                const q38 = QUESTIONS.find(q => q.id === 38);
+                const qIdx = QUESTIONS.indexOf(q38);
+                const q38Val = state.answers[qIdx]; // This is 'A'-'E'
+                const valMap = { 'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5 };
+                const q38Ans = valMap[q38Val];
+
+                if (q38Ans === 3 || q38Ans === 4 || q38Ans === 2) {
+                    recommended.push('anxious_attachment', 'abandonment');
+                } else if (q38Ans === 1 || q38Ans === 5) {
+                    recommended.push('avoidant_attachment', 'trust_issues');
+                }
+            }
+
+            // 3. Finance/Leadership (Axis 3: FGM) > 30%
+            if (scores[3] && scores[3].score > 3) {
+                recommended.push('gender_development');
+            }
+
+            // 4. History/Background (Proxy Axis 2: RVG) > 30%
+            if (scores[2] && scores[2].score > 3) {
+                recommended.push('trauma', 'father_wounds', 'mother_wounds');
+            }
+
+            // Universal (Always offered)
+            recommended.push('boundaries', 'low_self_worth');
+
+            return [...new Set(recommended)];
+        }
+
+        function renderGrowthLab() {
+            const content = document.getElementById('view-content');
+            const progress = state.growthLab.progress;
+
+            if (!state.growthLab.selectedModule) {
+                // SELECTION SCREEN
+                let recommendedHtml = '';
+                state.growthLab.recommended.forEach(id => {
+                    const m = GROWTH_MODULES[id];
+                    if (!m) return;
+                    recommendedHtml += `
+                        <div onclick="selectModule('${id}')" class="group bg-white/5 border border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-white/10 transition-all">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xl font-bold text-white">${m.title}</h4>
+                                <span class="text-xs font-black bg-violet-500/20 text-violet-400 px-2 py-1 rounded">PRIORITY</span>
+                            </div>
+                            <p class="text-white/60 text-sm">${m.subtitle}</p>
+                        </div>
+                    `;
+                });
+
+                let otherHtml = '';
+                Object.keys(GROWTH_MODULES).forEach(id => {
+                    if (state.growthLab.recommended.includes(id)) return;
+                    const m = GROWTH_MODULES[id];
+                    otherHtml += `
+                        <div onclick="selectModule('${id}')" class="group bg-white/5 border border-white/10 p-6 rounded-2xl cursor-pointer hover:bg-white/10 transition-all opacity-60">
+                            <h4 class="text-lg font-bold text-white">${m.title}</h4>
+                            <p class="text-white/40 text-xs">${m.subtitle}</p>
+                        </div>
+                    `;
+                });
+
+                content.innerHTML = `
+                    <div class="max-w-4xl mx-auto py-12 px-6">
+                        <header class="text-center mb-12">
+                            <div class="inline-block px-4 py-1.5 bg-violet-500/10 text-violet-400 rounded-full text-xs font-black tracking-widest uppercase mb-4 border border-violet-500/20">The Repair Laboratory</div>
+                            <h2 class="text-4xl font-black text-white mb-4">Your Personalized Growth Path</h2>
+                            <p class="text-white/60 italic">Select a module to begin your restoration journey.</p>
+                        </header>
+                        
+                        <div class="mb-12">
+                            <h3 class="text-white/40 text-xs font-black uppercase tracking-widest mb-6">Recommended for your results</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${recommendedHtml}
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-white/40 text-xs font-black uppercase tracking-widest mb-6">Foundational Modules</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                ${otherHtml}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // MODULE VIEW
+            const m = GROWTH_MODULES[state.growthLab.selectedModule];
+            const modId = state.growthLab.selectedModule;
+            const modProgress = progress[modId] || { steps: [], notes: '' };
+
+            content.innerHTML = `
+                <div class="max-w-4xl mx-auto py-12 px-6">
+                    <button onclick="state.growthLab.selectedModule = null; render();" class="text-white/40 hover:text-white mb-8 flex items-center gap-2 transition-all">
+                        ← Back to Lab
+                    </button>
+
+                    <header class="mb-12">
+                        <h2 class="text-5xl font-black text-white mb-2">${m.title}</h2>
+                        <p class="text-violet-400 font-bold text-lg">${m.subtitle}</p>
+                    </header>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Content Side -->
+                        <div class="lg:col-span-2 space-y-8">
+                            
+                            <!-- PULSE CHECK -->
+                            <section class="bg-white/5 border border-white/10 rounded-3xl p-8">
+                                <h3 class="text-white font-black text-xl mb-6 flex items-center gap-3">
+                                    <span class="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center text-sm">01</span>
+                                    Pulse Check: Warning Signs
+                                </h3>
+                                <div class="space-y-3">
+                                    ${m.pulse_check.map((item, i) => `
+                                        <label class="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 cursor-pointer transition-all border border-transparent hover:border-white/10">
+                                            <input type="checkbox" onchange="togglePulseStep('${modId}', ${i})" ${modProgress.steps.includes('pulse_' + i) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-white/5 text-violet-500">
+                                            <span class="text-white/80 leading-snug">${item}</span>
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </section>
+
+                            <!-- ROOT CAUSE -->
+                            <section class="bg-white/5 border border-white/10 rounded-3xl p-8">
+                                <h3 class="text-white font-black text-xl mb-6 flex items-center gap-3">
+                                    <span class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm">02</span>
+                                    Root Cause Mirror
+                                </h3>
+                                <p class="text-white/60 mb-6 italic leading-relaxed">"${m.root_cause}"</p>
+                                <div class="relative">
+                                    <textarea id="reflection-note" class="w-full h-40 bg-black/40 border border-white/10 rounded-2xl p-6 text-white focus:border-violet-500 outline-none transition-all placeholder-white/20" 
+                                              placeholder="Reflect on how this pattern shows up in your life..."
+                                              oninput="saveNotes('${modId}', this.value)">${modProgress.notes || ''}</textarea>
+                                    <div id="deep-work-badge" class="${(modProgress.notes || '').length > 100 ? '' : 'hidden'} absolute top-4 right-4 bg-violet-500 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-tighter">Deep Work Badge</div>
+                                </div>
+                            </section>
+
+                            <!-- BELIEF BUSTER -->
+                            <section class="bg-white/5 border border-white/10 rounded-3xl p-8">
+                                <h3 class="text-white font-black text-xl mb-6 flex items-center gap-3">
+                                    <span class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-sm">03</span>
+                                    Belief Buster
+                                </h3>
+                                <div class="group relative perspective-1000 h-48 cursor-pointer" onclick="this.classList.toggle('flipped')">
+                                    <div class="relative w-full h-full duration-500 preserve-3d group-[.flipped]:rotate-y-180">
+                                        <!-- Front -->
+                                        <div class="absolute w-full h-full backface-hidden bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col justify-center items-center text-center">
+                                            <span class="text-xs font-black text-white/30 uppercase tracking-widest mb-4">The Hidden Belief</span>
+                                            <p class="text-xl font-bold text-white">"${m.belief_buster.belief}"</p>
+                                            <span class="mt-6 text-violet-400 text-sm font-bold animate-pulse">Click to Challenge →</span>
+                                        </div>
+                                        <!-- Back -->
+                                        <div class="absolute w-full h-full backface-hidden bg-violet-500 rounded-2xl p-8 flex flex-col justify-center items-center text-center rotate-y-180">
+                                            <span class="text-xs font-black text-white/60 uppercase tracking-widest mb-4">The Reframe</span>
+                                            <p class="text-xl font-black text-white">"${m.belief_buster.reframe}"</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+
+                        <!-- Sidebar -->
+                        <div class="space-y-6">
+                            <!-- DAILY QUEST -->
+                            <div class="bg-gradient-to-br from-violet-600 to-indigo-700 rounded-3xl p-8 text-white shadow-xl shadow-violet-900/20">
+                                <h4 class="text-xs font-black uppercase tracking-widest mb-4 opacity-70">Daily Quest</h4>
+                                <p class="text-xl font-bold leading-tight mb-6">${m.daily_quest}</p>
+                                <button class="w-full bg-white text-violet-600 font-black py-3 rounded-xl hover:scale-[1.02] transition-all">Accept Quest</button>
+                            </div>
+
+                            <!-- SPIRITUAL PERSPECTIVE -->
+                            <div class="bg-white/5 border border-white/10 rounded-3xl p-8">
+                                <div class="flex items-center justify-between mb-6">
+                                    <h4 class="text-white font-black text-lg">Spiritual View</h4>
+                                    <button onclick="toggleBiblical()" class="text-xs font-bold text-violet-400">${state.growthLab.showBiblical ? 'Hide' : 'Show'}</button>
+                                </div>
+                                <div class="${state.growthLab.showBiblical ? '' : 'hidden'}">
+                                    <p class="text-white/70 italic text-sm leading-relaxed">"${m.spiritual}"</p>
+                                </div>
+                            </div>
+
+                            <!-- ROADMAP -->
+                            <div class="bg-white/5 border border-white/10 rounded-3xl p-8">
+                                <h4 class="text-white font-black text-lg mb-6">4-Week Roadmap</h4>
+                                <div class="space-y-4">
+                                    ${m.roadmap.map(step => `
+                                        <div class="flex items-start gap-3">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-violet-500 mt-2 shrink-0"></div>
+                                            <span class="text-white/60 text-sm">${step}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function togglePulseStep(modId, index) {
+            const stepId = 'pulse_' + index;
+            if (!state.growthLab.progress[modId]) state.growthLab.progress[modId] = { steps: [], notes: '' };
+            const steps = state.growthLab.progress[modId].steps;
+            const idx = steps.indexOf(stepId);
+            if (idx > -1) steps.splice(idx, 1);
+            else steps.push(stepId);
+            localStorage.setItem('growthLabProgress', JSON.stringify(state.growthLab.progress));
+        }
+
+        saveNotesTimeout = null;
+        function saveNotes(modId, value) {
+            if (!state.growthLab.progress[modId]) state.growthLab.progress[modId] = { steps: [], notes: '' };
+            state.growthLab.progress[modId].notes = value;
+
+            // UI Update for Badge
+            const badge = document.getElementById('deep-work-badge');
+            if (value.length > 100) badge.classList.remove('hidden');
+            else badge.classList.add('hidden');
+
+            clearTimeout(saveNotesTimeout);
+            saveNotesTimeout = setTimeout(() => {
+                localStorage.setItem('growthLabProgress', JSON.stringify(state.growthLab.progress));
+            }, 500);
+        }
+
+        function toggleBiblical() {
+            state.growthLab.showBiblical = !state.growthLab.showBiblical;
+            render();
+        }
+
+        function selectModule(id) {
+            state.growthLab.selectedModule = id;
+            render();
         }
 
         function render() {
@@ -1172,6 +1432,9 @@
                         <button onclick="setView('quiz')" class="w-full py-5 bg-[#1F2A38] rounded-2xl font-black uppercase tracking-widest text-xs animate-pulse shadow-xl shadow-[#1F2A38]/20 text-white">Continue to Full Assessment (FREE)</button>
                     </div>
                 `;
+            } else if (state.view === 'growth-lab') {
+                progressContainer.classList.add('hidden');
+                renderGrowthLab();
             } else if (state.view === 'single-flow') {
                 progressContainer.classList.add('hidden');
                 if (state.singleStep === 1) {
@@ -1277,6 +1540,9 @@
                 progressContainer.classList.add('hidden');
                 const scores = calculateScores();
 
+                // Calculate Growth Lab Recommendations
+                state.growthLab.recommended = getRecommendedModules(scores, state.answers);
+
                 content.innerHTML = `
                     <div class="fade-in space-y-12 pb-20">
                         <div class="text-center space-y-4">
@@ -1306,6 +1572,13 @@
                             <div class="max-w-md mx-auto space-y-4">
                                 <input type="email" id="email-capture" placeholder="Enter your email" class="w-full bg-white border border-[#1F2A38]/20 rounded-2xl px-6 py-5 focus:ring-2 focus:ring-[#6B7D6D] outline-none text-center font-medium shadow-sm transition-all text-[#2C2C2C] placeholder-[#6B7D6D]/30">
                                 <button id="send-report-btn" onclick="syncToWebhook(true)" class="w-full py-6 bg-[#1F2A38] hover:bg-[#2c3e50] text-white rounded-2xl font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-black/10">Deliver Report to Inbox</button>
+                            </div>
+
+                            <!-- GROWTH LAB PROMPT -->
+                            <div class="bg-violet-600 rounded-[2.5rem] p-8 text-white mt-8 text-center shadow-xl shadow-violet-900/20">
+                                <h3 class="text-2xl font-black mb-2">The Repair Laboratory</h3>
+                                <p class="mb-6 opacity-90 text-sm">Your results indicate specific areas for growth. <br>Enter your personalized blueprint below.</p>
+                                <button onclick="state.view = 'growth-lab'; render();" class="w-full bg-white text-violet-600 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-[1.02] transition-all shadow-lg">Enter Growth Lab</button>
                             </div>
 
                             <div class="pt-10 flex flex-col items-center space-y-6">
@@ -1544,7 +1817,7 @@
             else document.body.classList.remove('no-scroll');
 
             return `
-                <div class="${isLocked ? 'h-[500px] overflow-hidden' : ''} space-y-16 pt-16 border-t border-rose-100 relative pb-20">
+                <div class="${isLocked ? 'h-[500px] overflow-hidden' : ''} space-y-16 pt-16 border-t border-[#1F2A38]/10 relative pb-20">
                     ${isLocked ? `
                         <div class="overlay-container">
                             <div class="bg-white p-10 rounded-[3rem] shadow-2xl space-y-8 max-w-md border border-[#1F2A38]/20">
@@ -1586,7 +1859,7 @@
                                                 <p class="text-base text-[#2C2C2C]/60 font-medium leading-tight">${content.desc}</p>
                                             </div>
                                             <div class="text-right">
-                                                <span class="text-xs font-black uppercase tracking-widest ${result.score >= 7 ? 'text-[#be123c]' : (result.score >= 4 ? 'text-[#6B7D6D]' : 'text-emerald-700')}">${result.status}</span>
+                                                <span class="text-xs font-black uppercase tracking-widest ${result.score >= 7 ? 'text-[#1F2A38]' : (result.score >= 4 ? 'text-[#6B7D6D]' : 'text-[#2C2C2C]')}">${result.status}</span>
                                                 <p class="text-4xl font-black text-[#1F2A38] leading-none mt-1">${Math.round(result.score)}<span class="text-base text-[#6B7D6D]/30 font-bold">/10</span></p>
                                             </div>
                                         </div>
@@ -1611,10 +1884,10 @@
                                                     <p class="text-lg text-[#2C2C2C] leading-snug font-medium italic">"${d.pattern}"</p>
                                                 </div>
                                                 <div class="space-y-3">
-                                                    <h5 class="text-xs font-black uppercase tracking-widest text-[#be123c] flex items-center">
-                                                        <span class="w-2 h-2 rounded-full bg-[#be123c] mr-2"></span>
+                                                    <h5 class="text-xs font-black uppercase tracking-widest text-[#1F2A38] flex items-center">
+                                                        <span class="w-2 h-2 rounded-full bg-[#1F2A38] mr-2"></span>
                                                         The Hidden Risk
-+                                                    </h5>
+                                                    </h5>
                                                     <p class="text-lg text-[#2C2C2C]/80 leading-snug font-medium italic">"${d.risk}"</p>
                                                 </div>
                                             </div>
@@ -1745,9 +2018,9 @@
                             </div>
 
                             <!-- Where things go wrong -->
-                            <div class="bg-rose-50 p-8 rounded-[2.5rem] border border-rose-200 shadow-sm space-y-4">
-                                <h5 class="text-xs font-black uppercase tracking-widest text-rose-700 flex items-center">
-                                    <span class="w-2 h-2 rounded-full bg-rose-600 mr-2"></span>
+                            <div class="bg-white p-8 rounded-[2.5rem] border border-[#1F2A38]/20 shadow-sm space-y-4">
+                                <h5 class="text-xs font-black uppercase tracking-widest text-[#1F2A38] flex items-center">
+                                    <span class="w-2 h-2 rounded-full bg-[#1F2A38] mr-2"></span>
                                     Where things usually go wrong
                                 </h5>
                                 <p class="text-lg text-[#2C2C2C] leading-relaxed font-medium">${arcData.failure}</p>
@@ -1772,7 +2045,7 @@
                         <div class="grid grid-cols-1 gap-8">
                             ${Object.entries(pillarScores).map(([p, data]) => {
                 const band = data.percentage <= 40 ? 'needs work' : (data.percentage <= 60 ? 'growing' : (data.percentage <= 75 ? 'solid' : (data.percentage <= 90 ? 'strong' : 'boss level')));
-                const color = data.percentage <= 60 ? 'bg-rose-400' : (data.percentage <= 75 ? 'bg-[#6B7D6D]' : 'bg-[#1F2A38]');
+                const color = data.percentage <= 60 ? 'bg-[#2C2C2C]' : (data.percentage <= 75 ? 'bg-[#6B7D6D]' : 'bg-[#1F2A38]');
                 const pillarNames = state.gender === 'male' ? {
                     M1: "Identity & Vision",
                     M2: "Attraction & Confidence",
