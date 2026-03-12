@@ -171,7 +171,7 @@
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 bg-[#F3EFE6] transition-colors duration-500">
 
     <!-- App Container -->
     <div id="app"
@@ -1345,7 +1345,17 @@
         function render() {
             const content = document.getElementById('view-content');
             const progressContainer = document.getElementById('progress-container');
+            const app = document.getElementById('app');
             content.innerHTML = '';
+
+            // Dynamic Theme & Layout Handling
+            if (state.view === 'growth-lab') {
+                document.body.style.backgroundColor = '#020617'; // slate-950
+                app.className = "w-full max-w-5xl mx-auto shadow-2xl rounded-[3rem] overflow-hidden bg-slate-900 min-h-[600px] flex flex-col uppercase-none border border-white/10 shadow-2xl shadow-indigo-500/10";
+            } else {
+                document.body.style.backgroundColor = '#F3EFE6';
+                app.className = "w-full max-w-2xl mx-auto shadow-2xl rounded-3xl overflow-hidden glass min-h-[600px] flex flex-col uppercase-none";
+            }
 
             if (state.view === 'landing') {
                 progressContainer.classList.add('hidden');
