@@ -2122,6 +2122,23 @@
                         <button onclick="startSimulator('${lowestPillar}')" class="w-full py-6 bg-[#6B7D6D] hover:bg-[#5a6a5c] text-white rounded-[2rem] font-black uppercase tracking-widest text-sm transition-all shadow-xl shadow-black/20">Try Training Simulation</button>
                     </div>
 
+                    ${state.gender === 'male' ? `
+                    <div class="bg-white p-10 rounded-[3rem] text-center space-y-8 shadow-sm border border-[#1F2A38]/20">
+                        <div class="space-y-4 flex flex-col items-center">
+                            <svg class="w-8 h-8 text-[#1F2A38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                               <polyline points="15 3 21 3 21 9"></polyline>
+                               <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                            <div class="space-y-2">
+                                <h4 class="text-xs font-black uppercase tracking-widest text-[#1F2A38]">Advanced Training App</h4>
+                                <p class="text-[#2C2C2C]/80 text-lg font-medium leading-relaxed">Take your relational and communication skills to the next level.</p>
+                            </div>
+                        </div>
+                        <a href="https://rizz-app-azure.vercel.app" target="_blank" class="block w-full py-6 bg-[#1F2A38] hover:bg-[#2c3e50] text-white rounded-[2rem] font-black uppercase tracking-widest text-sm transition-all shadow-xl">Access Training App</a>
+                    </div>
+                    ` : ''}
+
                     <div class="text-center px-8 pt-8 opacity-40">
                         <p class="text-[#1F2A38] text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
                             Patience over rushing • Character over chemistry • Mutual alignment
